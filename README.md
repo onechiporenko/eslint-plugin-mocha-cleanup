@@ -27,6 +27,19 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 * `no-empty-title` Rule to disallow use empty title in the `describe` and `it`
 
 
+## Usage
 
+Add to your eslint config-file:
+
+```javascript
+"plugins": [
+    "mocha-cleanup"
+],
+"rules": {
+    "mocha-cleanup/asserts-limit": 2,
+    "mocha-cleanup/disallow-stub-spy-restore-in-it": 2,
+    "mocha-cleanup/no-empty-title": 2
+}
+```
 
 
