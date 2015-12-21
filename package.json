@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-mocha-cleanup",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "eslint-plugin-mocha-cleanup",
   "keywords": [
     "eslint",
