@@ -10,6 +10,7 @@ var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert
 ruleTester.run("asserts-limit", rule, {
   valid: [
     {code: "it('1234', function () {" + assertions.join('') + "});"},
+    {code: "" + assertions.join('') + assertions.join('') + "it('1234', function () {});"},
     {code: "it('1234', function () {" + assertions.join('') + "});", options: [4]},
     {code: "it('1234', function () {assert;});"},
     {code: "it('1234', function () {should;});"},
