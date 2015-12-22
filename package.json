@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-mocha-cleanup",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Check mocha tests for empty titles, huge number of assertions in the one `it` and invalid sinon usage",
   "keywords": [
     "eslint",
