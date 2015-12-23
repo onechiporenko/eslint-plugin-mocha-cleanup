@@ -30,6 +30,8 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 * `no-same-titles` Rule to disallow usage same titles for `it`s inside one `describe`
 
+* `no-nested-it` Rule to disallow usage nested `it`
+
 
 ## Usage
 
