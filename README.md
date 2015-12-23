@@ -1,8 +1,8 @@
 # eslint-plugin-mocha-cleanup
 
-[![npm version](https://badge.fury.io/js/ember-models-table.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
+[![npm version](https://badge.fury.io/js/eslint-plugin-mocha-cleanup.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
-[![Downloads](http://img.shields.io/npm/dm/ember-models-table.svg)](https://www.npmjs.com/package/eslint-plugin-mocha-cleanup)
+[![Downloads](http://img.shields.io/npm/dm/eslint-plugin-mocha-cleanup.svg)](https://www.npmjs.com/package/eslint-plugin-mocha-cleanup)
 
 ## Installation
 
