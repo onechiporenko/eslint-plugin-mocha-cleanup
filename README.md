@@ -1,6 +1,8 @@
 # eslint-plugin-mocha-cleanup
 
-eslint-plugin-mocha-cleanup
+[![npm version](https://badge.fury.io/js/ember-models-table.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+[![Downloads](http://img.shields.io/npm/dm/ember-models-table.svg)](https://www.npmjs.com/package/eslint-plugin-mocha-cleanup)
 
 ## Installation
 
@@ -26,6 +28,8 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 * `no-empty-title` Rule to disallow use empty title in the `describe` and `it`
 
+* `no-same-titles` Rule to disallow usage same titles for `it`s inside one `describe`
+
 
 ## Usage
 
@@ -38,7 +42,8 @@ Add to your eslint config-file:
 "rules": {
     "mocha-cleanup/asserts-limit": 2,
     "mocha-cleanup/disallow-stub-spy-restore-in-it": 2,
-    "mocha-cleanup/no-empty-title": 2
+    "mocha-cleanup/no-empty-title": 2,
+    "mocha-cleanup/no-same-titles": 2
 }
 ```
 
