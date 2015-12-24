@@ -32,6 +32,8 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 * `no-nested-it` Rule to disallow usage nested `it`
 
+* `no-assertions-outside-it` Rule to disallow use assertions outside `it`
+
 
 ## Usage
 
@@ -46,7 +48,8 @@ Add to your eslint config-file:
     "mocha-cleanup/disallow-stub-spy-restore-in-it": 2,
     "mocha-cleanup/no-empty-title": 2,
     "mocha-cleanup/no-same-titles": 2,
-    "mocha-cleanup/no-nested-it": 2
+    "mocha-cleanup/no-nested-it": 2,
+    "mocha-cleanup/no-assertions-outside-it": 2
 }
 ```
 
