@@ -59,6 +59,20 @@ ruleTester.run("no-nested-it", rule, {
           "});" +
         "});",
       errors: [{message: "Nested `it` is not allowed.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it('1234', function () { " +
+            "it('4321', function () {" +
+              "it('4321', function () {}); " +
+            "}); " +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"},
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
     }
   ]
 });

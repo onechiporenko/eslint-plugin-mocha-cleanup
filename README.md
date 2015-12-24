@@ -45,7 +45,8 @@ Add to your eslint config-file:
     "mocha-cleanup/asserts-limit": 2,
     "mocha-cleanup/disallow-stub-spy-restore-in-it": 2,
     "mocha-cleanup/no-empty-title": 2,
-    "mocha-cleanup/no-same-titles": 2
+    "mocha-cleanup/no-same-titles": 2,
+    "mocha-cleanup/no-nested-it": 2
 }
 ```
 
