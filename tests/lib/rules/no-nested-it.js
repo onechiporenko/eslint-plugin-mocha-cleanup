@@ -47,7 +47,49 @@ ruleTester.run("no-nested-it", rule, {
         "it('123', function (){});" +
       "}); " +
       "it('123', function (){});" +
-    "});"
+    "});",
+
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () { " +
+            "it('4321', function () {}); " +
+          "});" +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it.skip('1234', function () { " +
+            "it('4321', function () {}); " +
+          "});" +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () { " +
+            "it('4321', function () {" +
+              "it('4321', function () {}); " +
+            "}); " +
+          "});" +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it.skip('1234', function () { " +
+            "it('4321', function () {" +
+              "it('4321', function () {}); " +
+            "}); " +
+          "});" +
+        "});",
+      options: [true]
+    }
+
   ],
 
   invalid: [
@@ -64,6 +106,69 @@ ruleTester.run("no-nested-it", rule, {
       code:
         "describe('1234', function () { " +
           "it('1234', function () { " +
+            "it('4321', function () {" +
+              "it('4321', function () {}); " +
+            "}); " +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"},
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () { " +
+            "it('4321', function () {}); " +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "describe('1234', function () { " +
+            "it('1234', function () { " +
+              "it('4321', function () {}); " +
+           "});" +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it.skip('1234', function () { " +
+            "it('4321', function () {}); " +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () { " +
+            "it('4321', function () {" +
+              "it('4321', function () {}); " +
+            "}); " +
+          "});" +
+        "});",
+      errors: [
+        {message: "Nested `it` is not allowed.", type: "CallExpression"},
+        {message: "Nested `it` is not allowed.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it.skip('1234', function () { " +
             "it('4321', function () {" +
               "it('4321', function () {}); " +
             "}); " +

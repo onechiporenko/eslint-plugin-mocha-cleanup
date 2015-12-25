@@ -23,7 +23,25 @@ ruleTester.run("no-same-title", rule, {
         "it('123', function (){});" +
       "}); " +
       "it('123', function (){});" +
-    "});"
+    "});",
+    {
+      code:
+        "describe.skip('4321', function () { " +
+          "it('1234', function () {}); " +
+          "it('1234', function () {}); " +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('4321', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {}); " +
+            "it('1234', function () {}); " +
+          "});" +
+        "});",
+      options: [true]
+    }
   ],
 
   invalid: [
@@ -32,6 +50,24 @@ ruleTester.run("no-same-title", rule, {
         "describe('4321', function () { " +
           "it('1234', function () {}); " +
           "it('1234', function () {}); " +
+        "});",
+      errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
+    },
+    {
+      code:
+        "describe.skip('4321', function () { " +
+          "it('1234', function () {}); " +
+          "it('1234', function () {}); " +
+        "});",
+      errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
+    },
+    {
+      code:
+        "describe.skip('4321', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {}); " +
+            "it('1234', function () {}); " +
+          "});" +
         "});",
       errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
     }

@@ -69,6 +69,61 @@ ruleTester.run("asserts-limit", rule, {
         "it('1234', function () {" +
           "var assert = {};" +
         "});"
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions.join('') +
+          "});" +
+         "});",
+      options: [1, true],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[0] + assertions[0] + assertions[0] +
+          "});" +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[1] + assertions[1] + assertions[1] +
+          "});" +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[1] + assertions[1] + assertions[1] +
+          "});" +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {" +
+              assertions[1] + assertions[1] + assertions[1] +
+            "});" +
+          "});" +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+       "it.skip('1234', function () {" +
+          assertions[1] + assertions[1] + assertions[1] +
+        "});",
+      options: [1, true]
     }
   ],
 
@@ -104,6 +159,66 @@ ruleTester.run("asserts-limit", rule, {
         "});",
       options: [2],
       errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions.join('') +
+          "});" +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[0] + assertions[0] + assertions[0] +
+          "});" +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[1] + assertions[1] + assertions[1] +
+          "});" +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {" +
+            assertions[1] + assertions[1] + assertions[1] +
+          "});" +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {" +
+              assertions[1] + assertions[1] + assertions[1] +
+            "});" +
+          "});" +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "it.skip('1234', function () {" +
+          assertions[1] + assertions[1] + assertions[1] +
+        "});",
+      options: [1],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
     }
   ]
 });

@@ -37,7 +37,40 @@ ruleTester.run("no-empty-title", rule, {
     "}; " +
     "describe(a(), function () {" +
       "it('some title', function () {});" +
-    "});"
+    "});",
+    {
+      code: "it.skip('', function () {});",
+      options: [true]
+    },
+    {
+      code: "it.skip('   ', function () {});",
+      options: [true]
+    },
+    {
+      code: "it.skip('\t', function () {});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('   ', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('\t', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      options: [true]
+    }
   ],
 
   invalid: [
@@ -51,6 +84,27 @@ ruleTester.run("no-empty-title", rule, {
     },
     {
       code: "it('\t', function () {});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('123', function () {" +
+          "it('', function () {});" +
+        "});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('123', function () {" +
+          "it('   ', function () {});" +
+        "});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('123', function () {" +
+          "it('\t', function () {});" +
+        "});",
       errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
     },
     {
@@ -70,6 +124,39 @@ ruleTester.run("no-empty-title", rule, {
     {
       code:
         "describe('\t', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      errors: [{message: "Empty title is not allowed for `describe`.", type: "CallExpression"}]
+    },
+    {
+      code: "it.skip('', function () {});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code: "it.skip('   ', function () {});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code: "it.skip('\t', function () {});",
+      errors: [{message: "Empty title is not allowed for `it`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      errors: [{message: "Empty title is not allowed for `describe`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('   ', function () {" +
+          "it('some title', function () {});" +
+        "});",
+      errors: [{message: "Empty title is not allowed for `describe`.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "describe.skip('\t', function () {" +
           "it('some title', function () {});" +
         "});",
       errors: [{message: "Empty title is not allowed for `describe`.", type: "CallExpression"}]

@@ -22,7 +22,13 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-* `asserts-limit` Rule to disallow use more than allowed number of assertions
+* `asserts-limit` Rule to disallow use more than allowed number of assertions. May be customized with setting maximum number of allowed asserts:
+
+```
+"rules": {
+    "mocha-cleanup/asserts-limit": [2, 3],
+}
+```
 
 * `disallow-stub-spy-restore-in-it` Rule to disallow usage `stub/spy/restore` in the `it`
 
@@ -34,6 +40,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 * `no-assertions-outside-it` Rule to disallow use assertions outside `it`
 
+Each rule may be customized to avoid `describe.skip` and `it.skip` buy adding `true` to the and of the rule-settings. 
 
 ## Usage
 

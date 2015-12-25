@@ -74,6 +74,59 @@ ruleTester.run("no-assertions-outside-it", rule, {
         "describe('1234', function () {" +
           "var assert = {};" +
         "});"
+    },
+
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[0] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[0] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[1] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[1] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[2] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+            assertions[2] +
+          "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions.join('') +
+        "});",
+      options: [true]
     }
   ],
 
@@ -138,6 +191,74 @@ ruleTester.run("no-assertions-outside-it", rule, {
     {
       code:
         "describe('1234', function () {" +
+          assertions.join('') +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[0] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[0] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[1] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[1] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          assertions[2] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[2] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
           assertions.join('') +
         "});",
       errors: [
