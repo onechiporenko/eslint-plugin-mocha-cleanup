@@ -40,6 +40,14 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 * `no-assertions-outside-it` Rule to disallow use assertions outside `it`
 
+* `complexity-it` Counts `it`-body complexity. May be customized with setting maximum complexity:
+
+```
+"rules": {
+    "mocha-cleanup/complexity-it": [2, 30],
+}
+```
+
 Each rule may be customized to avoid `describe.skip` and `it.skip` buy adding `true` to the and of the rule-settings. 
 
 ## Usage
@@ -56,7 +64,8 @@ Add to your eslint config-file:
     "mocha-cleanup/no-empty-title": 2,
     "mocha-cleanup/no-same-titles": 2,
     "mocha-cleanup/no-nested-it": 2,
-    "mocha-cleanup/no-assertions-outside-it": 2
+    "mocha-cleanup/no-assertions-outside-it": 2,
+    "mocha-cleanup/complexity-it": 2
 }
 ```
 
