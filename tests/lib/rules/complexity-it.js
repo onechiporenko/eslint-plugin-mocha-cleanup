@@ -65,6 +65,22 @@ ruleTester.run("complexity-it", rule, {
           "func().should.be.equal(1);" +
         "});",
       options: [0, true]
+    },
+    {
+      code:
+        "it.skip('1234', function () { " +
+          "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
+        "});",
+      options: [0, true]
+    },
+    {
+      code:
+        "describe.skip('4321', function () {" +
+          "it('1234', function () { " +
+            "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
+          "});"+
+        "});",
+      options: [0, true]
     }
   ],
 
@@ -75,7 +91,15 @@ ruleTester.run("complexity-it", rule, {
           "expect(func()).to.be.equal(1);" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 6. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
+    },
+    {
+      code:
+        "it('1234', function () { " +
+          "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
+        "});",
+      options: [0],
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
     },
     {
       code:
@@ -91,7 +115,7 @@ ruleTester.run("complexity-it", rule, {
           "func().should.be.equal(1);" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 5. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
     }
   ]
 });
