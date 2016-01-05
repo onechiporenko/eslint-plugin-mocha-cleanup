@@ -22,6 +22,22 @@ ruleTester.run("complexity-it", rule, {
       code:
         "describe.skip('3421', function () {" +
           "it('1234', function () { " +
+            "sinon.assert.calledOn(sp, {});" +
+          "});" +
+        "});",
+      options: [0, true]
+    },
+    {
+      code:
+        "it.skip('1234', function () { " +
+          "sinon.assert.calledOn(sp, {});" +
+        "});",
+      options: [0, true]
+    },
+    {
+      code:
+        "describe.skip('3421', function () {" +
+          "it('1234', function () { " +
             "expect(func()).to.be.equal(1);" +
           "});" +
         "});",
@@ -116,6 +132,14 @@ ruleTester.run("complexity-it", rule, {
         "});",
       options: [0],
       errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
+    },
+    {
+      code:
+        "it('1234', function () { " +
+          "sinon.assert.calledOn(sp, {});" +
+        "});",
+      options: [0],
+      errors: [{ message: "`it` has a complexity of 3. Maximum allowed is 0."}]
     }
   ]
 });

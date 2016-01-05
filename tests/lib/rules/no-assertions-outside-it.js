@@ -5,7 +5,7 @@ var rule = require("../../../lib/rules/no-assertions-outside-it"),
 
 var ruleTester = new RuleTester();
 
-var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);"];
+var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
 
 ruleTester.run("no-assertions-outside-it", rule, {
   valid: [
@@ -25,6 +25,12 @@ ruleTester.run("no-assertions-outside-it", rule, {
       code:
         "it('1234', function () {" +
           assertions[2] +
+        "});"
+    },
+    {
+      code:
+        "it('1234', function () {" +
+          assertions[3] +
         "});"
     },
     {
@@ -124,6 +130,21 @@ ruleTester.run("no-assertions-outside-it", rule, {
     {
       code:
         "describe.skip('1234', function () {" +
+          assertions[3] +
+        "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+            assertions[3] +
+          "});",
+      options: [true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
           assertions.join('') +
         "});",
       options: [true]
@@ -191,9 +212,29 @@ ruleTester.run("no-assertions-outside-it", rule, {
     {
       code:
         "describe('1234', function () {" +
+          assertions[3] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[3] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe('1234', function () {" +
           assertions.join('') +
         "});",
       errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
@@ -259,9 +300,29 @@ ruleTester.run("no-assertions-outside-it", rule, {
     {
       code:
         "describe.skip('1234', function () {" +
+          assertions[3] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
+          "it('321', function () {});" +
+          assertions[3] +
+        "});",
+      errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"}
+      ]
+    },
+    {
+      code:
+        "describe.skip('1234', function () {" +
           assertions.join('') +
         "});",
       errors: [
+        {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"},
         {message: "Assertion outside `it` is not allowed.", type: "Identifier"}

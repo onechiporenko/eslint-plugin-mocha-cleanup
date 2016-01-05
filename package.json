@@ -16,6 +16,9 @@
   "dependencies": {
     "requireindex": "~1.1.0"
   },
+  "devDependencies": {
+    "mocha": ">=2.3.4"
+  },
   "peerDependencies": {
     "eslint": ">=0.8.0"
   },
