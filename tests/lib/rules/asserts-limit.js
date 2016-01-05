@@ -18,12 +18,6 @@ ruleTester.run("asserts-limit", rule, {
     },
     {
       code:
-        assertions.join('') +
-        assertions.join('') +
-        "it('1234', function () {});"
-    },
-    {
-      code:
         "it('1234', function () {" +
           assertions.join('') +
         "});",
@@ -32,43 +26,43 @@ ruleTester.run("asserts-limit", rule, {
     {
       code:
         "it('1234', function () {" +
-          "assert;" +
+          "assert;" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "should;" +
+          "should;" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "should();" +
+          "should();" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "expect;" +
+          "expect;" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "var expect = {};" +
+          "var expect = {};" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "var should = {};" +
+          "var should = {};" + assertions[0] +
         "});"
     },
     {
       code:
         "it('1234', function () {" +
-          "var assert = {};" +
+          "var assert = {};" + assertions[0] +
         "});"
     },
     {
@@ -141,6 +135,27 @@ ruleTester.run("asserts-limit", rule, {
       code:
        "it.skip('1234', function () {" +
           assertions[3] + assertions[3] + assertions[3] +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+       "it.skip('1234', function () {});",
+      options: [1, true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {});" +
+        "});",
+      options: [1, true]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {});" +
+          "});" +
         "});",
       options: [1, true]
     }
@@ -266,6 +281,39 @@ ruleTester.run("asserts-limit", rule, {
         "});",
       options: [1],
       errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+    },
+    {
+      code:
+        "it('1234', function () {});",
+      errors: [{message: "`it` without assertions is not allowed."}]
+    },
+    {
+      code:
+        "it.skip('1234', function () {});",
+      errors: [{message: "`it` without assertions is not allowed."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "it('1234', function () {});" +
+        "});",
+      errors: [{message: "`it` without assertions is not allowed."}]
+    },
+    {
+      code:
+        "describe('1234', function () { " +
+          "it('1234', function () {});" +
+        "});",
+      errors: [{message: "`it` without assertions is not allowed."}]
+    },
+    {
+      code:
+        "describe.skip('1234', function () { " +
+          "describe('4321', function () { " +
+            "it('1234', function () {});" +
+          "});" +
+        "});",
+      errors: [{message: "`it` without assertions is not allowed."}]
     }
   ]
 });
