@@ -168,7 +168,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions.join('') +
         "});",
       options: [2],
-      errors: [{message: "Too many assertions (4). Maximum allowed is 2."}]
+      errors: [{message: "Too many assertions (4). Maximum allowed is 2.", type: "CallExpression"}]
     },
     {
       code:
@@ -176,7 +176,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions[0] + assertions[0] + assertions[0] +
         "});",
       options: [2],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
     },
     {
       code:
@@ -184,7 +184,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions[1] + assertions[1] + assertions[1] +
         "});",
       options: [2],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
     },
     {
       code:
@@ -192,7 +192,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions[3] + assertions[3] + assertions[3] +
         "});",
       options: [2],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
     },
     {
       code:
@@ -200,7 +200,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions[2] + assertions[2] + assertions[2] +
         "});",
       options: [2],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
     },
     {
       code:
@@ -210,7 +210,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (4). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (4). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -220,7 +220,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -230,7 +230,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -240,7 +240,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -252,7 +252,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -264,7 +264,7 @@ ruleTester.run("asserts-limit", rule, {
           "});" +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -272,7 +272,7 @@ ruleTester.run("asserts-limit", rule, {
           assertions[1] + assertions[1] + assertions[1] +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
@@ -280,31 +280,31 @@ ruleTester.run("asserts-limit", rule, {
           assertions[3] + assertions[3] + assertions[3] +
         "});",
       options: [1],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1."}]
+      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
         "it('1234', function () {});",
-      errors: [{message: "`it` without assertions is not allowed."}]
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "it.skip('1234', function () {});",
-      errors: [{message: "`it` without assertions is not allowed."}]
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "describe.skip('1234', function () { " +
           "it('1234', function () {});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed."}]
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "describe('1234', function () { " +
           "it('1234', function () {});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed."}]
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
@@ -313,7 +313,7 @@ ruleTester.run("asserts-limit", rule, {
             "it('1234', function () {});" +
           "});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed."}]
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     }
   ]
 });

@@ -107,7 +107,7 @@ ruleTester.run("complexity-it", rule, {
           "expect(func()).to.be.equal(1);" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
     },
     {
       code:
@@ -115,7 +115,7 @@ ruleTester.run("complexity-it", rule, {
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
     },
     {
       code:
@@ -123,7 +123,7 @@ ruleTester.run("complexity-it", rule, {
           "assert.equal(func(), 1, '4321');" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 3. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
     },
     {
       code:
@@ -131,7 +131,7 @@ ruleTester.run("complexity-it", rule, {
           "func().should.be.equal(1);" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
     },
     {
       code:
@@ -139,7 +139,7 @@ ruleTester.run("complexity-it", rule, {
           "sinon.assert.calledOn(sp, {});" +
         "});",
       options: [0],
-      errors: [{ message: "`it` has a complexity of 3. Maximum allowed is 0."}]
+      errors: [{ message: "`it` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
     }
   ]
 });
