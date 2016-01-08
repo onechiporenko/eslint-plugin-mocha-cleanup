@@ -23,11 +23,11 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-* `asserts-limit` Rule to disallow use more than allowed number of assertions. May be customized with setting maximum number of allowed asserts:
+* `asserts-limit` Rule to disallow use more than allowed number of assertions. `it`s without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
 
 ```
 "rules": {
-    "mocha-cleanup/asserts-limit": [2, 3],
+    "mocha-cleanup/asserts-limit": [2, 3]
 }
 ```
 
@@ -45,7 +45,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ```
 "rules": {
-    "mocha-cleanup/complexity-it": [2, 30],
+    "mocha-cleanup/complexity-it": [2, 30]
 }
 ```
 
