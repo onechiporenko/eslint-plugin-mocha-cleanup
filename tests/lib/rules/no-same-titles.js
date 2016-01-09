@@ -51,7 +51,7 @@ ruleTester.run("no-same-title", rule, {
           "it('1234', function () {}); " +
           "it('1234', function () {}); " +
         "});",
-      errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
+      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
     },
     {
       code:
@@ -59,7 +59,7 @@ ruleTester.run("no-same-title", rule, {
           "it('1234', function () {}); " +
           "it('1234', function () {}); " +
         "});",
-      errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
+      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
     },
     {
       code:
@@ -69,7 +69,7 @@ ruleTester.run("no-same-title", rule, {
             "it('1234', function () {}); " +
           "});" +
         "});",
-      errors: [{message: "Some `it` have same titles.", type: "FunctionExpression"}]
+      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
     }
   ]
 });
