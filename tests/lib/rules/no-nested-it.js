@@ -2,182 +2,199 @@
 
 var rule = require("../../../lib/rules/no-nested-it"),
   RuleTester = require("eslint").RuleTester;
-
+var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester();
-ruleTester.run("no-nested-it", rule, {
-  valid: [
-    "it('123', function (){}); " +
-    "describe('321', function () {" +
-      " it('123', function (){});" +
-    "});",
 
-    "describe('321', function () {" +
-      "it('123', function (){" +
-        "some.it;" +
-      "});" +
-    "});",
-
-    "describe('321', function () {" +
-      "it('123', function (){" +
-        "it.abc();" +
-      "});" +
-    "});",
-
-    "describe('321', function () {" +
-      "it('123', function (){" +
-        "abc.it();" +
-      "});" +
-    "});",
-
-    "describe('321', function () {" +
-      "it('123', function (){" +
-        "abc.it('33', function () {});" +
-      "});" +
-    "});",
-
-    "describe('321', function () {" +
-      "it('123', function (){});" +
-    "}); " +
-    "describe('4321', function () {" +
-      "it('123', function (){});" +
-    "});",
-
-    "describe('4321', function () {" +
-      "describe('321', function () {" +
-        "it('123', function (){});" +
+var validTestTemplates = [
+  {
+    code:
+      "TEST('123', function (){}); " +
+      "SUITE('321', function () {" +
+        " TEST('123', function (){});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){" +
+          "some.it;" +
+        "});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){" +
+          "it.abc();" +
+        "});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){" +
+          "abc.it();" +
+        "});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){" +
+          "abc.it('33', function () {});" +
+        "});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){});" +
       "}); " +
-      "it('123', function (){});" +
+      "SUITE('4321', function () {" +
+        "TEST('123', function (){});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('4321', function () {" +
+        "SUITE('321', function () {" +
+          "TEST('123', function (){});" +
+        "}); " +
+        "TEST('123', function (){});" +
+      "});"
+  },
+  {
+    code:
+      "SUITESKIP('1234', function () { " +
+        "TEST('1234', function () { " +
+          "TEST('4321', function () {}); " +
+        "});" +
+      "});",
+    options: [true]
+  },
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TESTSKIP('1234', function () { " +
+          "TEST('4321', function () {}); " +
+        "});" +
+      "});",
+    options: [true]
+  },
+  {
+    code:
+      "SUITESKIP('1234', function () { " +
+        "TEST('1234', function () { " +
+          "TEST('4321', function () {" +
+            "TEST('4321', function () {}); " +
+          "}); " +
+        "});" +
+      "});",
+    options: [true]
+  },
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TESTSKIP('1234', function () { " +
+          "TEST('4321', function () {" +
+            "TEST('4321', function () {}); " +
+          "}); " +
+        "});" +
+      "});",
+    options: [true]
+  }
+];
+
+var invalidTestTemplates = [
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TEST('1234', function () { " +
+          "TEST('4321', function () {}); " +
+        "});" +
+      "});",
+    errors: [{message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TEST('1234', function () { " +
+          "TEST('4321', function () {" +
+            "TEST('4321', function () {}); " +
+          "}); " +
+        "});" +
+      "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+      "SUITESKIP('1234', function () { " +
+        "TEST('1234', function () { " +
+          "TEST('4321', function () {}); " +
+        "});" +
+      "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+      "SUITESKIP('1234', function () { " +
+        "SUITE('1234', function () { " +
+          "TEST('1234', function () { " +
+            "TEST('4321', function () {}); " +
+          "});" +
+        "});" +
+      "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TESTSKIP('1234', function () { " +
+          "TEST('4321', function () {}); " +
+        "});" +
+      "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+    "SUITESKIP('1234', function () { " +
+      "TEST('1234', function () { " +
+        "TEST('4321', function () {" +
+          "TEST('4321', function () {}); " +
+        "}); " +
+      "});" +
     "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+      "SUITE('1234', function () { " +
+        "TESTSKIP('1234', function () { " +
+          "TEST('4321', function () {" +
+            "TEST('4321', function () {}); " +
+          "}); " +
+        "});" +
+      "});",
+    errors: [
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
+      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+    ]
+  }
+];
 
-    {
-      code:
-        "describe.skip('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {}); " +
-          "});" +
-        "});",
-      options: [true]
-    },
-    {
-      code:
-        "describe('1234', function () { " +
-          "it.skip('1234', function () { " +
-            "it('4321', function () {}); " +
-          "});" +
-        "});",
-      options: [true]
-    },
-    {
-      code:
-        "describe.skip('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {" +
-              "it('4321', function () {}); " +
-            "}); " +
-          "});" +
-        "});",
-      options: [true]
-    },
-    {
-      code:
-        "describe('1234', function () { " +
-          "it.skip('1234', function () { " +
-            "it('4321', function () {" +
-              "it('4321', function () {}); " +
-            "}); " +
-          "});" +
-        "});",
-      options: [true]
-    }
-
-  ],
-
-  invalid: [
-    {
-      code:
-        "describe('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {}); " +
-          "});" +
-        "});",
-      errors: [{message: "Nested `it` is not allowed.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "describe('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {" +
-              "it('4321', function () {}); " +
-            "}); " +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"},
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    },
-    {
-      code:
-        "describe.skip('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {}); " +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    },
-    {
-      code:
-        "describe.skip('1234', function () { " +
-          "describe('1234', function () { " +
-            "it('1234', function () { " +
-              "it('4321', function () {}); " +
-           "});" +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    },
-    {
-      code:
-        "describe('1234', function () { " +
-          "it.skip('1234', function () { " +
-            "it('4321', function () {}); " +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    },
-    {
-      code:
-        "describe.skip('1234', function () { " +
-          "it('1234', function () { " +
-            "it('4321', function () {" +
-              "it('4321', function () {}); " +
-            "}); " +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"},
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    },
-    {
-      code:
-        "describe('1234', function () { " +
-          "it.skip('1234', function () { " +
-            "it('4321', function () {" +
-              "it('4321', function () {}); " +
-            "}); " +
-          "});" +
-        "});",
-      errors: [
-        {message: "Nested `it` is not allowed.", type: "CallExpression"},
-        {message: "Nested `it` is not allowed.", type: "CallExpression"}
-      ]
-    }
-  ]
+ruleTester.run("no-nested-it", rule, {
+  valid: testHelpers.getCombos(validTestTemplates),
+  invalid: testHelpers.getCombos(invalidTestTemplates)
 });

@@ -2,74 +2,76 @@
 
 var rule = require("../../../lib/rules/no-same-titles"),
   RuleTester = require("eslint").RuleTester;
-
+var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester();
-ruleTester.run("no-same-title", rule, {
-  valid: [
-    "it('123', function (){}); " +
-    "describe('321', function () {" +
-      "it('123', function (){});" +
-    "});",
 
-    "describe('321', function () {" +
-      "it('123', function (){});" +
-    "}); " +
-    "describe('4321', function () {" +
-      "it('123', function (){});" +
-    "});",
-
-    "describe('4321', function () {" +
-      "describe('321', function () {" +
-        "it('123', function (){});" +
+var validTestTemplates = [
+  {
+    code:
+      "TEST('123', function (){}); " +
+      "SUITE('321', function () {" +
+        "TEST('123', function (){});" +
+      "});"
+  },
+  {
+    code:
+      "SUITE('321', function () {" +
+        "TEST('123', function (){});" +
       "}); " +
-      "it('123', function (){});" +
-    "});",
-    {
-      code:
-        "describe.skip('4321', function () { " +
-          "it('1234', function () {}); " +
-          "it('1234', function () {}); " +
-        "});",
-      options: [true]
-    },
-    {
-      code:
-        "describe.skip('4321', function () { " +
-          "describe('4321', function () { " +
-            "it('1234', function () {}); " +
-            "it('1234', function () {}); " +
-          "});" +
-        "});",
-      options: [true]
-    }
-  ],
+      "SUITE('4321', function () {" +
+        "TEST('123', function (){});" +
+      "});"
+  },
+  {
+    code:
+      "SUITESKIP('4321', function () { " +
+        "TEST('1234', function () {}); " +
+        "TEST('1234', function () {}); " +
+      "});",
+    options: [true]
+  },
+  {
+    code:
+      "SUITESKIP('4321', function () { " +
+        "SUITE('4321', function () { " +
+          "TEST('1234', function () {}); " +
+          "TEST('1234', function () {}); " +
+        "});" +
+      "});",
+    options: [true]
+  }
+];
 
-  invalid: [
-    {
-      code:
-        "describe('4321', function () { " +
-          "it('1234', function () {}); " +
-          "it('1234', function () {}); " +
-        "});",
-      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "describe.skip('4321', function () { " +
-          "it('1234', function () {}); " +
-          "it('1234', function () {}); " +
-        "});",
-      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "describe.skip('4321', function () { " +
-          "describe('4321', function () { " +
-            "it('1234', function () {}); " +
-            "it('1234', function () {}); " +
-          "});" +
-        "});",
-      errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
-    }
-  ]
+var invalidTestTemplates = [
+  {
+    code:
+      "SUITE('4321', function () { " +
+        "TEST('1234', function () {}); " +
+        "TEST('1234', function () {}); " +
+      "});",
+    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "SUITESKIP('4321', function () { " +
+        "TEST('1234', function () {}); " +
+        "TEST('1234', function () {}); " +
+      "});",
+    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "SUITESKIP('4321', function () { " +
+        "SUITE('4321', function () { " +
+          "TEST('1234', function () {}); " +
+          "TEST('1234', function () {}); " +
+        "});" +
+      "});",
+    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+  }
+];
+
+ruleTester.run("no-same-title", rule, {
+  valid: testHelpers.getCombos(validTestTemplates),
+  invalid: testHelpers.getCombos(invalidTestTemplates)
 });
