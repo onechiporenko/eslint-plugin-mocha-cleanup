@@ -305,26 +305,26 @@ var invalidTestTemplates = [
     {
       code:
         "TEST('1234', function () {});",
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "TESTSKIP('1234', function () {});",
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "SUITESKIP('1234', function () { " +
           "TEST('1234', function () {});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "SUITE('1234', function () { " +
           "TEST('1234', function () {});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
@@ -333,7 +333,7 @@ var invalidTestTemplates = [
             "TEST('1234', function () {});" +
           "});" +
         "});",
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
@@ -341,13 +341,13 @@ var invalidTestTemplates = [
           "done();" +
         "});",
       options: [1, true, false],
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "TEST('1234', function (done) {});",
       options: [1, true, false],
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
@@ -355,13 +355,13 @@ var invalidTestTemplates = [
           "notDone();" +
         "});",
       options: [1, true, false],
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
         "TEST('1234', function (notDone) {});",
       options: [1, true, false],
-      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+      errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     }
   ];
 
