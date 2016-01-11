@@ -70,7 +70,7 @@ var validTestTemplates = [
           "TEST('4321', function () {}); " +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -79,7 +79,7 @@ var validTestTemplates = [
           "TEST('4321', function () {}); " +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -90,7 +90,7 @@ var validTestTemplates = [
           "}); " +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -101,7 +101,7 @@ var validTestTemplates = [
           "}); " +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   }
 ];
 

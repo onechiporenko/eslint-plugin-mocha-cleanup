@@ -27,7 +27,15 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ```
 "rules": {
-    "mocha-cleanup/asserts-limit": [2, 3]
+    "mocha-cleanup/asserts-limit": [2, {assertsLimit: 3}]
+}
+```
+
+This rule ignores tests with `done`-callback and 0 assertions. Set option `ignoreZeroAssertionsIfDoneExists` to `false` to start handle such behavior:
+
+```
+"rules": {
+    "mocha-cleanup/asserts-limit": [2, {ignoreZeroAssertionsIfDoneExists: false}]
 }
 ```
 
@@ -45,11 +53,11 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ```
 "rules": {
-    "mocha-cleanup/complexity-it": [2, 30]
+    "mocha-cleanup/complexity-it": [2, {maxAllowedComplexity: 30}]
 }
 ```
 
-Each rule may be customized to avoid `describe.skip` and `it.skip` buy adding `true` to the and of the rule-settings. 
+Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
 ## Usage
 

@@ -88,7 +88,7 @@ var validTestTemplates = [
       "SUITESKIP('1234', function () {" +
         assertions[0] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -96,14 +96,14 @@ var validTestTemplates = [
         "TEST('321', function () {});" +
         assertions[0] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('1234', function () {" +
         assertions[1] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -111,14 +111,14 @@ var validTestTemplates = [
         "TEST('321', function () {});" +
         assertions[1] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('1234', function () {" +
         assertions[2] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -126,14 +126,14 @@ var validTestTemplates = [
         "TEST('321', function () {});" +
         assertions[2] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('1234', function () {" +
         assertions[3] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -141,14 +141,14 @@ var validTestTemplates = [
         "TEST('321', function () {});" +
         assertions[3] +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('1234', function () {" +
         assertions.join('') +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   }
 ];
 

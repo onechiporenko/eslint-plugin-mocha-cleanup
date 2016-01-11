@@ -62,38 +62,38 @@ var validTestTemplates = [
   {
     code:
       "TESTSKIP('', function () {});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('   ', function () {});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('\t', function () {});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('', function () {" +
         "TEST('some title', function () {});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('   ', function () {" +
         "TEST('some title', function () {});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('\t', function () {" +
         "TEST('some title', function () {});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   }
 ];
 

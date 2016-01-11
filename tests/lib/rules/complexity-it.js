@@ -17,7 +17,7 @@ var validTestTemplates = [
           "expect(result).to.be.equal(expected);" +
         "});" +
       "});",
-    options: [9]
+    options: [{maxAllowedComplexity: 9}]
   },
   {
     code:
@@ -26,14 +26,14 @@ var validTestTemplates = [
           "sinon.assert.calledOn(sp, {});" +
         "});" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('1234', function () { " +
         "sinon.assert.calledOn(sp, {});" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
@@ -42,14 +42,14 @@ var validTestTemplates = [
           "expect(func()).to.be.equal(1);" +
         "});" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('1234', function () { " +
         "expect(func()).to.be.equal(1);" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
@@ -58,14 +58,14 @@ var validTestTemplates = [
           "assert.equal(func(), 1, '4321');" +
         "});" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('1234', function () { " +
         "assert.equal(func(), 1, '4321');" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
@@ -74,21 +74,21 @@ var validTestTemplates = [
           "func().should.be.equal(1);" +
         "});" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('1234', function () { " +
         "func().should.be.equal(1);" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('1234', function () { " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
@@ -97,7 +97,7 @@ var validTestTemplates = [
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});"+
       "});",
-    options: [0, true]
+    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   }
 ];
 
@@ -107,7 +107,7 @@ var invalidTestTemplates = [
       "TEST('1234', function () { " +
         "expect(func()).to.be.equal(1);" +
       "});",
-    options: [0],
+    options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
@@ -115,7 +115,7 @@ var invalidTestTemplates = [
       "TEST('1234', function () { " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
-    options: [0],
+    options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
@@ -123,7 +123,7 @@ var invalidTestTemplates = [
       "TEST('1234', function () { " +
         "assert.equal(func(), 1, '4321');" +
       "});",
-    options: [0],
+    options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
@@ -131,7 +131,7 @@ var invalidTestTemplates = [
       "TEST('1234', function () { " +
         "func().should.be.equal(1);" +
       "});",
-    options: [0],
+    options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
@@ -139,7 +139,7 @@ var invalidTestTemplates = [
       "TEST('1234', function () { " +
         "sinon.assert.calledOn(sp, {});" +
       "});",
-    options: [0],
+    options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
   }
 ];

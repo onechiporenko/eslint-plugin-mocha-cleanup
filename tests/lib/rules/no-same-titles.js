@@ -28,7 +28,7 @@ var validTestTemplates = [
         "TEST('1234', function () {}); " +
         "TEST('1234', function () {}); " +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -38,7 +38,7 @@ var validTestTemplates = [
           "TEST('1234', function () {}); " +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   }
 ];
 
@@ -49,7 +49,7 @@ var invalidTestTemplates = [
         "TEST('1234', function () {}); " +
         "TEST('1234', function () {}); " +
       "});",
-    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
   },
   {
     code:
@@ -57,7 +57,7 @@ var invalidTestTemplates = [
         "TEST('1234', function () {}); " +
         "TEST('1234', function () {}); " +
       "});",
-    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
   },
   {
     code:
@@ -67,7 +67,7 @@ var invalidTestTemplates = [
           "TEST('1234', function () {}); " +
         "});" +
       "});",
-    errors: [{message: "Some `it` have same titles.", type: "CallExpression"}]
+    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
   }
 ];
 

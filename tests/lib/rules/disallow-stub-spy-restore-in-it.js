@@ -114,7 +114,7 @@ var validTestTemplates = [
           "sinon.restore();" +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -123,7 +123,7 @@ var validTestTemplates = [
           "sinon.stub();" +
         "});" +
      "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -132,7 +132,7 @@ var validTestTemplates = [
           "sinon.spy();" +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
@@ -143,14 +143,14 @@ var validTestTemplates = [
           "});" +
         "});" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   },
   {
     code:
       "TESTSKIP('12345', function () {" +
         "sinon.stub().withArgs().returns();" +
       "});",
-    options: [true]
+    options: [{skipSkipped: true}]
   }
 ];
 
