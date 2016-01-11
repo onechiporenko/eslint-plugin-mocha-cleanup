@@ -126,6 +126,26 @@ var validTestTemplates = [
     },
     {
       code:
+        "TEST('1234', function (done) {" +
+          "done();" +
+        "});"
+    },
+    {
+      code:
+        "TEST('1234', function (done) {});"
+    },
+    {
+      code:
+        "TEST('1234', function (notDone) {" +
+          "notDone();" +
+        "});"
+    },
+    {
+      code:
+        "TEST('1234', function (notDone) {});"
+    },
+    {
+      code:
        "TESTSKIP('1234', function () {" +
           assertions[1] + assertions[1] + assertions[1] +
         "});",
@@ -313,6 +333,34 @@ var invalidTestTemplates = [
             "TEST('1234', function () {});" +
           "});" +
         "});",
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "TEST('1234', function (done) {" +
+          "done();" +
+        "});",
+      options: [1, true, false],
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "TEST('1234', function (done) {});",
+      options: [1, true, false],
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "TEST('1234', function (notDone) {" +
+          "notDone();" +
+        "});",
+      options: [1, true, false],
+      errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
+    },
+    {
+      code:
+        "TEST('1234', function (notDone) {});",
+      options: [1, true, false],
       errors: [{message: "`it` without assertions is not allowed.", type: "CallExpression"}]
     }
   ];
