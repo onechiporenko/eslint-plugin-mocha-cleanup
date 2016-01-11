@@ -1,11 +1,13 @@
 {
   "name": "eslint-plugin-mocha-cleanup",
-  "version": "1.1.1",
-  "description": "Check mocha tests for empty titles and equal titles, huge number of assertions in the one `it` and invalid sinon usage",
+  "version": "1.2.0",
+  "description": "Check mocha tests for empty titles and equal titles, huge number of assertions in the one test-block, invalid sinon usage etc. TDD and BDD syntaxes are supported",
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "mocha",
+    "cleanup"
   ],
   "repository": "https://github.com/onechiporenko/eslint-plugin-mocha-cleanup",
   "author": "onechiporenko",
