@@ -12,6 +12,10 @@ var validTestTemplates = [
   },
   {
     code:
+      "TEST(123, function () {});"
+  },
+  {
+    code:
       "var a = '12'; " +
       "TEST(a, function () {});"
   },
