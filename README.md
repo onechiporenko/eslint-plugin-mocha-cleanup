@@ -57,7 +57,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `no-eql-primitives` Rule to disallow usage `eql`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
+* `no-eql-primitives` Rule to disallow usage `eql`, `deep.equal`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
 
 Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
