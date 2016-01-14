@@ -57,6 +57,8 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
+* `no-eql-primitives` Rule to disallow usage `eql`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
+
 Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
 ## Usage
@@ -74,7 +76,8 @@ Add to your eslint config-file:
     "mocha-cleanup/no-same-titles": 2,
     "mocha-cleanup/no-nested-it": 2,
     "mocha-cleanup/no-assertions-outside-it": 2,
-    "mocha-cleanup/complexity-it": 2
+    "mocha-cleanup/complexity-it": 2,
+    "mocha-cleanup/no-eql-primitives": 2
 }
 ```
 
