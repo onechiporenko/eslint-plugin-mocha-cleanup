@@ -15,6 +15,16 @@ var validTestTemplates = [
   },
   {
     code:
+      "TEST('123', function (){}); " +
+      "SUITE('321', function () {" +
+        "TEST('123', function (){});" +
+        "SUITE('321', function () {" +
+          "TEST('123', function (){});" +
+        "});" +
+      "});"
+  },
+  {
+    code:
       "SUITE('321', function () {" +
         "TEST('123', function (){});" +
       "}); " +
@@ -67,6 +77,18 @@ var invalidTestTemplates = [
           "TEST('1234', function () {}); " +
         "});" +
       "});",
+    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "TEST('1111', function (){}); " +
+        "SUITE('321', function () {" +
+          "TEST('123', function (){});" +
+          "SUITE('321', function () {" +
+            "TEST('123', function (){});" +
+            "TEST('123', function (){});" +
+          "});" +
+        "});",
     errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
   }
 ];
