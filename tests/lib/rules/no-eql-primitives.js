@@ -23,9 +23,13 @@ var assertions = [
   {INVALID_ASSERTION: "a.should.be.eql('');", ASSERTION: "", IN_MESSAGE: ".eql"},
   {INVALID_ASSERTION: "a.should.be.eql(null);", ASSERTION: "", IN_MESSAGE: ".eql"},
   {INVALID_ASSERTION: "", ASSERTION: "assert.deepEqual(a, {});"},
+  {INVALID_ASSERTION: "", ASSERTION: "assert.deepEqual(a, b);"},
   {INVALID_ASSERTION: "", ASSERTION: "assert.notDeepEqual(a, {});"},
+  {INVALID_ASSERTION: "", ASSERTION: "assert.notDeepEqual(a, b);"},
   {INVALID_ASSERTION: "", ASSERTION: "expect(a).to.be.eql({});"},
-  {INVALID_ASSERTION: "", ASSERTION: "a.should.be.eql({});"}
+  {INVALID_ASSERTION: "", ASSERTION: "expect(a).to.be.eql(b);"},
+  {INVALID_ASSERTION: "", ASSERTION: "a.should.be.eql({});"},
+  {INVALID_ASSERTION: "", ASSERTION: "a.should.be.eql(b);"}
 ];
 
 var validTestTemplates = [
