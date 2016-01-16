@@ -27,7 +27,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ```
 "rules": {
-    "mocha-cleanup/asserts-limit": [2, {assertsLimit: 3}]
+    "mocha-cleanup/asserts-limit": [2, {"assertsLimit": 3}]
 }
 ```
 
@@ -35,7 +35,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 ```
 "rules": {
-    "mocha-cleanup/asserts-limit": [2, {ignoreZeroAssertionsIfDoneExists: false}]
+    "mocha-cleanup/asserts-limit": [2, {"ignoreZeroAssertionsIfDoneExists": false}]
 }
 ```
 
@@ -53,11 +53,19 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 ```
 "rules": {
-    "mocha-cleanup/complexity-it": [2, {maxAllowedComplexity: 30}]
+    "mocha-cleanup/complexity-it": [2, {"maxAllowedComplexity": 30}]
 }
 ```
 
 * `no-eql-primitives` Rule to disallow usage `eql`, `deep.equal`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
+
+* `no-assertions-in-loop` Rule to disallow use assertions inside loops. Rule may be customized with setting additional loops like `forEach`:
+
+```
+"rules": {
+    "mocha-cleanup/asserts-limit": [2, {"extraMemberExpression": ["forEach"]}]
+}
+```
 
 Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
@@ -77,7 +85,8 @@ Add to your eslint config-file:
     "mocha-cleanup/no-nested-it": 2,
     "mocha-cleanup/no-assertions-outside-it": 2,
     "mocha-cleanup/complexity-it": 2,
-    "mocha-cleanup/no-eql-primitives": 2
+    "mocha-cleanup/no-eql-primitives": 2,
+    "mocha-cleanup/no-assertions-in-loop": 2
 }
 ```
 

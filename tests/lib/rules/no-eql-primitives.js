@@ -79,6 +79,15 @@ var invalidTestTemplates = [
   },
   {
     code:
+      "TESTSKIP('123', function () {" +
+        "INVALID_ASSERTION" +
+      "});",
+    errors: [
+      {message: "`IN_MESSAGE` should not be used with primitives.", type: "MemberExpression"}
+    ]
+  },
+  {
+    code:
       "SUITESKIP('123', function () {" +
         "TEST('123', function () {" +
           "INVALID_ASSERTION" +

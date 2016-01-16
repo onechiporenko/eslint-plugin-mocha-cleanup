@@ -6,45 +6,45 @@ var testHelpers = require("../../../lib/utils/tests.js");
 
 var ruleTester = new RuleTester();
 
-var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
+var assert = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
+
+var assertions = [
+  {ASSERTION: assert[0]},
+  {ASSERTION: assert[1]},
+  {ASSERTION: assert[2]},
+  {ASSERTION: assert[3]}
+];
 
 var validTestTemplates = [
     {
       code:
         "TEST('1234', function () {" +
-          assertions.join('') +
+          "ASSERTION ASSERTION ASSERTION ASSERTION" +
         "});",
       options: [{assertsLimit: 4}]
     },
     {
       code:
         "TEST('1234', function () {" +
-          assertions.join('') +
-        "});",
-      options: [{assertsLimit: 5}]
-    },
-    {
-      code:
-        "TEST('1234', function () {" +
-          "assert;" + assertions[0] +
+          "assert; ASSERTION" +
         "});"
     },
     {
       code:
         "TEST('1234', function () {" +
-          "should;" + assertions[0] +
+          "should; ASSERTION" +
         "});"
     },
     {
       code:
         "TEST('1234', function () {" +
-          "should();" + assertions[0] +
+          "should(); ASSERTION" +
         "});"
     },
     {
       code:
         "TEST('1234', function () {" +
-          "expect;" + assertions[0] +
+          "expect; ASSERTION" +
         "});"
     },
     {
@@ -56,20 +56,20 @@ var validTestTemplates = [
     {
       code:
         "TEST('1234', function () {" +
-          "var should = {};" + assertions[0] +
+          "var should = {}; ASSERTION" +
         "});"
     },
     {
       code:
         "TEST('1234', function () {" +
-          "var assert = {};" + assertions[0] +
+          "var assert = {}; ASSERTION" +
         "});"
     },
     {
       code:
         "SUITESKIP('1234', function () { " +
           "TEST('1234', function () {" +
-            assertions.join('') +
+            "ASSERTION ASSERTION ASSERTION" +
           "});" +
          "});",
       options: [{assertsLimit: 1, skipSkipped: true}],
@@ -78,47 +78,9 @@ var validTestTemplates = [
     {
       code:
         "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[0] + assertions[0] + assertions[0] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1, skipSkipped: true}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[1] + assertions[1] + assertions[1] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1, skipSkipped: true}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[3] + assertions[3] + assertions[3] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1, skipSkipped: true}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
           "SUITE('4321', function () { " +
             "TEST('1234', function () {" +
-              assertions[1] + assertions[1] + assertions[1] +
-            "});" +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1, skipSkipped: true}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "SUITE('4321', function () { " +
-            "TEST('1234', function () {" +
-              assertions[3] + assertions[3] + assertions[3] +
+              "ASSERTION ASSERTION ASSERTION" +
             "});" +
           "});" +
         "});",
@@ -147,14 +109,7 @@ var validTestTemplates = [
     {
       code:
        "TESTSKIP('1234', function () {" +
-          assertions[1] + assertions[1] + assertions[1] +
-        "});",
-      options: [{assertsLimit: 1, skipSkipped: true}]
-    },
-    {
-      code:
-       "TESTSKIP('1234', function () {" +
-          assertions[3] + assertions[3] + assertions[3] +
+          "ASSERTION ASSERTION ASSERTION" +
         "});",
       options: [{assertsLimit: 1, skipSkipped: true}]
     },
@@ -185,101 +140,17 @@ var invalidTestTemplates = [
     {
       code:
         "TEST('1234', function () {" +
-          assertions.join('') +
-        "});",
-      options: [{assertsLimit: 2}],
-      errors: [{message: "Too many assertions (4). Maximum allowed is 2.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "TEST('1234', function () {" +
-          assertions[0] + assertions[0] + assertions[0] +
+          "ASSERTION ASSERTION ASSERTION" +
         "});",
       options: [{assertsLimit: 2}],
       errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "TEST('1234', function () {" +
-          assertions[1] + assertions[1] + assertions[1] +
-        "});",
-      options: [{assertsLimit: 2}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "TEST('1234', function () {" +
-          assertions[3] + assertions[3] + assertions[3] +
-        "});",
-      options: [{assertsLimit: 2}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "TEST('1234', function () {" +
-          assertions[2] + assertions[2] + assertions[2] +
-        "});",
-      options: [{assertsLimit: 2}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 2.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions.join('') +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (4). Maximum allowed is 1.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[0] + assertions[0] + assertions[0] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[1] + assertions[1] + assertions[1] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "TEST('1234', function () {" +
-            assertions[3] + assertions[3] + assertions[3] +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
     },
     {
       code:
         "SUITESKIP('1234', function () { " +
           "SUITE('4321', function () { " +
             "TEST('1234', function () {" +
-              assertions[1] + assertions[1] + assertions[1] +
-            "});" +
-          "});" +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "SUITESKIP('1234', function () { " +
-          "SUITE('4321', function () { " +
-            "TEST('1234', function () {" +
-              assertions[3] + assertions[3] + assertions[3] +
+              "ASSERTION ASSERTION ASSERTION" +
             "});" +
           "});" +
         "});",
@@ -289,19 +160,13 @@ var invalidTestTemplates = [
     {
       code:
         "TESTSKIP('1234', function () {" +
-          assertions[1] + assertions[1] + assertions[1] +
+          "ASSERTION ASSERTION ASSERTION" +
         "});",
       options: [{assertsLimit: 1}],
       errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
-    },
-    {
-      code:
-        "TESTSKIP('1234', function () {" +
-          assertions[3] + assertions[3] + assertions[3] +
-        "});",
-      options: [{assertsLimit: 1}],
-      errors: [{message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression"}]
-    },
+    }
+  ];
+  var invalidTestTemplatesWithoutAssertions = [
     {
       code:
         "TEST('1234', function () {});",
@@ -365,7 +230,14 @@ var invalidTestTemplates = [
     }
   ];
 
+function filter(combo) {
+  return !combo.code.match(/\{\s*\}/);
+}
+
+var valid = testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, assertions)).filter(filter);
+var invalid = testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, assertions)).filter(filter);
+
 ruleTester.run("asserts-limit", rule, {
-  valid: testHelpers.getCombos(validTestTemplates),
-  invalid: testHelpers.getCombos(invalidTestTemplates)
+  valid: valid,
+  invalid: invalid.concat(testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplatesWithoutAssertions, assertions)))
 });

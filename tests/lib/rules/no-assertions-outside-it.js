@@ -9,35 +9,18 @@ var testHelpers = require("../../../lib/utils/tests.js");
 
 var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
 
+var asserts = [
+  {ASSERT: "expect(1).to.be.equal(1);"},
+  {ASSERT: "'1'.should.equal('1');"},
+  {ASSERT: "assert.equal(1, 1);"},
+  {ASSERT: "sinon.assert.calledOn(sp, {});"}
+];
+
 var validTestTemplates = [
   {
     code:
       "TEST('1234', function () {" +
-        assertions[0] +
-      "});"
-  },
-  {
-    code:
-      "TEST('1234', function () {" +
-        assertions[1] +
-      "});"
-  },
-  {
-    code:
-      "TEST('1234', function () {" +
-        assertions[2] +
-      "});"
-  },
-  {
-    code:
-      "TEST('1234', function () {" +
-        assertions[3] +
-      "});"
-  },
-  {
-    code:
-      "TEST('1234', function () {" +
-        assertions.join('') +
+        "ASSERT" +
       "});"
   },
   {
@@ -86,7 +69,7 @@ var validTestTemplates = [
   {
     code:
       "SUITESKIP('1234', function () {" +
-        assertions[0] +
+        "ASSERT" +
       "});",
     options: [{skipSkipped: true}]
   },
@@ -94,59 +77,14 @@ var validTestTemplates = [
     code:
       "SUITESKIP('1234', function () {" +
         "TEST('321', function () {});" +
-        assertions[0] +
+        "ASSERT" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
       "SUITESKIP('1234', function () {" +
-        assertions[1] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[1] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions[2] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[2] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions[3] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[3] +
-      "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions.join('') +
+        "ASSERT" +
       "});",
     options: [{skipSkipped: true}]
   }
@@ -156,7 +94,7 @@ var invalidTestTemplates = [
   {
     code:
       "SUITE('1234', function () {" +
-        assertions[0] +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -166,7 +104,7 @@ var invalidTestTemplates = [
     code:
       "SUITE('1234', function () {" +
         "TEST('321', function () {});" +
-        assertions[0] +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -175,64 +113,10 @@ var invalidTestTemplates = [
   {
     code:
       "SUITE('1234', function () {" +
-        assertions[1] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[1] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        assertions[2] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[2] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        assertions[3] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[3] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITE('1234', function () {" +
-        assertions.join('') +
+        "ASSERT" +
+        "ASSERT" +
+        "ASSERT" +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"},
@@ -244,17 +128,8 @@ var invalidTestTemplates = [
   {
     code:
       "SUITESKIP('1234', function () {" +
-        assertions[0] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
         "TEST('321', function () {});" +
-        assertions[0] +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -263,7 +138,7 @@ var invalidTestTemplates = [
   {
     code:
       "SUITESKIP('1234', function () {" +
-        assertions[1] +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -272,55 +147,10 @@ var invalidTestTemplates = [
   {
     code:
       "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[1] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions[2] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[2] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions[3] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        assertions[3] +
-      "});",
-    errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
-    ]
-  },
-  {
-    code:
-      "SUITESKIP('1234', function () {" +
-        assertions.join('') +
+        "ASSERT" +
+        "ASSERT" +
+        "ASSERT" +
+        "ASSERT" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"},
@@ -332,6 +162,6 @@ var invalidTestTemplates = [
 ];
 
 ruleTester.run("no-assertions-outside-it", rule, {
-  valid: testHelpers.getCombos(validTestTemplates),
-  invalid: testHelpers.getCombos(invalidTestTemplates)
+  valid: testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, asserts)),
+  invalid: testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, asserts))
 });

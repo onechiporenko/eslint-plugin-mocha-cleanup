@@ -7,6 +7,13 @@ var rule = require("../../../lib/rules/complexity-it"),
 
 var ruleTester = new RuleTester();
 
+var assertions = [
+  {ASSERT: "sinon.assert.calledOn(sp, {});", COMPLEXITY: "3"},
+  {ASSERT: "expect(func()).to.be.equal(1);", COMPLEXITY: "4"},
+  {ASSERT: "assert.equal(func(), 1, '4321');", COMPLEXITY: "3"},
+  {ASSERT: "func().should.be.equal(1);", COMPLEXITY: "4"}
+];
+
 var validTestTemplates = [
   {
     code:
@@ -23,7 +30,7 @@ var validTestTemplates = [
     code:
       "SUITESKIP('3421', function () {" +
         "TEST('1234', function () { " +
-          "sinon.assert.calledOn(sp, {});" +
+          "ASSERT" +
         "});" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
@@ -31,7 +38,7 @@ var validTestTemplates = [
   {
     code:
       "TESTSKIP('1234', function () { " +
-        "sinon.assert.calledOn(sp, {});" +
+        "ASSERT" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
@@ -39,47 +46,8 @@ var validTestTemplates = [
     code:
       "SUITESKIP('3421', function () {" +
         "TEST('1234', function () { " +
-          "expect(func()).to.be.equal(1);" +
+          "ASSERT" +
         "});" +
-      "});",
-    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
-  },
-  {
-    code:
-      "TESTSKIP('1234', function () { " +
-        "expect(func()).to.be.equal(1);" +
-      "});",
-    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('3421', function () {" +
-        "TEST('1234', function () { " +
-          "assert.equal(func(), 1, '4321');" +
-        "});" +
-      "});",
-    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
-  },
-  {
-    code:
-      "TESTSKIP('1234', function () { " +
-        "assert.equal(func(), 1, '4321');" +
-      "});",
-    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
-  },
-  {
-    code:
-      "SUITESKIP('3421', function () {" +
-        "TEST('1234', function () { " +
-          "func().should.be.equal(1);" +
-        "});" +
-      "});",
-    options: [{maxAllowedComplexity: 0, skipSkipped: true}]
-  },
-  {
-    code:
-      "TESTSKIP('1234', function () { " +
-        "func().should.be.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
@@ -105,10 +73,28 @@ var invalidTestTemplates = [
   {
     code:
       "TEST('1234', function () { " +
-        "expect(func()).to.be.equal(1);" +
+        "ASSERT" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`TEST` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "SUITESKIP('4321', function () {" +
+        "TEST('1234', function () { " +
+          "ASSERT" +
+        "});" +
+      "});",
+    options: [{maxAllowedComplexity: 0}],
+    errors: [{ message: "`TEST` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
+  },
+  {
+    code:
+      "TESTSKIP('1234', function () { " +
+        "ASSERT" +
+      "});",
+    options: [{maxAllowedComplexity: 0}],
+    errors: [{ message: "`TESTSKIP` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
@@ -120,31 +106,25 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "TEST('1234', function () { " +
-        "assert.equal(func(), 1, '4321');" +
+      "TESTSKIP('1234', function () { " +
+        "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`TESTSKIP` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "TEST('1234', function () { " +
-        "func().should.be.equal(1);" +
+      "SUITESKIP('4321', function () {" +
+        "TEST('1234', function () { " +
+          "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
+        "});" +
       "});",
     options: [{maxAllowedComplexity: 0}],
     errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
-  },
-  {
-    code:
-      "TEST('1234', function () { " +
-        "sinon.assert.calledOn(sp, {});" +
-      "});",
-    options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of 3. Maximum allowed is 0.", type: "CallExpression"}]
   }
 ];
 
 ruleTester.run("complexity-it", rule, {
-  valid: testHelpers.getCombos(validTestTemplates),
-  invalid: testHelpers.getCombos(invalidTestTemplates)
+  valid: testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, assertions)),
+  invalid: testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, assertions))
 });
