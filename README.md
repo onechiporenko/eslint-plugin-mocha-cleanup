@@ -63,7 +63,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 ```
 "rules": {
-    "mocha-cleanup/asserts-limit": [2, {"extraMemberExpression": ["forEach"]}]
+    "mocha-cleanup/no-assertions-in-loop": [2, {"extraMemberExpression": ["forEach"]}]
 }
 ```
 
