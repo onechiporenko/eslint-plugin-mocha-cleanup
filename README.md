@@ -67,6 +67,8 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
+* `no-empty-body` Rule to disallow use empty tests, suites and hooks
+
 Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
 ## Usage
@@ -86,8 +88,7 @@ Add to your eslint config-file:
     "mocha-cleanup/no-assertions-outside-it": 2,
     "mocha-cleanup/complexity-it": 2,
     "mocha-cleanup/no-eql-primitives": 2,
-    "mocha-cleanup/no-assertions-in-loop": 2
+    "mocha-cleanup/no-assertions-in-loop": 2,
+    "mocha-cleanup/no-empty-body": 2
 }
 ```
-
-
