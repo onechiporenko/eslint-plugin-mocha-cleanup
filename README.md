@@ -69,6 +69,20 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-empty-body` Rule to disallow use empty tests, suites and hooks
 
+* `disallowed-usage` Rule to disallow usage some functions, methods or properties in the tests and hooks
+
+```
+"rules": {
+    "mocha-cleanup/disallowed-usage": [
+        2, 
+        {
+            "test": [{"o": "myObject", "m": "myNotAllowedMethod"}], 
+            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": "myNotAllowedProperty"}]
+        }
+    ]
+}
+```
+
 Each rule may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
 
 ## Usage
@@ -89,6 +103,13 @@ Add to your eslint config-file:
     "mocha-cleanup/complexity-it": 2,
     "mocha-cleanup/no-eql-primitives": 2,
     "mocha-cleanup/no-assertions-in-loop": 2,
-    "mocha-cleanup/no-empty-body": 2
+    "mocha-cleanup/no-empty-body": 2,
+    "mocha-cleanup/disallowed-usage": [
+        2, 
+        {
+            "test": [{"o": "myObject", "m": "myNotAllowedMethod"}], 
+            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": "myNotAllowedProperty"}]
+        }
+    ]
 }
 ```
