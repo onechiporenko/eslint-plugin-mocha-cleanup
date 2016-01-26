@@ -1,6 +1,8 @@
 "use strict";
 
 var testHelpers = require("../../../lib/utils/tests.js");
+var Jsonium = require('jsonium');
+var j = new Jsonium();
 
 var rule = require("../../../lib/rules/complexity-it"),
   RuleTester = require("eslint").RuleTester;
@@ -17,8 +19,8 @@ var assertions = [
 var validTestTemplates = [
   {
     code:
-      "SUITE('3421', function () {" +
-        "TEST('1234', function () { " +
+      "{{SUITE}}('3421', function () {" +
+        "{{TEST}}('1234', function () { " +
           "var result = myObj.coolFunc(1, 2);" +
           "var expected = myTestCase.expected[0];" +
           "expect(result).to.be.equal(expected);" +
@@ -28,40 +30,40 @@ var validTestTemplates = [
   },
   {
     code:
-      "SUITESKIP('3421', function () {" +
-        "TEST('1234', function () { " +
-          "ASSERT" +
+      "{{SUITESKIP}}('3421', function () {" +
+        "{{TEST}}('1234', function () { " +
+          "{{ASSERT}}" +
         "});" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "TESTSKIP('1234', function () { " +
-        "ASSERT" +
+      "{{TESTSKIP}}('1234', function () { " +
+        "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP('3421', function () {" +
-        "TEST('1234', function () { " +
-          "ASSERT" +
+      "{{SUITESKIP}}('3421', function () {" +
+        "{{TEST}}('1234', function () { " +
+          "{{ASSERT}}" +
         "});" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "TESTSKIP('1234', function () { " +
+      "{{TESTSKIP}}('1234', function () { " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP('4321', function () {" +
-        "TEST('1234', function () { " +
+      "{{SUITESKIP}}('4321', function () {" +
+        "{{TEST}}('1234', function () { " +
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});"+
       "});",
@@ -72,59 +74,75 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "TEST('1234', function () { " +
-        "ASSERT" +
+      "{{TEST}}('1234', function () { " +
+        "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TEST}}` has a complexity of {{COMPLEXITY}}. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "SUITESKIP('4321', function () {" +
-        "TEST('1234', function () { " +
-          "ASSERT" +
+      "{{SUITESKIP}}('4321', function () {" +
+        "{{TEST}}('1234', function () { " +
+          "{{ASSERT}}" +
         "});" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TEST}}` has a complexity of {{COMPLEXITY}}. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "TESTSKIP('1234', function () { " +
-        "ASSERT" +
+      "{{TESTSKIP}}('1234', function () { " +
+        "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TESTSKIP` has a complexity of COMPLEXITY. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TESTSKIP}}` has a complexity of {{COMPLEXITY}}. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "TEST('1234', function () { " +
+      "{{TEST}}('1234', function () { " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TEST}}` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "TESTSKIP('1234', function () { " +
+      "{{TESTSKIP}}('1234', function () { " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TESTSKIP` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TESTSKIP}}` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   },
   {
     code:
-      "SUITESKIP('4321', function () {" +
-        "TEST('1234', function () { " +
+      "{{SUITESKIP}}('4321', function () {" +
+        "{{TEST}}('1234', function () { " +
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});" +
       "});",
     options: [{maxAllowedComplexity: 0}],
-    errors: [{ message: "`TEST` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
+    errors: [{ message: "`{{TEST}}` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression"}]
   }
 ];
+var validTests = j
+  .setTemplates(validTestTemplates)
+  .createCombos(['code'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+j.clearTemplates().clearCombos();
+var invalidTests = j
+  .setTemplates(invalidTestTemplates)
+  .createCombos(['code', 'errors.0.message'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
 
 ruleTester.run("complexity-it", rule, {
-  valid: testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, assertions)),
-  invalid: testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, assertions))
+  valid: validTests,
+  invalid: invalidTests
 });

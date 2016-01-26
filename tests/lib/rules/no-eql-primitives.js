@@ -5,6 +5,9 @@ var rule = require("../../../lib/rules/no-eql-primitives"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester();
 
+var Jsonium = require('jsonium');
+var j = new Jsonium();
+
 var assertions = [
   {INVALID_ASSERTION: "assert.deepEqual(a, 1);", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
   {INVALID_ASSERTION: "assert.deepEqual(a, true);", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
@@ -43,24 +46,24 @@ var assertions = [
 var validTestTemplates = [
   {
     code:
-      "TEST('123', function () {" +
+      "{{TEST}}('123', function () {" +
         "ASSERTION" +
       "});"
   },
   {
     code:
-      "SUITESKIP('123', function () {" +
-        "TEST('123', function () {" +
-          "INVALID_ASSERTION" +
+      "{{SUITESKIP}}('123', function () {" +
+        "{{TEST}}('123', function () {" +
+          "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITE('123', function () {" +
-        "TESTSKIP('123', function () {" +
-          "INVALID_ASSERTION" +
+      "{{SUITE}}('123', function () {" +
+        "{{TESTSKIP}}('123', function () {" +
+          "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
@@ -70,43 +73,56 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "TEST('123', function () {" +
-        "INVALID_ASSERTION" +
+      "{{TEST}}('123', function () {" +
+        "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
-      {message: "`IN_MESSAGE` should not be used with primitives.", type: "MemberExpression"}
+      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
     ]
   },
   {
     code:
-      "TESTSKIP('123', function () {" +
-        "INVALID_ASSERTION" +
+      "{{TESTSKIP}}('123', function () {" +
+        "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
-      {message: "`IN_MESSAGE` should not be used with primitives.", type: "MemberExpression"}
+      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
     ]
   },
   {
     code:
-      "SUITESKIP('123', function () {" +
-        "TEST('123', function () {" +
-          "INVALID_ASSERTION" +
+      "{{SUITESKIP}}('123', function () {" +
+        "{{TEST}}('123', function () {" +
+          "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
     errors: [
-      {message: "`IN_MESSAGE` should not be used with primitives.", type: "MemberExpression"}
+      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
     ]
   }
 ];
 
-var combosWithValidAssertions = testHelpers.getCombos(validTestTemplates, assertions);
+var validTests = j
+  .setTemplates(validTestTemplates)
+  .createCombos(['code'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
 
-// tests without invalid assertions should not be here
-var combosWithInvalidAssertions = testHelpers.getCombos(invalidTestTemplates, assertions.filter(function (a) {
-  return !!a.INVALID_ASSERTION;
-}));
+j.clearTemplates().clearCombos();
+
+var invalidTests = j
+  .setTemplates(invalidTestTemplates)
+  .createCombos(['code', 'errors.0.message'], assertions.filter(function (a) {
+    return !!a.INVALID_ASSERTION;
+  }))
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
 
 ruleTester.run("no-eql-primitives", rule, {
-  valid: testHelpers.getCombos(combosWithValidAssertions),
-  invalid: testHelpers.getCombos(combosWithInvalidAssertions)
+  valid: validTests,
+  invalid: invalidTests
 });

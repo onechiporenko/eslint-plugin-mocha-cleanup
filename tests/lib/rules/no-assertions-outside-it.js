@@ -7,6 +7,9 @@ var ruleTester = new RuleTester();
 
 var testHelpers = require("../../../lib/utils/tests.js");
 
+var Jsonium = require('jsonium');
+var j = new Jsonium();
+
 var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
 
 var asserts = [
@@ -19,72 +22,72 @@ var asserts = [
 var validTestTemplates = [
   {
     code:
-      "TEST('1234', function () {" +
-        "ASSERT" +
+      "{{TEST}}('1234', function () {" +
+        "{{ASSERT}}" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "assert;" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "should;" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "should();" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "expect;" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "var expect = {};" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "var should = {};" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
+      "{{SUITE}}('1234', function () {" +
         "var assert = {};" +
       "});"
   },
 
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{TEST}}('321', function () {});" +
+        "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
   }
@@ -93,8 +96,8 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "SUITE('1234', function () {" +
-        "ASSERT" +
+      "{{SUITE}}('1234', function () {" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -102,9 +105,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TEST('321', function () {});" +
-        "ASSERT" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TEST}}('321', function () {});" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -112,11 +115,11 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "ASSERT" +
-        "ASSERT" +
-        "ASSERT" +
-        "ASSERT" +
+      "{{SUITE}}('1234', function () {" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"},
@@ -127,9 +130,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('321', function () {});" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{TEST}}('321', function () {});" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -137,8 +140,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"}
@@ -146,11 +149,11 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "ASSERT" +
-        "ASSERT" +
-        "ASSERT" +
-        "ASSERT" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
+        "{{ASSERT}}" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "Identifier"},
@@ -161,7 +164,26 @@ var invalidTestTemplates = [
   }
 ];
 
+var validTests = j
+  .setTemplates(validTestTemplates)
+  .createCombos(['code'], asserts)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+j.clearTemplates().clearCombos();
+
+var invalidTests = j
+  .setTemplates(invalidTestTemplates)
+  .createCombos(['code'], asserts)
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message', 'errors.1.message', 'errors.2.message', 'errors.3.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+
 ruleTester.run("no-assertions-outside-it", rule, {
-  valid: testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, asserts)),
-  invalid: testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, asserts))
+  valid: validTests,
+  invalid: invalidTests
 });

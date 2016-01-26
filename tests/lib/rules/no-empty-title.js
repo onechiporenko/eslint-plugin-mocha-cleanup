@@ -5,6 +5,9 @@ var rule = require("../../../lib/rules/no-empty-title"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester();
 
+var Jsonium = require('jsonium');
+var j = new Jsonium();
+
 var titles = [
   {TITLE: "''"},
   {TITLE: "'    '"},
@@ -14,46 +17,46 @@ var titles = [
 var validTestTemplates = [
   {
     code:
-      "TEST('some title', function () {});"
+      "{{TEST}}('some title', function () {});"
   },
   {
     code:
-      "TEST(123, function () {});"
+      "{{TEST}}(123, function () {});"
   },
   {
     code:
       "var a = '12'; " +
-      "TEST(a, function () {});"
+      "{{TEST}}(a, function () {});"
   },
   {
     code:
       "function a() {" +
         "return sinon.stub()" +
       "}; " +
-      "TEST('some title', function () {});"
+      "{{TEST}}('some title', function () {});"
   },
   {
     code:
-      "TEST('1234', function() {}); sinon.stub();"
+      "{{TEST}}('1234', function() {}); sinon.stub();"
   },
   {
     code:
       "var a = function () {" +
         "return '123';" +
       "}; " +
-      "TEST(a(), function () {});"
+      "{{TEST}}(a(), function () {});"
   },
   {
     code:
-      "SUITE('title', function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITE}}('title', function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});"
   },
   {
     code:
       "var a = '12';" +
-      "SUITE(a, function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITE}}(a, function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});"
   },
   {
@@ -61,19 +64,19 @@ var validTestTemplates = [
       "var a = function () {" +
         "return '123';" +
       "}; " +
-      "SUITE(a(), function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITE}}(a(), function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});"
   },
   {
     code:
-      "TESTSKIP(TITLE, function () {});",
+      "{{TESTSKIP}}({{TITLE}}, function () {});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP(TITLE, function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITESKIP}}({{TITLE}}, function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});",
     options: [{skipSkipped: true}]
   }
@@ -82,38 +85,57 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "TEST(TITLE, function () {});",
-    errors: [{message: "Empty title is not allowed for `TEST`.", type: "CallExpression"}]
+      "{{TEST}}({{TITLE}}, function () {});",
+    errors: [{message: "Empty title is not allowed for `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "SUITESKIP('123', function () {" +
-        "TEST(TITLE, function () {});" +
+      "{{SUITESKIP}}('123', function () {" +
+        "{{TEST}}({{TITLE}}, function () {});" +
       "});",
-    errors: [{message: "Empty title is not allowed for `TEST`.", type: "CallExpression"}]
+    errors: [{message: "Empty title is not allowed for `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "SUITE(TITLE, function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITE}}({{TITLE}}, function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});",
-    errors: [{message: "Empty title is not allowed for `SUITE`.", type: "CallExpression"}]
+    errors: [{message: "Empty title is not allowed for `{{SUITE}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "TESTSKIP(TITLE, function () {});",
-    errors: [{message: "Empty title is not allowed for `TESTSKIP`.", type: "CallExpression"}]
+      "{{TESTSKIP}}({{TITLE}}, function () {});",
+    errors: [{message: "Empty title is not allowed for `{{TESTSKIP}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "SUITESKIP(TITLE, function () {" +
-        "TEST('some title', function () {});" +
+      "{{SUITESKIP}}({{TITLE}}, function () {" +
+        "{{TEST}}('some title', function () {});" +
       "});",
-    errors: [{message: "Empty title is not allowed for `SUITESKIP`.", type: "CallExpression"}]
+    errors: [{message: "Empty title is not allowed for `{{SUITESKIP}}`.", type: "CallExpression"}]
   }
 ];
 
+var validTests = j
+  .setTemplates(validTestTemplates)
+  .createCombos(['code'], titles)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+j.clearTemplates().clearCombos();
+
+var invalidTests = j
+  .setTemplates(invalidTestTemplates)
+  .createCombos(['code'], titles)
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+
 ruleTester.run("no-empty-title", rule, {
-  valid: testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, titles)),
-  invalid: testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, titles))
+  valid: /*testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, titles))*/ validTests,
+  invalid: /*testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, titles))*/ invalidTests
 });

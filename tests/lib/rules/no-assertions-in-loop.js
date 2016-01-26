@@ -5,15 +5,14 @@ var rule = require("../../../lib/rules/no-assertions-in-loop"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester();
 
-// assertions -> loops -> testTemplates
-// assertions -> testTemplates
-// pLoops - loop wrappers
+var Jsonium = require('jsonium');
+var j = new Jsonium();
 
 var loops = [
-  {code: "for(var i = 0; i < 5; i++) {ASSERTION}"},
-  {code: "for(var i in obj) {ASSERTION}"},
-  {code: "while(i < 5) {ASSERTION}"},
-  {code: "do {ASSERTION} while (i < 5)"}
+  {code: "for(var i = 0; i < 5; i++) {{{ASSERTION}}}"},
+  {code: "for(var i in obj) {{{ASSERTION}}}"},
+  {code: "while(i < 5) {{{ASSERTION}}}"},
+  {code: "do {{{ASSERTION}}} while (i < 5)"}
 ];
 
 var pLoops = [
@@ -45,46 +44,46 @@ var assertions = [
 var validTestTemplates = [
   {
     code:
-      "LO" +
-        "SUITE('1234', function () {" +
-          "TEST('4321', function () {" +
-            "ASSERTION" +
+      "{{LO}}" +
+        "{{SUITE}}('1234', function () {" +
+          "{{TEST}}('4321', function () {" +
+            "{{ASSERTION}}" +
           "});" +
         "});" +
-      "OP"
+      "{{OP}}"
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TEST('4321', function () {" +
-          "ASSERTION" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TEST}}('4321', function () {" +
+          "{{ASSERTION}}" +
         "});" +
       "});"
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TESTSKIP('4321', function () {" +
-          "LOOP" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TESTSKIP}}('4321', function () {" +
+          "{{LOOP}}" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('4321', function () {" +
-          "LOOP" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{TEST}}('4321', function () {" +
+          "{{LOOP}}" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TESTSKIP('4321', function () {" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TESTSKIP}}('4321', function () {" +
           "obj.forEach(function () {" +
-            "ASSERTION" +
+            "{{ASSERTION}}" +
           "});" +
         "});" +
       "});",
@@ -95,9 +94,9 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "SUITE('1234', function () {" +
-        "TEST('4321', function () {" +
-          "LOOP" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TEST}}('4321', function () {" +
+          "{{LOOP}}" +
         "});" +
       "});",
     errors: [
@@ -106,9 +105,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TESTSKIP('4321', function () {" +
-          "LOOP" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TESTSKIP}}('4321', function () {" +
+          "{{LOOP}}" +
         "});" +
       "});",
     errors: [
@@ -117,9 +116,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITESKIP('1234', function () {" +
-        "TEST('4321', function () {" +
-          "LOOP" +
+      "{{SUITESKIP}}('1234', function () {" +
+        "{{TEST}}('4321', function () {" +
+          "{{LOOP}}" +
         "});" +
       "});",
     errors: [
@@ -128,10 +127,10 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "SUITE('1234', function () {" +
-        "TESTSKIP('4321', function () {" +
+      "{{SUITE}}('1234', function () {" +
+        "{{TESTSKIP}}('4321', function () {" +
           "obj.forEach(function () {" +
-            "ASSERTION" +
+            "{{ASSERTION}}" +
           "});" +
         "});" +
       "});",
@@ -142,13 +141,38 @@ var invalidTestTemplates = [
   }
 ];
 
-var loopsWithAssertions = testHelpers.getCombos(loops, assertions);
-loopsWithAssertions.forEach(function (item) {item.LOOP = item.code;});
+var loopsWithAssertions = j
+  .setTemplates(loops)
+  .createCombos('code', assertions)
+  .uniqueCombos()
+  .switchKeys('code', 'LOOP')
+  .getCombos();
 
-var combosWithValidAssertions = testHelpers.getCombos(testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, pLoops), loopsWithAssertions), assertions);
-var combosWithInvalidAssertions = testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, loopsWithAssertions), assertions);
+var validTests = j
+  .setTemplates(validTestTemplates)
+  .createCombos(['code'], pLoops)
+  .useCombosAsTemplates()
+  .createCombos(['code'], loopsWithAssertions)
+  .useCombosAsTemplates()
+  .createCombos(['code'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
+
+j.clearTemplates().clearCombos();
+
+var invalidTests = j
+  .setTemplates(invalidTestTemplates)
+  .createCombos(['code'], loopsWithAssertions)
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .getCombos();
 
 ruleTester.run("no-assertions-in-loop", rule, {
-  valid: testHelpers.getCombos(combosWithValidAssertions),
-  invalid: testHelpers.getCombos(combosWithInvalidAssertions)
+  valid: validTests,
+  invalid: invalidTests
 });
