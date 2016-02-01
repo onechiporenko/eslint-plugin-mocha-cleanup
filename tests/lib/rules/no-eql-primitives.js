@@ -8,46 +8,47 @@ var ruleTester = new RuleTester();
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
-var assertions = [
-  {INVALID_ASSERTION: "assert.deepEqual(a, 1);", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert.deepEqual(a, true);", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert.deepEqual(a, '');", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert.deepEqual(a, null);", ASSERTION: "", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert.notDeepEqual(a, 1);", ASSERTION: "", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "assert.notDeepEqual(a, true);", ASSERTION: "", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "assert.notDeepEqual(a, '');", ASSERTION: "", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "assert.notDeepEqual(a, null);", ASSERTION: "", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "expect(a).to.be.eql(1);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "expect(a).to.be.eql(true);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "expect(a).to.be.eql('');", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "expect(a).to.be.eql(null);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "expect(a).to.be.deep.equal(1);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "expect(a).to.be.deep.equal(true);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "expect(a).to.be.deep.equal('');", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "expect(a).to.be.deep.equal(null);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a.should.be.eql(1);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a.should.be.eql(true);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a.should.be.eql('');", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a.should.be.eql(null);", ASSERTION: "", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a.should.be.deep.equal(1);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a.should.be.deep.equal(true);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a.should.be.deep.equal('');", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a.should.be.deep.equal(null);", ASSERTION: "", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "", ASSERTION: "assert.deepEqual(a, {});"},
-  {INVALID_ASSERTION: "", ASSERTION: "assert.deepEqual(a, b);"},
-  {INVALID_ASSERTION: "", ASSERTION: "assert.notDeepEqual(a, {});"},
-  {INVALID_ASSERTION: "", ASSERTION: "assert.notDeepEqual(a, b);"},
-  {INVALID_ASSERTION: "", ASSERTION: "expect(a).to.be.eql({});"},
-  {INVALID_ASSERTION: "", ASSERTION: "expect(a).to.be.eql(b);"},
-  {INVALID_ASSERTION: "", ASSERTION: "a.should.be.eql({});"},
-  {INVALID_ASSERTION: "", ASSERTION: "a.should.be.eql(b);"}
+var invalidVals = [
+  {VAL: "1"},
+  {VAL: "true"},
+  {VAL: "''"},
+  {VAL: "null"}
+];
+
+var validVals = [
+  {VAL: "{}"},
+  {VAL: "b"}
+];
+
+var invalidAssertions = [
+  {INVALID_ASSERTION: "assert.deepEqual(a, {{VAL}});", IN_MESSAGE: "assert.deepEqual"},
+  {INVALID_ASSERTION: "assert['deepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.deepEqual"},
+  {INVALID_ASSERTION: "assert.notDeepEqual(a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual"},
+  {INVALID_ASSERTION: "assert['notDeepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual"},
+  {INVALID_ASSERTION: "expect(a).to.be.eql({{VAL}});", IN_MESSAGE: ".eql"},
+  {INVALID_ASSERTION: "expect(a).to.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"},
+  {INVALID_ASSERTION: "a.should.be.eql({{VAL}});", IN_MESSAGE: ".eql"},
+  {INVALID_ASSERTION: "a['should'].be.eql({{VAL}});", IN_MESSAGE: ".eql"},
+  {INVALID_ASSERTION: "a.should.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"},
+  {INVALID_ASSERTION: "a['should'].be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"}
+];
+var validAssertions = [
+  {ASSERTION: "assert.deepEqual(a, {{VAL}});"},
+  {ASSERTION: "assert['deepEqual'](a, {{VAL}});"},
+  {ASSERTION: "assert.notDeepEqual(a, {{VAL}});"},
+  {ASSERTION: "assert['notDeepEqual'](a, {{VAL}});"},
+  {ASSERTION: "expect(a).to.be.eql({{VAL}});"},
+  {ASSERTION: "a.should.be.eql({{VAL}});"},
+  {ASSERTION: "a['should'].be.eql({{VAL}});"},
+  {ASSERTION: "a.should.be.deep.equal({{VAL}});"},
+  {ASSERTION: "a['should'].be.deep.equal({{VAL}});"}
 ];
 
 var validTestTemplates = [
   {
     code:
       "{{TEST}}('123', function () {" +
-        "ASSERTION" +
+        "{{ASSERTION}}" +
       "});"
   },
   {
@@ -102,9 +103,29 @@ var invalidTestTemplates = [
   }
 ];
 
+validAssertions = j
+  .setTemplates(validAssertions)
+  .createCombos(["ASSERTION"], validVals)
+  .uniqueCombos()
+  .getCombos();
+
+j
+  .clearTemplates()
+  .clearCombos();
+
+invalidAssertions = j
+  .setTemplates(invalidAssertions)
+  .createCombos(["INVALID_ASSERTION"], invalidVals)
+  .uniqueCombos()
+  .getCombos();
+
+j
+  .clearTemplates()
+  .clearCombos();
+
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], assertions)
+  .createCombos(['code'], validAssertions)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
   .uniqueCombos()
@@ -114,9 +135,7 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code', 'errors.0.message'], assertions.filter(function (a) {
-    return !!a.INVALID_ASSERTION;
-  }))
+  .createCombos(['code', 'errors.0.message'], invalidAssertions)
   .useCombosAsTemplates()
   .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
   .uniqueCombos()

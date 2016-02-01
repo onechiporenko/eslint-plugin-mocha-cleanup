@@ -136,6 +136,6 @@ var invalidTests = j
 
 
 ruleTester.run("no-empty-title", rule, {
-  valid: /*testHelpers.getCombos(testHelpers.getCombos(validTestTemplates, titles))*/ validTests,
-  invalid: /*testHelpers.getCombos(testHelpers.getCombos(invalidTestTemplates, titles))*/ invalidTests
+  valid: validTests,
+  invalid: invalidTests
 });

@@ -9,13 +9,13 @@ var ruleTester = new RuleTester();
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
-var assert = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
-
 var assertions = [
-  {ASSERTION: assert[0]},
-  {ASSERTION: assert[1]},
-  {ASSERTION: assert[2]},
-  {ASSERTION: assert[3]}
+  {ASSERTION: "expect(1).to.be.equal(1);"},
+  {ASSERTION: "'1'.should.equal('1');"},
+  {ASSERTION: "'1'['should'].equal('1');"},
+  {ASSERTION: "assert.equal(1, 1);"},
+  {ASSERTION: "sinon.assert.calledOn(sp, {});"},
+  {ASSERTION: "sinon['assert'].calledOn(sp, {});"}
 ];
 
 var validTestTemplates = [
@@ -36,6 +36,12 @@ var validTestTemplates = [
       code:
         "{{TEST}}('1234', function () {" +
           "should; {{ASSERTION}}" +
+        "});"
+    },
+    {
+      code:
+        "{{TEST}}('1234', function () {" +
+          "notAssert['assert']; {{ASSERTION}}" +
         "});"
     },
     {

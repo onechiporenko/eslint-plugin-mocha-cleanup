@@ -10,13 +10,13 @@ var testHelpers = require("../../../lib/utils/tests.js");
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
-var assertions = ["expect(1).to.be.equal(1);", "'1'.should.equal('1');", "assert.equal(1, 1);", "sinon.assert.calledOn(sp, {});"];
-
 var asserts = [
-  {ASSERT: "expect(1).to.be.equal(1);"},
-  {ASSERT: "'1'.should.equal('1');"},
-  {ASSERT: "assert.equal(1, 1);"},
-  {ASSERT: "sinon.assert.calledOn(sp, {});"}
+  {ASSERT: "expect(1).to.be.equal(1);", TYPE: "CallExpression"},
+  {ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression"},
+  {ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression"},
+  {ASSERT: "assert.equal(1, 1);", TYPE: "MemberExpression"},
+  {ASSERT: "sinon.assert.calledOn(sp, {});", TYPE: "MemberExpression"},
+  {ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression"}
 ];
 
 var validTestTemplates = [
@@ -100,7 +100,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   },
   {
@@ -110,7 +110,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   },
   {
@@ -122,10 +122,10 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   },
   {
@@ -135,7 +135,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   },
   {
@@ -144,7 +144,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   },
   {
@@ -156,10 +156,10 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"},
-      {message: "Assertion outside tests is not allowed.", type: "Identifier"}
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
     ]
   }
 ];
@@ -176,9 +176,20 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code'], asserts)
+  .createCombos([
+    'code',
+    'errors.0.type',
+    'errors.1.type',
+    'errors.2.type',
+    'errors.3.type'], asserts)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.0.message', 'errors.1.message', 'errors.2.message', 'errors.3.message'], testHelpers.mochaDatasets)
+  .createCombos([
+    'code',
+    'errors.0.message',
+    'errors.1.message',
+    'errors.2.message',
+    'errors.3.message'
+    ], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos();
 
