@@ -13,7 +13,7 @@
   "author": "onechiporenko",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha tests/lib/rules"
+    "test": "mocha -R min tests/lib/rules"
   },
   "dependencies": {
     "requireindex": "~1.1.0"
