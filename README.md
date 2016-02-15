@@ -76,8 +76,8 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
     "mocha-cleanup/disallowed-usage": [
         2, 
         {
-            "test": [{"o": "myObject", "m": "myNotAllowedMethod"}], 
-            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": "myNotAllowedProperty"}]
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ]
 }
@@ -107,8 +107,8 @@ Add to your eslint config-file:
     "mocha-cleanup/disallowed-usage": [
         2, 
         {
-            "test": [{"o": "myObject", "m": "myNotAllowedMethod"}], 
-            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": "myNotAllowedProperty"}]
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ]
 }
