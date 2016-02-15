@@ -130,7 +130,7 @@ var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code'], titles)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos();
 

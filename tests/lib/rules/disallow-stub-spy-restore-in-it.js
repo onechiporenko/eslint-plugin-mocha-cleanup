@@ -440,7 +440,7 @@ var validTests = j
 j.clearTemplates().clearCombos();
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos();
 

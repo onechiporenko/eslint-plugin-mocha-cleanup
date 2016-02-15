@@ -168,9 +168,9 @@ var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code'], loopsWithAssertions)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.0.message'], assertions)
+  .createCombos(['code', 'errors.@each.message'], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.0.message'], testHelpers.mochaDatasets)
+  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos();
 

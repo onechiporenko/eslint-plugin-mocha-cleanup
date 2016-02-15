@@ -185,7 +185,7 @@ var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code'], hooks)
   .useCombosAsTemplates()
-  .createCombos(['code', 'options.0.test', 'options.0.hook', 'errors.0.message', 'errors.1.message', 'errors.2.message'], disallowed)
+  .createCombos(['code', 'options.0.test', 'options.0.hook', 'errors.@each.message'], disallowed)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
   .uniqueCombos()

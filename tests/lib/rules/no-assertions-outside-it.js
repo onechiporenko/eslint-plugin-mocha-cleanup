@@ -176,20 +176,9 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos([
-    'code',
-    'errors.0.type',
-    'errors.1.type',
-    'errors.2.type',
-    'errors.3.type'], asserts)
+  .createCombos(['code', 'errors.@each.type'], asserts)
   .useCombosAsTemplates()
-  .createCombos([
-    'code',
-    'errors.0.message',
-    'errors.1.message',
-    'errors.2.message',
-    'errors.3.message'
-    ], testHelpers.mochaDatasets)
+  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos();
 
