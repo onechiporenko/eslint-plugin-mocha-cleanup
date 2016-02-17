@@ -91,9 +91,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "before(function() {" +
-          "sinon.stub(); " +
-          "sinon.spy(); " +
-          "sinon.restore();" +
+          "sinon.stub{{MOD}}(); " +
+          "sinon.spy{{MOD}}(); " +
+          "sinon.restore{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -102,9 +102,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "before(function() {" +
-          "sinon['stub'](); " +
-          "sinon['spy'](); " +
-          "sinon['restore']();" +
+          "sinon['stub']{{MOD}}(); " +
+          "sinon['spy']{{MOD}}(); " +
+          "sinon['restore']{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -113,9 +113,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "beforeEach(function() {" +
-          "sinon.stub(); " +
-          "sinon.spy(); " +
-          "sinon.restore();" +
+          "sinon.stub{{MOD}}(); " +
+          "sinon.spy{{MOD}}(); " +
+          "sinon.restore{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -124,9 +124,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "beforeEach(function() {" +
-          "sinon['stub'](); " +
-          "sinon['spy'](); " +
-          "sinon['restore']();" +
+          "sinon['stub']{{MOD}}(); " +
+          "sinon['spy']{{MOD}}(); " +
+          "sinon['restore']{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -135,9 +135,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "after(function() {" +
-          "sinon.stub(); " +
-          "sinon.spy(); " +
-          "sinon.restore();" +
+          "sinon.stub{{MOD}}(); " +
+          "sinon.spy{{MOD}}(); " +
+          "sinon.restore{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -146,9 +146,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "after(function() {" +
-          "sinon['stub'](); " +
-          "sinon['spy'](); " +
-          "sinon['restore']();" +
+          "sinon['stub']{{MOD}}(); " +
+          "sinon['spy']{{MOD}}(); " +
+          "sinon['restore']{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -157,9 +157,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "afterEach(function() {" +
-          "sinon.stub(); " +
-          "sinon.spy(); " +
-          "sinon.restore();" +
+          "sinon.stub{{MOD}}(); " +
+          "sinon.spy{{MOD}}(); " +
+          "sinon.restore{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -168,9 +168,9 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', function () {" +
         "afterEach(function() {" +
-          "sinon['stub'](); " +
-          "sinon['spy'](); " +
-          "sinon['restore']();" +
+          "sinon['stub']{{MOD}}(); " +
+          "sinon['spy']{{MOD}}(); " +
+          "sinon['restore']{{MOD}}();" +
         "}); " +
         "{{TEST}}('4321', function () {});" +
       "});"
@@ -179,7 +179,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.restore();" +
+          "sinon.restore{{MOD}}();" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
@@ -188,7 +188,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['restore']();" +
+          "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
@@ -197,7 +197,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.stub();" +
+          "sinon.stub{{MOD}}();" +
         "});" +
      "});",
     options: [{skipSkipped: true}]
@@ -206,7 +206,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['stub']();" +
+          "sinon['stub']{{MOD}}();" +
         "});" +
      "});",
     options: [{skipSkipped: true}]
@@ -215,7 +215,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.spy();" +
+          "sinon.spy{{MOD}}();" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
@@ -224,7 +224,7 @@ var validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['spy']();" +
+          "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
     options: [{skipSkipped: true}]
@@ -234,7 +234,7 @@ var validTestTemplates = [
       "{{SUITESKIP}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon.spy();" +
+            "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
       "});",
@@ -245,7 +245,7 @@ var validTestTemplates = [
       "{{SUITESKIP}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon['spy']();" +
+            "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
       "});",
@@ -254,14 +254,14 @@ var validTestTemplates = [
   {
     code:
       "{{TESTSKIP}}('12345', function () {" +
-        "sinon.stub().withArgs().returns();" +
+        "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
       "{{TESTSKIP}}('12345', function () {" +
-        "sinon['stub']().withArgs().returns();" +
+        "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
     options: [{skipSkipped: true}]
   }
@@ -271,163 +271,163 @@ var invalidTestTemplates = [
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon.restore();" +
+        "sinon.restore{{MOD}}();" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon['restore']();" +
+        "sinon['restore']{{MOD}}();" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon.stub();" +
+        "sinon.stub{{MOD}}();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon['stub']();" +
+        "sinon['stub']{{MOD}}();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon.spy();" +
+        "sinon.spy{{MOD}}();" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITE}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon.spy();" +
+            "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITE}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon['spy']();" +
+            "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon.stub().withArgs().returns();" +
+        "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TEST}}('12345', function () {" +
-        "sinon['stub']().withArgs().returns();" +
+        "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.restore();" +
+          "sinon.restore{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['restore']();" +
+          "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.stub();" +
+          "sinon.stub{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['stub']();" +
+          "sinon['stub']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon.spy();" +
+          "sinon.spy{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () {" +
         "{{TEST}}('12345', function () {" +
-          "sinon['spy']();" +
+          "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon.spy();" +
+            "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Identifier"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{SUITESKIP}}('1234', function () { " +
         "[].forEach(function () {" +
           "{{TEST}}('12345', function () {" +
-            "sinon['spy']();" +
+            "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "Literal"}]
+    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TESTSKIP}}('12345', function () {" +
-        "sinon.stub().withArgs().returns();" +
+        "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "Identifier"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
   },
   {
     code:
       "{{TESTSKIP}}('12345', function () {" +
-        "sinon['stub']().withArgs().returns();" +
+        "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "Literal"}]
+    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
   }
 ];
 
@@ -435,12 +435,18 @@ var validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(['code'], testHelpers.mochaDatasets)
   .uniqueCombos()
+  .useCombosAsTemplates()
+  .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])
+  .uniqueCombos()
   .getCombos();
 
 j.clearTemplates().clearCombos();
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .useCombosAsTemplates()
+  .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])
   .uniqueCombos()
   .getCombos();
 
