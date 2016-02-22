@@ -71,6 +71,8 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `invalid-assetions` Rule to check `expect` and `should` assertions for completeness. It detects assertions that end with "chainable" words or even raw calls for `expect` and `should`
 
+* `no-expressions-in-assertions` Rule to detect expressions in the `expect` and `assert` assertions
+
 * `disallowed-usage` Rule to disallow usage some functions, methods or properties in the tests and hooks
 
 ```
@@ -107,6 +109,7 @@ Add to your eslint config-file:
     "mocha-cleanup/no-assertions-in-loop": 2,
     "mocha-cleanup/no-empty-body": 2,
     "mocha-cleanup/invalid-assertions": 2,
+    "mocha-cleanup/no-expressions-in-assertions": 2,
     "mocha-cleanup/disallowed-usage": [
         2, 
         {
