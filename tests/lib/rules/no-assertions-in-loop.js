@@ -36,6 +36,7 @@ var pLoops = [
 
 var assertions = [
   {ASSERTION: "assert.equal(1, 1);"},
+  {ASSERTION: "assert['equal'](1, 1);"},
   {ASSERTION: "expect(1).to.be.equal(1);"},
   {ASSERTION: "'1'.should.be.equal('1');"},
   {ASSERTION: "'1'['should'].be.equal('1');"},

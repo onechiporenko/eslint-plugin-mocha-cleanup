@@ -10,6 +10,7 @@ var j = new Jsonium();
 
 var defaultMessage = "Expression should not be used here.";
 var detailedMessage = "`{{USE}}` should be used.";
+var emptyArgMessage = "Empty assertion is not allowed.";
 
 var binariesForExpect = [
   {BINARY: ">", USE: ".to.be.above"},
@@ -108,15 +109,16 @@ var primitiveAssertionsForAssert = j
   .uniqueCombos()
   .getCombos();
 
-var binaryAssertions = [
+var assertions = [
   {ASSERTION: "a {{BINARY}} b", MESSAGE: detailedMessage},
   {ASSERTION: "a {{LOGICAL}} b", MESSAGE: defaultMessage},
   {ASSERTION: "{{UPDATE}} b", MESSAGE: defaultMessage},
-  {ASSERTION: "b{{UPDATE}}", MESSAGE: defaultMessage}
+  {ASSERTION: "b{{UPDATE}}", MESSAGE: defaultMessage},
+  {ASSERTION: "", MESSAGE: emptyArgMessage}
 ];
 
 var assertionsForExpect = j
-  .setTemplates(binaryAssertions)
+  .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForExpect)
   .uniqueCombos()
   .useCombosAsTemplates()
@@ -132,7 +134,7 @@ var assertionsForExpect = j
   .getCombos();
 
 var assertionsForAssert = j
-  .setTemplates(binaryAssertions)
+  .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForAssert)
   .uniqueCombos()
   .useCombosAsTemplates()
@@ -207,6 +209,35 @@ var validTestTemplatesForAssert = [
   }
 ];
 
+var validTestTemplatesForChaiAssert = [
+  {
+    code:
+      "chai.assert.equal({{ASSERTION}});"
+  },
+  {
+    code:
+      "{{SUITE}}('123', function () {" +
+        "{{TESTSKIP}}('123', function () {" +
+          "chai.assert.equal({{ASSERTION}});" +
+        "});" +
+      "});",
+    options: [
+      {skipSkipped: true}
+    ]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('123', function () {" +
+        "{{TEST}}('123', function () {" +
+          "chai.assert.equal({{ASSERTION}});" +
+        "});" +
+      "});",
+    options: [
+      {skipSkipped: true}
+    ]
+  }
+];
+
 var invalidTestTemplatesForExpect = [
   {
     code:
@@ -235,6 +266,20 @@ var invalidTestTemplatesForAssert = [
   }
 ];
 
+var invalidTestTemplatesForChaiAssert = [
+  {
+    code:
+      "{{SUITE}}('123', function () {" +
+        "{{TEST}}('123', function () {" +
+          "sinon.assert.equal({{ASSERTION}});" +
+        "});" +
+      "});",
+    errors: [
+      {message: "{{MESSAGE}}", type: "MemberExpression"}
+    ]
+  }
+];
+
 var validTests = j
   .setTemplates(validTestTemplatesForExpect)
   .createCombos(["code"], assertionsForExpect)
@@ -252,6 +297,15 @@ validTests = j
   .concatCombos(validTests)
   .getCombos();
 
+validTests = j
+  .setTemplates(validTestTemplatesForChaiAssert)
+  .createCombos(["code"], assertionsForAssert)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .concatCombos(validTests)
+  .getCombos();
+
 var invalidTests = j
   .setTemplates(invalidTestTemplatesForExpect)
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
@@ -262,6 +316,15 @@ var invalidTests = j
 
 invalidTests = j
   .setTemplates(invalidTestTemplatesForAssert)
+  .createCombos(["code", "errors.@each.message"], assertionsForAssert)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.mochaDatasets)
+  .uniqueCombos()
+  .concatCombos(invalidTests)
+  .getCombos();
+
+invalidTests = j
+  .setTemplates(invalidTestTemplatesForChaiAssert)
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
