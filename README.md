@@ -43,7 +43,13 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-empty-title` Rule to disallow use empty title in the `describe` and `it`
 
-* `no-same-titles` Rule to disallow usage same titles for `it`s inside one `describe`
+* `no-same-titles` Rule to disallow usage same titles for `it`s inside one `describe` or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
+
+```
+"rules": {
+    "mocha-cleanup/no-same-titles": [2, {scope: "file"}]
+}
+```
 
 * `no-nested-it` Rule to disallow usage nested `it`
 

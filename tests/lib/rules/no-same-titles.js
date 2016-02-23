@@ -8,6 +8,8 @@ var ruleTester = new RuleTester();
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
+var m = "Some tests have same titles.";
+
 var validTestTemplates = [
   {
     code:
@@ -21,10 +23,29 @@ var validTestTemplates = [
       "{{TEST}}('123', function (){}); " +
       "{{SUITE}}('321', function () {" +
         "{{TEST}}('123', function (){});" +
+      "});",
+    options: [{scope: "suite"}]
+  },
+  {
+    code:
+      "{{TEST}}('123', function (){}); " +
+      "{{SUITE}}('321', function () {" +
+        "{{TEST}}('123', function (){});" +
         "{{SUITE}}('321', function () {" +
           "{{TEST}}('123', function (){});" +
         "});" +
       "});"
+  },
+  {
+    code:
+      "{{TEST}}('123', function (){}); " +
+      "{{SUITE}}('321', function () {" +
+        "{{TEST}}('123', function (){});" +
+        "{{SUITE}}('321', function () {" +
+          "{{TEST}}('123', function (){});" +
+        "});" +
+      "});",
+    options: [{scope: "suite"}]
   },
   {
     code:
@@ -37,9 +58,37 @@ var validTestTemplates = [
   },
   {
     code:
+      "{{SUITE}}('321', function () {" +
+        "{{TEST}}('123', function (){});" +
+      "}); " +
+      "{{SUITE}}('4321', function () {" +
+        "{{TEST}}('123', function (){});" +
+      "});",
+    options: [{scope: "suite"}]
+  },
+  {
+    code:
       "{{SUITESKIP}}('4321', function () { " +
         "{{TEST}}('1234', function () {}); " +
         "{{TEST}}('1234', function () {}); " +
+      "});",
+    options: [{skipSkipped: true}]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('4321', function () { " +
+        "{{TEST}}('1234', function () {}); " +
+        "{{TEST}}('1234', function () {}); " +
+      "});",
+    options: [{skipSkipped: true, scope: "suite"}]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('4321', function () { " +
+        "{{SUITE}}('4321', function () { " +
+          "{{TEST}}('1234', function () {}); " +
+          "{{TEST}}('1234', function () {}); " +
+        "});" +
       "});",
     options: [{skipSkipped: true}]
   },
@@ -51,7 +100,18 @@ var validTestTemplates = [
           "{{TEST}}('1234', function () {}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{skipSkipped: true, scope: "suite"}]
+  },
+  {
+    code:
+      "{{TEST}}('1111', function (){}); " +
+        "{{SUITE}}('321', function () {" +
+          "{{TEST}}('123', function (){});" +
+          "{{SUITESKIP}}('321', function () {" +
+            "{{TEST}}('123', function (){});" +
+        "});" +
+      "});",
+    options: [{scope: "file", skipSkipped: true}]
   }
 ];
 
@@ -62,7 +122,10 @@ var invalidTestTemplates = [
         "{{TEST}}('1234', function () {}); " +
         "{{TEST}}('1234', function () {}); " +
       "});",
-    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
+    errors: [
+      {message: m, type: "CallExpression"},
+      {message: m, type: "CallExpression"}
+    ]
   },
   {
     code:
@@ -70,7 +133,10 @@ var invalidTestTemplates = [
         "{{TEST}}('1234', function () {}); " +
         "{{TEST}}('1234', function () {}); " +
       "});",
-    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
+    errors: [
+      {message: m, type: "CallExpression"},
+      {message: m, type: "CallExpression"}
+    ]
   },
   {
     code:
@@ -80,7 +146,10 @@ var invalidTestTemplates = [
           "{{TEST}}('1234', function () {}); " +
         "});" +
       "});",
-    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
+    errors: [
+      {message: m, type: "CallExpression"},
+      {message: m, type: "CallExpression"}
+    ]
   },
   {
     code:
@@ -92,7 +161,25 @@ var invalidTestTemplates = [
             "{{TEST}}('123', function (){});" +
           "});" +
         "});",
-    errors: [{message: "Some tests have same titles.", type: "CallExpression"}]
+    errors: [
+      {message: m, type: "CallExpression"},
+      {message: m, type: "CallExpression"}
+    ]
+  },
+  {
+    code:
+      "{{TEST}}('1111', function (){}); " +
+        "{{SUITE}}('321', function () {" +
+          "{{TEST}}('123', function (){});" +
+          "{{SUITE}}('321', function () {" +
+            "{{TEST}}('123', function (){});" +
+          "});" +
+        "});",
+    options: [{scope: "file"}],
+    errors: [
+      {message: m, type: "CallExpression"},
+      {message: m, type: "CallExpression"}
+    ]
   }
 ];
 
