@@ -157,8 +157,8 @@ var invalidTestTemplates = [
         "{{SUITE}}('321', {{ES}}" +
           "{{TEST}}('123', {{ES}}});" +
           "{{SUITE}}('321', {{ES}}" +
-            "{{TEST}}('123', {{ES}}});" +
-            "{{TEST}}('123', {{ES}}});" +
+            "{{TEST}}('constructor', {{ES}}});" +
+            "{{TEST}}('constructor', {{ES}}});" +
           "});" +
         "});",
     errors: [
