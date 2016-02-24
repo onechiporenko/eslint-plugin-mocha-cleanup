@@ -7,7 +7,7 @@ var j = new Jsonium();
 var rule = require("../../../lib/rules/complexity-it"),
   RuleTester = require("eslint").RuleTester;
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var assertions = [
   {ASSERT: "sinon.assert.calledOn(sp, {});", COMPLEXITY: "3"},
@@ -19,8 +19,8 @@ var assertions = [
 var validTestTemplates = [
   {
     code:
-      "{{SUITE}}('3421', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITE}}('3421', {{ES}}" +
+        "{{TEST}}('1234', {{ES}}" +
           "var result = myObj.coolFunc(1, 2);" +
           "var expected = myTestCase.expected[0];" +
           "expect(result).to.be.equal(expected);" +
@@ -30,8 +30,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('3421', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITESKIP}}('3421', {{ES}}" +
+        "{{TEST}}('1234', {{ES}} " +
           "{{ASSERT}}" +
         "});" +
       "});",
@@ -39,15 +39,15 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('1234', function () { " +
+      "{{TESTSKIP}}('1234', {{ES}} " +
         "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('3421', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITESKIP}}('3421', {{ES}}" +
+        "{{TEST}}('1234', {{ES}} " +
           "{{ASSERT}}" +
         "});" +
       "});",
@@ -55,15 +55,15 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('1234', function () { " +
+      "{{TESTSKIP}}('1234', {{ES}} " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('4321', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITESKIP}}('4321', {{ES}}" +
+        "{{TEST}}('1234', {{ES}} " +
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});"+
       "});",
@@ -74,7 +74,7 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{TEST}}('1234', function () { " +
+      "{{TEST}}('1234', {{ES}} " +
         "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0}],
@@ -82,8 +82,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('4321', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITESKIP}}('4321', {{ES}}" +
+        "{{TEST}}('1234', {{ES}} " +
           "{{ASSERT}}" +
         "});" +
       "});",
@@ -92,7 +92,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('1234', function () { " +
+      "{{TESTSKIP}}('1234', {{ES}} " +
         "{{ASSERT}}" +
       "});",
     options: [{maxAllowedComplexity: 0}],
@@ -100,7 +100,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TEST}}('1234', function () { " +
+      "{{TEST}}('1234', {{ES}} " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0}],
@@ -108,7 +108,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('1234', function () { " +
+      "{{TESTSKIP}}('1234', {{ES}} " +
         "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
       "});",
     options: [{maxAllowedComplexity: 0}],
@@ -116,8 +116,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('4321', function () {" +
-        "{{TEST}}('1234', function () { " +
+      "{{SUITESKIP}}('4321', {{ES}}" +
+        "{{TEST}}('1234', {{ES}} " +
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
         "});" +
       "});",
@@ -130,6 +130,8 @@ var validTests = j
   .createCombos(['code'], assertions)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -139,6 +141,8 @@ var invalidTests = j
   .createCombos(['code', 'errors.@each.message'], assertions)
   .useCombosAsTemplates()
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

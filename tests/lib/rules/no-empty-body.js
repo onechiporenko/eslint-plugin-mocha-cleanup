@@ -3,21 +3,21 @@
 var rule = require("../../../lib/rules/no-empty-body"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
 var msg = "Empty function is not allowed here.";
 var hooks = [
-  {HO: "before(function () {", OK: "});"},
-  {HO: "beforeEach(function () {", OK: "});"},
-  {HO: "after(function () {", OK:"});"},
-  {HO: "afterEach(function () {", OK:"});"},
-  {HO: "before('12345', function () {", OK: "});"},
-  {HO: "beforeEach('12345', function () {", OK: "});"},
-  {HO: "after('12345', function () {", OK:"});"},
-  {HO: "afterEach('12345', function () {", OK:"});"}
+  {HO: "before({{ES}}", OK: "});"},
+  {HO: "beforeEach({{ES}}", OK: "});"},
+  {HO: "after({{ES}}", OK:"});"},
+  {HO: "afterEach({{ES}}", OK:"});"},
+  {HO: "before('12345', {{ES}}", OK: "});"},
+  {HO: "beforeEach('12345', {{ES}}", OK: "});"},
+  {HO: "after('12345', {{ES}}", OK:"});"},
+  {HO: "afterEach('12345', {{ES}}", OK:"});"}
 ];
 var emptyBodies = [
   {BODY: ""},
@@ -28,13 +28,13 @@ var emptyBodies = [
 var validTestTemplates = [
   {
     code:
-      "{{SUITESKIP}}('1234', function () {{{BODY}}});",
+      "{{SUITESKIP}}('1234', {{ES}}{{BODY}}});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{BODY}}" +
         "});" +
       "});",
@@ -42,8 +42,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TESTSKIP}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TESTSKIP}}('4321', {{ES}}" +
           "{{BODY}}" +
         "});" +
       "});",
@@ -51,13 +51,13 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {{{HO}} {{BODY}} {{OK}}});",
+      "{{SUITESKIP}}('1234', {{ES}}{{HO}} {{BODY}} {{OK}}});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{SUITE}}('1234', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{SUITE}}('1234', {{ES}}" +
           "{{HO}} {{BODY}} {{OK}}" +
         "});" +
       "});",
@@ -68,22 +68,22 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{SUITE}}('1234', function () {{{BODY}}});",
+      "{{SUITE}}('1234', {{ES}}{{BODY}}});",
     errors: [
       {message: msg}
     ]
   },
   {
     code:
-      "{{SUITE}}('1234', function () {{{HO}} {{BODY}} {{OK}}});",
+      "{{SUITE}}('1234', {{ES}}{{HO}} {{BODY}} {{OK}}});",
     errors: [
       {message: msg}
     ]
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{SUITE}}('1234', {{ES}}" +
           "{{HO}} {{BODY}} {{OK}}" +
         "});" +
       "});",
@@ -93,11 +93,11 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{SUITE}}('1234', {{ES}}" +
           "{{HO}} {{BODY}} {{OK}}" +
         "});" +
-        "{{SUITE}}('1234', function () {" +
+        "{{SUITE}}('1234', {{ES}}" +
           "{{BODY}}" +
         "});" +
       "});",
@@ -108,15 +108,15 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {{{BODY}}});",
+      "{{SUITESKIP}}('1234', {{ES}}{{BODY}}});",
     errors: [
       {message: msg}
     ]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{BODY}}" +
         "});" +
       "});",
@@ -126,8 +126,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TESTSKIP}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TESTSKIP}}('4321', {{ES}}" +
           "{{BODY}}" +
         "});" +
       "});",
@@ -144,6 +144,8 @@ var validTests = j
   .createCombos(['code'], hooks)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -156,6 +158,8 @@ var invalidTests = j
   .createCombos(['code'], hooks)
   .useCombosAsTemplates()
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

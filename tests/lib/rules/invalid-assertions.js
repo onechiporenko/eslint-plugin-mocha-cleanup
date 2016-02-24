@@ -5,7 +5,7 @@ var rule = require("../../../lib/rules/invalid-assertions"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var n = require("../../../lib/utils/node.js");
 var m = "Invalid assertion usage.";
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var Jsonium = require('jsonium');
 var j = new Jsonium();
@@ -35,16 +35,16 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "{{ASSERTION}}" +
-        "{{TEST}}('4321', function () {" +
+        "{{TEST}}('4321', {{ES}}" +
         "})" +
       "})"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TESTSKIP}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TESTSKIP}}('4321', {{ES}}" +
           "{{ASSERTION}}" +
         "})" +
       "})",
@@ -54,8 +54,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{ASSERTION}}" +
         "})" +
       "})",
@@ -68,8 +68,8 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{ASSERTION}}" +
         "})" +
       "})",
@@ -84,6 +84,8 @@ var validTests = j
   .createCombos(["code"], assertions)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -92,6 +94,8 @@ var invalidTests = j
   .createCombos(["code", "errors.@each.type"], assertions)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

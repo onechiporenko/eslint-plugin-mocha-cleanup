@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/no-assertions-outside-it"),
   RuleTester = require("eslint").RuleTester;
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var testHelpers = require("../../../lib/utils/tests.js");
 
@@ -22,71 +22,71 @@ var asserts = [
 var validTestTemplates = [
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "assert;" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "should;" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "should();" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "expect;" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "var expect = {};" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "var should = {};" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "var assert = {};" +
       "});"
   },
 
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('321', function () {});" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('321', {{ES}}});" +
         "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
     options: [{skipSkipped: true}]
@@ -96,7 +96,7 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
     errors: [
@@ -105,8 +105,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TEST}}('321', function () {});" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TEST}}('321', {{ES}}});" +
         "{{ASSERT}}" +
       "});",
     errors: [
@@ -115,7 +115,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
         "{{ASSERT}}" +
         "{{ASSERT}}" +
         "{{ASSERT}}" +
@@ -130,8 +130,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('321', function () {});" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('321', {{ES}}});" +
         "{{ASSERT}}" +
       "});",
     errors: [
@@ -140,7 +140,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
     errors: [
@@ -149,7 +149,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
         "{{ASSERT}}" +
         "{{ASSERT}}" +
@@ -169,6 +169,8 @@ var validTests = j
   .createCombos(['code'], asserts)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -179,6 +181,8 @@ var invalidTests = j
   .createCombos(['code', 'errors.@each.type'], asserts)
   .useCombosAsTemplates()
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

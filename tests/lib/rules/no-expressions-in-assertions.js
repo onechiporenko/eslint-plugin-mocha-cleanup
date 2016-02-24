@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/no-expressions-in-assertions"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var Jsonium = require('jsonium');
 var j = new Jsonium();
@@ -157,8 +157,8 @@ var validTestTemplatesForExpect = [
   },
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TESTSKIP}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TESTSKIP}}('123', {{ES}}" +
           "expect({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
@@ -168,8 +168,8 @@ var validTestTemplatesForExpect = [
   },
   {
     code:
-      "{{SUITESKIP}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITESKIP}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "expect({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
@@ -187,8 +187,8 @@ var validTestTemplatesForAssert = [
   },
   {
     code:
-    "{{SUITE}}('123', function () {" +
-      "{{TESTSKIP}}('123', function () {" +
+    "{{SUITE}}('123', {{ES}}" +
+      "{{TESTSKIP}}('123', {{ES}}" +
         "assert.equal({{ASSERTION}});" +
         "});" +
     "});",
@@ -198,8 +198,8 @@ var validTestTemplatesForAssert = [
   },
   {
     code:
-      "{{SUITESKIP}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITESKIP}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "assert.equal({{ASSERTION}});" +
         "});" +
     "});",
@@ -216,8 +216,8 @@ var validTestTemplatesForChaiAssert = [
   },
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TESTSKIP}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TESTSKIP}}('123', {{ES}}" +
           "chai.assert.equal({{ASSERTION}});" +
         "});" +
       "});",
@@ -227,8 +227,8 @@ var validTestTemplatesForChaiAssert = [
   },
   {
     code:
-      "{{SUITESKIP}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITESKIP}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "chai.assert.equal({{ASSERTION}});" +
         "});" +
       "});",
@@ -241,8 +241,8 @@ var validTestTemplatesForChaiAssert = [
 var invalidTestTemplatesForExpect = [
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "expect({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
@@ -255,8 +255,8 @@ var invalidTestTemplatesForExpect = [
 var invalidTestTemplatesForAssert = [
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "assert.equal({{ASSERTION}});" +
         "});" +
       "});",
@@ -269,8 +269,8 @@ var invalidTestTemplatesForAssert = [
 var invalidTestTemplatesForChaiAssert = [
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "sinon.assert.equal({{ASSERTION}});" +
         "});" +
       "});",
@@ -285,6 +285,8 @@ var validTests = j
   .createCombos(["code"], assertionsForExpect)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -293,6 +295,8 @@ validTests = j
   .createCombos(["code"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(validTests)
   .getCombos();
@@ -302,6 +306,8 @@ validTests = j
   .createCombos(["code"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(validTests)
   .getCombos();
@@ -311,6 +317,8 @@ var invalidTests = j
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -319,6 +327,8 @@ invalidTests = j
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(invalidTests)
   .getCombos();
@@ -328,6 +338,8 @@ invalidTests = j
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(invalidTests)
   .getCombos();

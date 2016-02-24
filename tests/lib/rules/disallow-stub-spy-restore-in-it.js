@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
@@ -17,168 +17,168 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var stub = '12345';" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var spy = '12345';" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var restore = '12345';" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var a = restore.a;" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var a = stub.a;" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "var a = spy.a;" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this.stub = '1234';" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this['stub'] = '1234';" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this.stub.returns(1234);" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this['stub'].returns(1234);" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this.stub.withArgs(1234).returns(4321);" +
       "});"
   },
   {
     code:
-      "{{TEST}}('1234', function () {" +
+      "{{TEST}}('1234', {{ES}}" +
         "this['stub'].withArgs(1234).returns(4321);" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "before(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "before({{ES}}" +
           "sinon.stub{{MOD}}(); " +
           "sinon.spy{{MOD}}(); " +
           "sinon.restore{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "before(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "before({{ES}}" +
           "sinon['stub']{{MOD}}(); " +
           "sinon['spy']{{MOD}}(); " +
           "sinon['restore']{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "beforeEach(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "beforeEach({{ES}}" +
           "sinon.stub{{MOD}}(); " +
           "sinon.spy{{MOD}}(); " +
           "sinon.restore{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "beforeEach(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "beforeEach({{ES}}" +
           "sinon['stub']{{MOD}}(); " +
           "sinon['spy']{{MOD}}(); " +
           "sinon['restore']{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "after(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "after({{ES}}" +
           "sinon.stub{{MOD}}(); " +
           "sinon.spy{{MOD}}(); " +
           "sinon.restore{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "after(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "after({{ES}}" +
           "sinon['stub']{{MOD}}(); " +
           "sinon['spy']{{MOD}}(); " +
           "sinon['restore']{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "afterEach(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "afterEach({{ES}}" +
           "sinon.stub{{MOD}}(); " +
           "sinon.spy{{MOD}}(); " +
           "sinon.restore{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "afterEach(function() {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "afterEach({{ES}}" +
           "sinon['stub']{{MOD}}(); " +
           "sinon['spy']{{MOD}}(); " +
           "sinon['restore']{{MOD}}();" +
         "}); " +
-        "{{TEST}}('4321', function () {});" +
+        "{{TEST}}('4321', {{ES}}});" +
       "});"
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.restore{{MOD}}();" +
         "});" +
       "});",
@@ -186,8 +186,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
@@ -195,8 +195,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.stub{{MOD}}();" +
         "});" +
      "});",
@@ -204,8 +204,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['stub']{{MOD}}();" +
         "});" +
      "});",
@@ -213,8 +213,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.spy{{MOD}}();" +
         "});" +
       "});",
@@ -222,8 +222,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
@@ -231,9 +231,9 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
@@ -242,9 +242,9 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
@@ -253,14 +253,14 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('12345', function () {" +
+      "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
     options: [{skipSkipped: true}]
   },
   {
     code:
-      "{{TESTSKIP}}('12345', function () {" +
+      "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
     options: [{skipSkipped: true}]
@@ -270,44 +270,44 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon.restore{{MOD}}();" +
       "});",
     errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon['restore']{{MOD}}();" +
       "});",
     errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon.spy{{MOD}}();" +
       "});",
     errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{SUITE}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITE}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
@@ -316,9 +316,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITE}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
@@ -327,22 +327,22 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TEST}}('12345', function () {" +
+      "{{TEST}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.restore{{MOD}}();" +
         "});" +
       "});",
@@ -350,8 +350,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
@@ -359,8 +359,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.stub{{MOD}}();" +
         "});" +
       "});",
@@ -368,8 +368,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['stub']{{MOD}}();" +
         "});" +
       "});",
@@ -377,8 +377,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon.spy{{MOD}}();" +
         "});" +
       "});",
@@ -386,8 +386,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('12345', {{ES}}" +
           "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
@@ -395,9 +395,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon.spy{{MOD}}();" +
           "});" +
         "});" +
@@ -406,9 +406,9 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () { " +
-        "[].forEach(function () {" +
-          "{{TEST}}('12345', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "[].forEach({{ES}}" +
+          "{{TEST}}('12345', {{ES}}" +
             "sinon['spy']{{MOD}}();" +
           "});" +
         "});" +
@@ -417,14 +417,14 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('12345', function () {" +
+      "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
   },
   {
     code:
-      "{{TESTSKIP}}('12345', function () {" +
+      "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
     errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
@@ -434,6 +434,8 @@ var invalidTestTemplates = [
 var validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .useCombosAsTemplates()
   .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])
@@ -444,6 +446,8 @@ j.clearTemplates().clearCombos();
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .useCombosAsTemplates()
   .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])

@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/no-eql-primitives"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var Jsonium = require('jsonium');
 var j = new Jsonium();
@@ -47,14 +47,14 @@ var validAssertions = [
 var validTestTemplates = [
   {
     code:
-      "{{TEST}}('123', function () {" +
+      "{{TEST}}('123', {{ES}}" +
         "{{ASSERTION}}" +
       "});"
   },
   {
     code:
-      "{{SUITESKIP}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITESKIP}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
@@ -62,8 +62,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('123', function () {" +
-        "{{TESTSKIP}}('123', function () {" +
+      "{{SUITE}}('123', {{ES}}" +
+        "{{TESTSKIP}}('123', {{ES}}" +
           "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
@@ -74,7 +74,7 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{TEST}}('123', function () {" +
+      "{{TEST}}('123', {{ES}}" +
         "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
@@ -83,7 +83,7 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{TESTSKIP}}('123', function () {" +
+      "{{TESTSKIP}}('123', {{ES}}" +
         "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
@@ -92,8 +92,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('123', function () {" +
-        "{{TEST}}('123', function () {" +
+      "{{SUITESKIP}}('123', {{ES}}" +
+        "{{TEST}}('123', {{ES}}" +
           "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
@@ -128,6 +128,8 @@ var validTests = j
   .createCombos(['code'], validAssertions)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -138,6 +140,8 @@ var invalidTests = j
   .createCombos(['code', 'errors.@each.message'], invalidAssertions)
   .useCombosAsTemplates()
   .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

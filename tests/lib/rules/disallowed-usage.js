@@ -6,7 +6,7 @@ var testHelpers = require("../../../lib/utils/tests.js");
 var Jsonium = require('jsonium');
 var j = new Jsonium();
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var disallowed = [
   {CODE: "obj.subObj.prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{o: "obj.subObj", p: ["prop"]}], "options.0.hook": [{o: "obj.subObj", p: ["prop"]}]},
@@ -33,8 +33,8 @@ var hooks = [
 var validTestTemplates = [
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{CODE}};" +
         "})" +
       "})",
@@ -47,8 +47,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITESKIP}}('1234', function () {" +
-        "{{HOOK}}(function () {" +
+      "{{SUITESKIP}}('1234', {{ES}}" +
+        "{{HOOK}}({{ES}}" +
           "{{CODE}};" +
         "})" +
       "})",
@@ -61,8 +61,8 @@ var validTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TESTSKIP}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TESTSKIP}}('4321', {{ES}}" +
           "{{CODE}};" +
         "})" +
       "})",
@@ -77,8 +77,8 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{CODE}};" +
         "})" +
       "})",
@@ -93,8 +93,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{HOOK}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{HOOK}}('4321', {{ES}}" +
           "{{CODE}};" +
         "})" +
       "})",
@@ -109,8 +109,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{TEST}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{CODE}}" +
           "{{CODE}}" +
           "{{CODE}}" +
@@ -129,8 +129,8 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{HOOK}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{HOOK}}('4321', {{ES}}" +
           "{{CODE}}" +
           "{{CODE}}" +
           "{{CODE}}" +
@@ -149,11 +149,11 @@ var invalidTestTemplates = [
   },
   {
     code:
-      "{{SUITE}}('1234', function () {" +
-        "{{HOOK}}('4321', function () {" +
+      "{{SUITE}}('1234', {{ES}}" +
+        "{{HOOK}}('4321', {{ES}}" +
           "{{CODE}}" +
         "});" +
-        "{{TEST}}('4321', function () {" +
+        "{{TEST}}('4321', {{ES}}" +
           "{{CODE}}" +
         "});" +
       "});",
@@ -178,6 +178,8 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
+  .useCombosAsTemplates()
   .createCombos(['code'], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
   .uniqueCombos()
   .getCombos();
@@ -190,6 +192,8 @@ var invalidTests = j
   .createCombos(['code', 'options.0.{test,hook}', 'errors.@each.message'], disallowed)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .useCombosAsTemplates()
   .createCombos(['code'], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
   .uniqueCombos()

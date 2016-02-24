@@ -4,7 +4,7 @@ var rule = require("../../../lib/rules/asserts-limit"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({env: {es6: true}});
 
 var Jsonium = require('jsonium');
 var j = new Jsonium();
@@ -21,63 +21,63 @@ var assertions = [
 var validTestTemplates = [
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
         "});",
       options: [{assertsLimit: 4}]
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "assert; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "should; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "notAssert['assert']; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "should(); {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "expect; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "var expect = {};" + assertions[0] +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "var should = {}; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "var assert = {}; {{ASSERTION}}" +
         "});"
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{TEST}}('1234', function () {" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{TEST}}('1234', {{ES}}" +
             "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
           "});" +
          "});",
@@ -86,9 +86,9 @@ var validTestTemplates = [
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{SUITE}}('4321', function () { " +
-            "{{TEST}}('1234', function () {" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{SUITE}}('4321', {{ES}} " +
+            "{{TEST}}('1234', {{ES}}" +
               "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
             "});" +
           "});" +
@@ -117,28 +117,28 @@ var validTestTemplates = [
     },
     {
       code:
-       "{{TESTSKIP}}('1234', function () {" +
+       "{{TESTSKIP}}('1234', {{ES}}" +
           "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
         "});",
       options: [{assertsLimit: 1, skipSkipped: true}]
     },
     {
       code:
-       "{{TESTSKIP}}('1234', function () {});",
+       "{{TESTSKIP}}('1234', {{ES}} });",
       options: [{assertsLimit: 1, skipSkipped: true}]
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{TEST}}('1234', function () {});" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{TEST}}('1234', {{ES}} });" +
         "});",
       options: [{assertsLimit: 1, skipSkipped: true}]
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{{{SUITE}}}}('4321', function () { " +
-            "{{TEST}}('1234', function () {});" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{{{SUITE}}}}('4321', {{ES}} " +
+            "{{TEST}}('1234', {{ES}} });" +
           "});" +
         "});",
       options: [{assertsLimit: 1, skipSkipped: true}]
@@ -148,7 +148,7 @@ var validTestTemplates = [
 var invalidTestTemplates = [
     {
       code:
-        "{{TEST}}('1234', function () {" +
+        "{{TEST}}('1234', {{ES}}" +
           "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
         "});",
       options: [{assertsLimit: 2}],
@@ -156,9 +156,9 @@ var invalidTestTemplates = [
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{SUITE}}('4321', function () { " +
-            "{{TEST}}('1234', function () {" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{SUITE}}('4321', {{ES}} " +
+            "{{TEST}}('1234', {{ES}}" +
               "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
             "});" +
           "});" +
@@ -168,7 +168,7 @@ var invalidTestTemplates = [
     },
     {
       code:
-        "{{TESTSKIP}}('1234', function () {" +
+        "{{TESTSKIP}}('1234', {{ES}}" +
           "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
         "});",
       options: [{assertsLimit: 1}],
@@ -178,33 +178,33 @@ var invalidTestTemplates = [
   var invalidTestTemplatesWithoutAssertions = [
     {
       code:
-        "{{TEST}}('1234', function () {});",
+        "{{TEST}}('1234', {{ES}} });",
       errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
-        "{{TESTSKIP}}('1234', function () {});",
+        "{{TESTSKIP}}('1234', {{ES}} });",
       errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{TEST}}('1234', function () {});" +
+        "{{SUITESKIP}}('1234',{{ES}} " +
+          "{{TEST}}('1234', {{ES}} });" +
         "});",
       errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
-        "{{SUITE}}('1234', function () { " +
-          "{{TEST}}('1234', function () {});" +
+        "{{SUITE}}('1234', {{ES}} " +
+          "{{TEST}}('1234', {{ES}} });" +
         "});",
       errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
     },
     {
       code:
-        "{{SUITESKIP}}('1234', function () { " +
-          "{{SUITE}}('4321', function () { " +
-            "{{TEST}}('1234', function () {});" +
+        "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{SUITE}}('4321', {{ES}} " +
+            "{{TEST}}('1234', {{ES}} });" +
           "});" +
         "});",
       errors: [{message: "Test without assertions is not allowed.", type: "CallExpression"}]
@@ -247,6 +247,8 @@ var validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(['code'], assertions)
   .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
+  .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos()
@@ -257,6 +259,8 @@ j.clearTemplates().clearCombos();
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(['code'], assertions)
+  .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
   .uniqueCombos()
@@ -269,9 +273,11 @@ invalidTests = j
   .setTemplates(invalidTestTemplatesWithoutAssertions)
   .createCombos(['code'], assertions)
   .useCombosAsTemplates()
+  .createCombos(['code'], testHelpers.es)
+  .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
-  .uniqueCombos()
   .concatCombos(invalidTests)
+  .uniqueCombos()
   .getCombos();
 
 ruleTester.run("asserts-limit", rule, {
