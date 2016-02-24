@@ -55,8 +55,7 @@ var unaries = [
   {UNARY: "!"},
   {UNARY: "~"},
   {UNARY: "+"},
-  {UNARY: "-"},
-  {UNARY: "typeof"}
+  {UNARY: "-"}
 ];
 
 var primitiveEqualitiesForExpect = [
@@ -114,6 +113,7 @@ var assertions = [
   {ASSERTION: "a {{LOGICAL}} b", MESSAGE: defaultMessage},
   {ASSERTION: "{{UPDATE}} b", MESSAGE: defaultMessage},
   {ASSERTION: "b{{UPDATE}}", MESSAGE: defaultMessage},
+  {ASSERTION: "{{UNARY}} a", MESSAGE: defaultMessage},
   {ASSERTION: "", MESSAGE: emptyArgMessage}
 ];
 
@@ -157,6 +157,10 @@ var validTestTemplatesForExpect = [
   },
   {
     code:
+      "expect(typeof a).to.be.true;"
+  },
+  {
+    code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TESTSKIP}}('123', {{ES}}" +
           "expect({{ASSERTION}}).to.be.true;" +
@@ -187,6 +191,10 @@ var validTestTemplatesForAssert = [
   },
   {
     code:
+      "assert.equal(typeof a);"
+  },
+  {
+    code:
     "{{SUITE}}('123', {{ES}}" +
       "{{TESTSKIP}}('123', {{ES}}" +
         "assert.equal({{ASSERTION}});" +
@@ -213,6 +221,10 @@ var validTestTemplatesForChaiAssert = [
   {
     code:
       "chai.assert.equal({{ASSERTION}});"
+  },
+  {
+    code:
+      "chai.assert.equal(typeof a);"
   },
   {
     code:
