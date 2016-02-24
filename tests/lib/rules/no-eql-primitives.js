@@ -34,10 +34,17 @@ var invalidAssertions = [
 ];
 var validAssertions = [
   {ASSERTION: "assert.deepEqual(a, {{VAL}});"},
+  {ASSERTION: "chai.assert.deepEqual(a, {{VAL}});"},
+  {ASSERTION: "chai['assert'].deepEqual(a, {{VAL}});"},
   {ASSERTION: "assert['deepEqual'](a, {{VAL}});"},
+  {ASSERTION: "chai.assert['deepEqual'](a, {{VAL}});"},
   {ASSERTION: "assert.notDeepEqual(a, {{VAL}});"},
+  {ASSERTION: "chai.assert.notDeepEqual(a, {{VAL}});"},
+  {ASSERTION: "chai['assert'].notDeepEqual(a, {{VAL}});"},
   {ASSERTION: "assert['notDeepEqual'](a, {{VAL}});"},
   {ASSERTION: "expect(a).to.be.eql({{VAL}});"},
+  {ASSERTION: "chai.expect(a).to.be.eql({{VAL}});"},
+  {ASSERTION: "chai['expect'](a).to.be.eql({{VAL}});"},
   {ASSERTION: "a.should.be.eql({{VAL}});"},
   {ASSERTION: "a['should'].be.eql({{VAL}});"},
   {ASSERTION: "a.should.be.deep.equal({{VAL}});"},

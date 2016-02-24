@@ -18,6 +18,8 @@ chains.push({CHAIN: ""});
 
 var assertions = [
   {ASSERTION: "expect(1){{CHAIN}};", TYPE: "CallExpression"},
+  {ASSERTION: "chai.expect(1){{CHAIN}};", TYPE: "CallExpression"},
+  {ASSERTION: "chai['expect'](1){{CHAIN}};", TYPE: "CallExpression"},
   {ASSERTION: "'1'.should{{CHAIN}};", TYPE: "MemberExpression"},
   {ASSERTION: "'1'['should']{{CHAIN}};", TYPE: "MemberExpression"}
 ];
@@ -37,7 +39,7 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('1234', {{ES}}" +
         "{{ASSERTION}}" +
-        "{{TEST}}('4321', {{ES}}" +
+          "{{TEST}}('4321', {{ES}}" +
         "})" +
       "})"
   },

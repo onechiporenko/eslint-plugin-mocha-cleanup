@@ -11,11 +11,11 @@ var Jsonium = require('jsonium');
 var j = new Jsonium();
 
 var asserts = [
-  {ASSERT: "expect(1).to.be.equal(1);", TYPE: "CallExpression"},
+  {ASSERT: "expect(1).to.be.equal(1);", TYPE: "MemberExpression"},
   {ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression"},
   {ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression"},
-  {ASSERT: "assert.equal(1, 1);", TYPE: "MemberExpression"},
-  {ASSERT: "assert(1, 1);", TYPE: "CallExpression"},
+  {ASSERT: "assert.equal(1, 1);", TYPE: "CallExpression"},
+  {ASSERT: "assert(1, 1);", TYPE: "ExpressionStatement"},
   {ASSERT: "sinon.assert.calledOn(sp, {});", TYPE: "MemberExpression"},
   {ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression"}
 ];

@@ -153,17 +153,17 @@ var assertionsForAssert = j
 var validTestTemplatesForExpect = [
   {
     code:
-      "expect({{ASSERTION}}).to.be.true;"
+      "{{EXPECT}}({{ASSERTION}}).to.be.true;"
   },
   {
     code:
-      "expect(typeof a).to.be.true;"
+      "{{EXPECT}}(typeof a).to.be.true;"
   },
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TESTSKIP}}('123', {{ES}}" +
-          "expect({{ASSERTION}}).to.be.true;" +
+          "{{EXPECT}}({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
     options: [
@@ -174,7 +174,7 @@ var validTestTemplatesForExpect = [
     code:
       "{{SUITESKIP}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "expect({{ASSERTION}}).to.be.true;" +
+          "{{EXPECT}}({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
     options: [
@@ -187,17 +187,17 @@ var validTestTemplatesForExpect = [
 var validTestTemplatesForAssert = [
   {
     code:
-      "assert.equal({{ASSERTION}});"
+      "{{ASSERT}}.equal({{ASSERTION}});"
   },
   {
     code:
-      "assert.equal(typeof a);"
+      "{{ASSERT}}.equal(typeof a);"
   },
   {
     code:
     "{{SUITE}}('123', {{ES}}" +
       "{{TESTSKIP}}('123', {{ES}}" +
-        "assert.equal({{ASSERTION}});" +
+        "{{ASSERT}}.equal({{ASSERTION}});" +
         "});" +
     "});",
     options: [
@@ -208,7 +208,7 @@ var validTestTemplatesForAssert = [
     code:
       "{{SUITESKIP}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "assert.equal({{ASSERTION}});" +
+          "{{ASSERT}}.equal({{ASSERTION}});" +
         "});" +
     "});",
     options: [
@@ -219,7 +219,7 @@ var validTestTemplatesForAssert = [
     code:
     "{{SUITE}}('123', {{ES}}" +
       "{{TESTSKIP}}('123', {{ES}}" +
-        "assert({{ASSERTION}});" +
+        "{{ASSERT}}({{ASSERTION}});" +
         "});" +
     "});",
     options: [
@@ -230,7 +230,7 @@ var validTestTemplatesForAssert = [
     code:
       "{{SUITESKIP}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "assert({{ASSERTION}});" +
+          "{{ASSERT}}({{ASSERTION}});" +
         "});" +
     "});",
     options: [
@@ -244,7 +244,7 @@ var invalidTestTemplatesForExpect = [
     code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "expect({{ASSERTION}}).to.be.true;" +
+          "{{EXPECT}}({{ASSERTION}}).to.be.true;" +
         "});" +
       "});",
     errors: [
@@ -258,7 +258,7 @@ var invalidTestTemplatesForAssert = [
     code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "assert.equal({{ASSERTION}});" +
+          "{{ASSERT}}.equal({{ASSERTION}});" +
         "});" +
       "});",
     errors: [
@@ -269,11 +269,11 @@ var invalidTestTemplatesForAssert = [
     code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "assert({{ASSERTION}});" +
+          "{{ASSERT}}({{ASSERTION}});" +
         "});" +
       "});",
     errors: [
-      {message: "{{MESSAGE}}", type: "CallExpression"}
+      {message: "{{MESSAGE}}", type: "{{TYPE}}"}
     ]
   }
 ];
@@ -281,6 +281,8 @@ var invalidTestTemplatesForAssert = [
 var validTests = j
   .setTemplates(validTestTemplatesForExpect)
   .createCombos(["code"], assertionsForExpect)
+  .useCombosAsTemplates()
+  .createCombos(["code"], [{EXPECT: "expect"}, {EXPECT: "chai.expect"}, {EXPECT: "chai['expect']"}])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -291,6 +293,8 @@ var validTests = j
 validTests = j
   .setTemplates(validTestTemplatesForAssert)
   .createCombos(["code"], assertionsForAssert)
+  .useCombosAsTemplates()
+  .createCombos(["code"], [{ASSERT: "assert"}, {ASSERT: "chai.assert"}, {ASSERT: "chai['assert']"}])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -303,6 +307,8 @@ var invalidTests = j
   .setTemplates(invalidTestTemplatesForExpect)
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
   .useCombosAsTemplates()
+  .createCombos(["code"], [{EXPECT: "expect"}, {EXPECT: "chai.expect"}, {EXPECT: "chai['expect']"}])
+  .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
@@ -312,6 +318,8 @@ var invalidTests = j
 invalidTests = j
   .setTemplates(invalidTestTemplatesForAssert)
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
+  .useCombosAsTemplates()
+  .createCombos(["code", "errors.0.type"], [{ASSERT: "assert", TYPE: "CallExpression"}, {ASSERT: "chai.assert", TYPE: "MemberExpression"}, {ASSERT: "chai['assert']", TYPE: "MemberExpression"}])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()

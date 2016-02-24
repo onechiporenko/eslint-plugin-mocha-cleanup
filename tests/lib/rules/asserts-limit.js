@@ -10,10 +10,17 @@ var Jsonium = require('jsonium');
 var j = new Jsonium();
 
 var assertions = [
+  {ASSERTION: "chai.expect(1).to.be.equal(1);"},
+  {ASSERTION: "chai['expect'](1).to.be.equal(1);"},
   {ASSERTION: "expect(1).to.be.equal(1);"},
   {ASSERTION: "'1'.should.equal('1');"},
   {ASSERTION: "'1'['should'].equal('1');"},
   {ASSERTION: "assert.equal(1, 1);"},
+  {ASSERTION: "assert['equal'](1, 1);"},
+  {ASSERTION: "chai.assert.equal(1, 1);"},
+  {ASSERTION: "chai.assert['equal'](1, 1);"},
+  {ASSERTION: "chai['assert']['equal'](1, 1);"},
+  {ASSERTION: "chai['assert'].equal(1, 1);"},
   {ASSERTION: "assert(1, 1);"},
   {ASSERTION: "sinon.assert.calledOn(sp, {});"},
   {ASSERTION: "sinon['assert'].calledOn(sp, {});"}
