@@ -13,6 +13,7 @@ var assertions = [
   {ASSERT: "sinon.assert.calledOn(sp, {});", COMPLEXITY: "3"},
   {ASSERT: "expect(func()).to.be.equal(1);", COMPLEXITY: "4"},
   {ASSERT: "assert.equal(func(), 1, '4321');", COMPLEXITY: "3"},
+  {ASSERT: "assert(func(), 1, '4321');", COMPLEXITY: "3"},
   {ASSERT: "func().should.be.equal(1);", COMPLEXITY: "4"}
 ];
 

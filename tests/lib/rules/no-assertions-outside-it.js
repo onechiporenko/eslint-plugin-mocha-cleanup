@@ -15,6 +15,7 @@ var asserts = [
   {ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression"},
   {ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression"},
   {ASSERT: "assert.equal(1, 1);", TYPE: "MemberExpression"},
+  {ASSERT: "assert(1, 1);", TYPE: "CallExpression"},
   {ASSERT: "sinon.assert.calledOn(sp, {});", TYPE: "MemberExpression"},
   {ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression"}
 ];

@@ -214,25 +214,14 @@ var validTestTemplatesForAssert = [
     options: [
       {skipSkipped: true}
     ]
-  }
-];
-
-var validTestTemplatesForChaiAssert = [
-  {
-    code:
-      "chai.assert.equal({{ASSERTION}});"
   },
   {
     code:
-      "chai.assert.equal(typeof a);"
-  },
-  {
-    code:
-      "{{SUITE}}('123', {{ES}}" +
-        "{{TESTSKIP}}('123', {{ES}}" +
-          "chai.assert.equal({{ASSERTION}});" +
+    "{{SUITE}}('123', {{ES}}" +
+      "{{TESTSKIP}}('123', {{ES}}" +
+        "assert({{ASSERTION}});" +
         "});" +
-      "});",
+    "});",
     options: [
       {skipSkipped: true}
     ]
@@ -241,9 +230,9 @@ var validTestTemplatesForChaiAssert = [
     code:
       "{{SUITESKIP}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "chai.assert.equal({{ASSERTION}});" +
+          "assert({{ASSERTION}});" +
         "});" +
-      "});",
+    "});",
     options: [
       {skipSkipped: true}
     ]
@@ -275,19 +264,16 @@ var invalidTestTemplatesForAssert = [
     errors: [
       {message: "{{MESSAGE}}", type: "MemberExpression"}
     ]
-  }
-];
-
-var invalidTestTemplatesForChaiAssert = [
+  },
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
         "{{TEST}}('123', {{ES}}" +
-          "sinon.assert.equal({{ASSERTION}});" +
+          "assert({{ASSERTION}});" +
         "});" +
       "});",
     errors: [
-      {message: "{{MESSAGE}}", type: "MemberExpression"}
+      {message: "{{MESSAGE}}", type: "CallExpression"}
     ]
   }
 ];
@@ -313,17 +299,6 @@ validTests = j
   .concatCombos(validTests)
   .getCombos();
 
-validTests = j
-  .setTemplates(validTestTemplatesForChaiAssert)
-  .createCombos(["code"], assertionsForAssert)
-  .useCombosAsTemplates()
-  .createCombos(["code"], testHelpers.mochaDatasets)
-  .useCombosAsTemplates()
-  .createCombos(["code"], testHelpers.es)
-  .uniqueCombos()
-  .concatCombos(validTests)
-  .getCombos();
-
 var invalidTests = j
   .setTemplates(invalidTestTemplatesForExpect)
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
@@ -336,17 +311,6 @@ var invalidTests = j
 
 invalidTests = j
   .setTemplates(invalidTestTemplatesForAssert)
-  .createCombos(["code", "errors.@each.message"], assertionsForAssert)
-  .useCombosAsTemplates()
-  .createCombos(["code"], testHelpers.mochaDatasets)
-  .useCombosAsTemplates()
-  .createCombos(["code"], testHelpers.es)
-  .uniqueCombos()
-  .concatCombos(invalidTests)
-  .getCombos();
-
-invalidTests = j
-  .setTemplates(invalidTestTemplatesForChaiAssert)
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
