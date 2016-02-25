@@ -23,7 +23,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-* `asserts-limit` Rule to disallow use more than allowed number of assertions. `it`s without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
+* `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
 
 ```
 "rules": {
@@ -39,11 +39,11 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `disallow-stub-spy-restore-in-it` Rule to disallow usage `stub/spy/restore` in the `it`
+* `disallow-stub-spy-restore-in-it` Rule to disallow usage `stub/spy/restore` in the tests (should be in the hooks)
 
-* `no-empty-title` Rule to disallow use empty title in the `describe` and `it`
+* `no-empty-title` Rule to disallow use empty title in the suites and tests
 
-* `no-same-titles` Rule to disallow usage same titles for `it`s inside one `describe` or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
+* `no-same-titles` Rule to disallow usage same titles for tests inside one suite or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
 
 ```
 "rules": {
@@ -51,11 +51,11 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `no-nested-it` Rule to disallow usage nested `it`
+* `no-nested-it` Rule to disallow usage nested tests (not suites)
 
-* `no-assertions-outside-it` Rule to disallow use assertions outside `it`
+* `no-assertions-outside-it` Rule to disallow use assertions outside tests
 
-* `complexity-it` Counts `it`-body complexity. May be customized with setting maximum complexity:
+* `complexity-it` Counts test-body complexity. May be customized with setting maximum complexity:
 
 ```
 "rules": {

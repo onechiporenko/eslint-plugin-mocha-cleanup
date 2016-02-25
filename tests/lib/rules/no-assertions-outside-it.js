@@ -69,7 +69,72 @@ var validTestTemplates = [
         "var assert = {};" +
       "});"
   },
-
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "var a = {{ES}} " +
+          "{{ASSERT}} " +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "function a () {" +
+          "{{ASSERT}} " +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "var a = {{ES}} " +
+          "[].forEach({{ES}}" +
+            "{{ASSERT}}" +
+          "});" +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "function a () {" +
+          "[].forEach({{ES}}" +
+            "{{ASSERT}}" +
+          "});" +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "var a = {{ES}} " +
+          "[].forEach({{ES}}" +
+            "[].forEach({{ES}}" +
+              "{{ASSERT}}" +
+            "});" +
+          "});" +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "function a () {" +
+          "[].forEach({{ES}}" +
+            "[].forEach({{ES}}" +
+              "{{ASSERT}}" +
+            "});" +
+          "});" +
+        "}" +
+      "});"
+  },
+  {
+    code:
+      "var a = {{ES}} " +
+        "{{ASSERT}} " +
+      "}"
+  },
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}" +
@@ -97,8 +162,48 @@ var validTestTemplates = [
 var invalidTestTemplates = [
   {
     code:
+      "{{ASSERT}}",
+    errors: [
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+    ]
+  },
+  {
+    code:
+      "{{ASSERT}}" +
+      "{{ASSERT}}",
+    errors: [
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+    ]
+  },
+  {
+    code:
       "{{SUITE}}('1234', {{ES}}" +
         "{{ASSERT}}" +
+      "});",
+    errors: [
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+    ]
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "[].forEach({{ES}}" +
+          "{{ASSERT}}" +
+        "});" +
+      "});",
+    errors: [
+      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+    ]
+  },
+  {
+    code:
+      "{{SUITE}}('1234', {{ES}}" +
+        "[].forEach({{ES}}" +
+          "[].forEach({{ES}}" +
+            "{{ASSERT}}" +
+         "});" +
+        "});" +
       "});",
     errors: [
       {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
