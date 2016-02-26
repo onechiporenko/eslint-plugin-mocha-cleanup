@@ -20,7 +20,7 @@
     "requireindex": "~1.1.0"
   },
   "devDependencies": {
-    "jsonium": "^1.4.0",
+    "jsonium": "^1.5.0",
     "mocha": ">=2.3.4"
   },
   "peerDependencies": {
