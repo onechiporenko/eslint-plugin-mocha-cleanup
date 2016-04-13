@@ -7,7 +7,7 @@ var ruleTester = new RuleTester({env: {es6: true}});
 
 var testHelpers = require("../../../lib/utils/tests.js");
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var asserts = [
@@ -272,11 +272,11 @@ var invalidTestTemplates = [
 
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], asserts)
+  .createCombos(["code"], asserts)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -284,11 +284,11 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code', 'errors.@each.type'], asserts)
+  .createCombos(["code", "errors.@each.type"], asserts)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

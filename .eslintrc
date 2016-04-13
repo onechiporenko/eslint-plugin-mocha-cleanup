@@ -1,0 +1,10 @@
+{
+  "extends": "eslint:recommended",
+  "rules": {
+    "quotes": [2, "double"]
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

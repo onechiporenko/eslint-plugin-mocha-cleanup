@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/disallow-stub-window"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var ruleTester = new RuleTester({env: {es6: true}});
@@ -111,17 +111,17 @@ var hooks = [
 
 var validTests = j
   .setTemplates(templates)
-  .createCombos(['code'], hooks)
+  .createCombos(["code"], hooks)
   .useCombosAsTemplates()
-  .createCombos(['code'], codes)
+  .createCombos(["code"], codes)
   .useCombosAsTemplates()
-  .createCombos(['code'], stubs)
+  .createCombos(["code"], stubs)
   .useCombosAsTemplates()
-  .createCombos(['code', 'options.0.methods.@each', 'errors.@each.message'], methods)
+  .createCombos(["code", "options.0.methods.@each", "errors.@each.message"], methods)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos()
   .map(function (c) {
@@ -131,17 +131,17 @@ var validTests = j
 
 var invalidTests = j
   .setTemplates(templates)
-  .createCombos(['code'], hooks)
+  .createCombos(["code"], hooks)
   .useCombosAsTemplates()
-  .createCombos(['code'], codes)
+  .createCombos(["code"], codes)
   .useCombosAsTemplates()
-  .createCombos(['code'], stubs)
+  .createCombos(["code"], stubs)
   .useCombosAsTemplates()
-  .createCombos(['code', 'options.0.methods.@each', 'errors.@each.message'], methods)
+  .createCombos(["code", "options.0.methods.@each", "errors.@each.message"], methods)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

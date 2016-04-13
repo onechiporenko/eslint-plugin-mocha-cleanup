@@ -6,7 +6,7 @@ var testHelpers = require("../../../lib/utils/tests.js");
 
 var ruleTester = new RuleTester({env: {es6: true}});
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var assertions = [
@@ -253,11 +253,11 @@ function filter(combo) {
 
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], assertions)
+  .createCombos(["code"], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos()
   .filter(filter);
@@ -266,11 +266,11 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code'], assertions)
+  .createCombos(["code"], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .uniqueCombos()
   .getCombos()
   .filter(filter);
@@ -279,11 +279,11 @@ j.clearTemplates().clearCombos();
 
 invalidTests = j
   .setTemplates(invalidTestTemplatesWithoutAssertions)
-  .createCombos(['code'], assertions)
+  .createCombos(["code"], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .concatCombos(invalidTests)
   .uniqueCombos()
   .getCombos();

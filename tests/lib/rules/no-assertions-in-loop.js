@@ -5,7 +5,7 @@ var rule = require("../../../lib/rules/no-assertions-in-loop"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester({env: {es6: true}});
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var loops = [
@@ -147,22 +147,22 @@ var invalidTestTemplates = [
 
 var loopsWithAssertions = j
   .setTemplates(loops)
-  .createCombos('code', assertions)
+  .createCombos("code", assertions)
   .uniqueCombos()
-  .switchKeys('code', 'LOOP')
+  .switchKeys("code", "LOOP")
   .getCombos();
 
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], pLoops)
+  .createCombos(["code"], pLoops)
   .useCombosAsTemplates()
-  .createCombos(['code'], loopsWithAssertions)
+  .createCombos(["code"], loopsWithAssertions)
   .useCombosAsTemplates()
-  .createCombos(['code'], assertions)
+  .createCombos(["code"], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -170,13 +170,13 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code'], loopsWithAssertions)
+  .createCombos(["code"], loopsWithAssertions)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.@each.message'], assertions)
+  .createCombos(["code", "errors.@each.message"], assertions)
   .useCombosAsTemplates()
-  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

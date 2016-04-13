@@ -5,7 +5,7 @@ var rule = require("../../../lib/rules/no-expressions-in-assertions"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester({env: {es6: true}});
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var defaultMessage = "Expression should not be used here.";

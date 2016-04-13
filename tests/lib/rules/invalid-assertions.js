@@ -7,7 +7,7 @@ var n = require("../../../lib/utils/node.js");
 var m = "Invalid assertion usage.";
 var ruleTester = new RuleTester({env: {es6: true}});
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var chains = n.chaiChainable.map(function (c) {

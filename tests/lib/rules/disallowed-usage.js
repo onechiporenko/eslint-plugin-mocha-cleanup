@@ -3,7 +3,7 @@
 var rule = require("../../../lib/rules/disallowed-usage"),
   RuleTester = require("eslint").RuleTester;
 var testHelpers = require("../../../lib/utils/tests.js");
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var ruleTester = new RuleTester({env: {es6: true}});
@@ -172,30 +172,30 @@ var invalidTestTemplates = [
 
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], hooks)
+  .createCombos(["code"], hooks)
   .useCombosAsTemplates()
-  .createCombos(['code', 'options.0.{test,hook}'], disallowed)
+  .createCombos(["code", "options.0.{test,hook}"], disallowed)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(['code'], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
+  .createCombos(["code"], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
   .uniqueCombos()
   .getCombos();
 
 j.clearTemplates().clearCombos();
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code'], hooks)
+  .createCombos(["code"], hooks)
   .useCombosAsTemplates()
-  .createCombos(['code', 'options.0.{test,hook}', 'errors.@each.message'], disallowed)
+  .createCombos(["code", "options.0.{test,hook}", "errors.@each.message"], disallowed)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(['code'], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
+  .createCombos(["code"], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
   .uniqueCombos()
   .getCombos();
 

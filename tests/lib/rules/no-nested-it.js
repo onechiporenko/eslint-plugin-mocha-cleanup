@@ -5,7 +5,7 @@ var rule = require("../../../lib/rules/no-nested-it"),
 var testHelpers = require("../../../lib/utils/tests.js");
 var ruleTester = new RuleTester({env: {es6: true}});
 
-var Jsonium = require('jsonium');
+var Jsonium = require("jsonium");
 var j = new Jsonium();
 
 var validTestTemplates = [
@@ -199,9 +199,9 @@ var invalidTestTemplates = [
 
 var validTests = j
   .setTemplates(validTestTemplates)
-  .createCombos(['code'], testHelpers.mochaDatasets)
+  .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 
@@ -209,9 +209,9 @@ j.clearTemplates().clearCombos();
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
-  .createCombos(['code', 'errors.@each.message'], testHelpers.mochaDatasets)
+  .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
-  .createCombos(['code'], testHelpers.es)
+  .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .getCombos();
 

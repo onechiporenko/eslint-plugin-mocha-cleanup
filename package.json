@@ -13,13 +13,14 @@
   "author": "onechiporenko",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha -R min tests/lib/rules",
+    "test": "./node_modules/.bin/eslint . && mocha -R min tests/lib/rules",
     "test:fast": "mocha -R min tests/lib/rules --fast"
   },
   "dependencies": {
     "requireindex": "~1.1.0"
   },
   "devDependencies": {
+    "eslint": "~1.2.0",
     "jsonium": "^1.5.0",
     "mocha": ">=2.3.4"
   },
