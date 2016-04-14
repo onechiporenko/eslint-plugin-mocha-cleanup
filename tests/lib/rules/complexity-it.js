@@ -22,6 +22,17 @@ var validTestTemplates = [
     code:
       "{{SUITE}}('3421', {{ES}}" +
         "{{TEST}}('1234', {{ES}}" +
+          "var result = myObj.mySubObj.coolFunc(1, 2);" +
+          "var expected = myTestCase.expected[0];" +
+          "expect(result).to.be.equal(expected);" +
+        "});" +
+      "});",
+    options: [{maxAllowedComplexity: 6}]
+  },
+  {
+    code:
+      "{{SUITE}}('3421', {{ES}}" +
+        "{{TEST}}('1234', {{ES}}" +
           "var result = myObj.coolFunc(1, 2);" +
           "var expected = myTestCase.expected[0];" +
           "expect(result).to.be.equal(expected);" +
