@@ -33,7 +33,7 @@ Almost each rule (unless otherwise indicated) may be customized to ignore skippe
 }
 ```
 
-This rule ignores tests with `done`-callback and 0 assertions. Set option `ignoreZeroAssertionsIfDoneExists` to `false` to start handle such behavior:
+This rule ignores tests with `done`-callback and 0 assertions. Set option `ignoreZeroAssertionsIfDoneExists` to `false` to allow such behavior:
 
 ```
 "rules": {
@@ -41,11 +41,11 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `disallow-stub-spy-restore-in-it` Rule to disallow usage `stub/spy/restore` in the tests (should be in the hooks)
+* `disallow-stub-spy-restore-in-it` Rule to disallow `stub/spy/restore` in the tests (should be in the hooks)
 
-* `no-empty-title` Rule to disallow use empty title in the suites and tests
+* `no-empty-title` Rule to disallow empty title in the suites and tests
 
-* `no-same-titles` Rule to disallow usage same titles for tests inside one suite or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
+* `no-same-titles` Rule to disallow same titles for tests inside one suite or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
 
 ```
 "rules": {
@@ -53,9 +53,9 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `no-nested-it` Rule to disallow usage nested tests (not suites)
+* `no-nested-it` Rule to disallow nested tests (not suites)
 
-* `no-assertions-outside-it` Rule to disallow use assertions outside tests
+* `no-assertions-outside-it` Rule to disallow assertions outside tests
 
 * `complexity-it` Counts test-body complexity. May be customized with setting maximum complexity:
 
@@ -65,9 +65,9 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `no-eql-primitives` Rule to disallow usage `eql`, `deep.equal`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
+* `no-eql-primitives` Rule to disallow `eql`, `deep.equal`, `assert.deepEqual`, `assert.notDeepEqual` with primitives
 
-* `no-assertions-in-loop` Rule to disallow use assertions inside loops. Rule may be customized with setting additional loops like `forEach`:
+* `no-assertions-in-loop` Rule to disallow assertions inside loops. Rule may be customized with setting additional loops like `forEach`:
 
 ```
 "rules": {
@@ -75,7 +75,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `no-empty-body` Rule to disallow use empty tests, suites and hooks
+* `no-empty-body` Rule to disallow empty tests, suites and hooks
 
 * `invalid-assetions` Rule to check `expect` and `should` assertions for completeness. It detects assertions that end with "chainable" words or even raw calls for `expect` and `should`
 
