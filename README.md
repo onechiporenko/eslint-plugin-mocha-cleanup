@@ -97,6 +97,8 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option 
 
+* `no-outside-declaration` Rule to disallow variables declaration outside tests and hooks
+
 ## Usage
 
 Add to your eslint config-file:
@@ -130,6 +132,7 @@ Add to your eslint config-file:
         {
             "methods": ["setTimeout"]
         }
-    ]
+    ],
+    "mocha-cleanup/no-outside-declaration": 2
 }
 ```
