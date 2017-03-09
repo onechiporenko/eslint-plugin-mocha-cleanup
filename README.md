@@ -23,7 +23,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
+Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options.
 
 * `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
 
@@ -40,6 +40,15 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
     "mocha-cleanup/asserts-limit": [2, {"ignoreZeroAssertionsIfDoneExists": false}]
 }
 ```
+
+Allow zero assertions for specific functions with the `ignoreZeroAssertionsFor` option:
+
+```
+"rules": {
+    "mocha-cleanup/asserts-limit": [2, {"ignoreZeroAssertionsFor": ["And"]}]
+}
+```
+
 
 * `disallow-stub-spy-restore-in-it` Rule to disallow `stub/spy/restore` in the tests (should be in the hooks)
 
@@ -86,16 +95,16 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 ```
 "rules": {
     "mocha-cleanup/disallowed-usage": [
-        2, 
+        2,
         {
-            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}],
             "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ]
 }
 ```
 
-* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option 
+* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option
 
 * `no-outside-declaration` Rule to disallow variables declaration outside tests and hooks
 
@@ -121,9 +130,9 @@ Add to your eslint config-file:
     "mocha-cleanup/invalid-assertions": 2,
     "mocha-cleanup/no-expressions-in-assertions": 2,
     "mocha-cleanup/disallowed-usage": [
-        2, 
+        2,
         {
-            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}],
             "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ],
