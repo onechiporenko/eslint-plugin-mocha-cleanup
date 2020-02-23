@@ -77,7 +77,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-empty-body` Rule to disallow empty tests, suites and hooks
 
-* `invalid-assetions` Rule to check `expect` and `should` assertions for completeness. It detects assertions that end with "chainable" words or even raw calls for `expect` and `should`
+* `invalid-assertions` Rule to check `expect` and `should` assertions for completeness. It detects assertions that end with "chainable" words or even raw calls for `expect` and `should`
 
 * `no-expressions-in-assertions` Rule to detect expressions in the `expect` and `assert` assertions
 
