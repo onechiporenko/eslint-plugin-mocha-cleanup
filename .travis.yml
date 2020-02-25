@@ -1,9 +1,9 @@
 language: node_js
 
 node_js:
-  - "4.2"
-  - "0.12"
-  - "iojs"
+  - "8"
+  - "10"
+  - "12"
 
 install:
   - npm install --save-dev
