@@ -77,7 +77,7 @@ var validTestTemplates = [
       "{{SUITESKIP}}('4321', {{ES}}" +
         "{{TEST}}('1234', {{ES}} " +
           "expect(func()).to.be.been.is.that.which.and.has.have.with.at.of.same.equal(1);" +
-        "});"+
+        "});" +
       "});",
     options: [{maxAllowedComplexity: 0, skipSkipped: true}]
   }

@@ -12,12 +12,12 @@ var msg = "Empty function is not allowed here.";
 var hooks = [
   {HO: "before({{ES}}", OK: "});"},
   {HO: "beforeEach({{ES}}", OK: "});"},
-  {HO: "after({{ES}}", OK:"});"},
-  {HO: "afterEach({{ES}}", OK:"});"},
+  {HO: "after({{ES}}", OK: "});"},
+  {HO: "afterEach({{ES}}", OK: "});"},
   {HO: "before('12345', {{ES}}", OK: "});"},
   {HO: "beforeEach('12345', {{ES}}", OK: "});"},
-  {HO: "after('12345', {{ES}}", OK:"});"},
-  {HO: "afterEach('12345', {{ES}}", OK:"});"}
+  {HO: "after('12345', {{ES}}", OK: "});"},
+  {HO: "afterEach('12345', {{ES}}", OK: "});"}
 ];
 var emptyBodies = [
   {BODY: ""},
