@@ -23,11 +23,11 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. 
+Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options.
 
 * `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
 
-```
+```json
 "rules": {
     "mocha-cleanup/asserts-limit": [2, {"assertsLimit": 3}]
 }
@@ -35,7 +35,7 @@ Almost each rule (unless otherwise indicated) may be customized to ignore skippe
 
 This rule ignores tests with `done`-callback and 0 assertions. Set option `ignoreZeroAssertionsIfDoneExists` to `false` to allow such behavior:
 
-```
+```json
 "rules": {
     "mocha-cleanup/asserts-limit": [2, {"ignoreZeroAssertionsIfDoneExists": false}]
 }
@@ -47,9 +47,9 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-same-titles` Rule to disallow same titles for tests inside one suite or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
 
-```
+```json
 "rules": {
-    "mocha-cleanup/no-same-titles": [2, {scope: "file"}]
+    "mocha-cleanup/no-same-titles": [2, {"scope": "file"}]
 }
 ```
 
@@ -59,7 +59,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `complexity-it` Counts test-body complexity. May be customized with setting maximum complexity:
 
-```
+```json
 "rules": {
     "mocha-cleanup/complexity-it": [2, {"maxAllowedComplexity": 30}]
 }
@@ -69,7 +69,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-assertions-in-loop` Rule to disallow assertions inside loops. Rule may be customized with setting additional loops like `forEach`:
 
-```
+```json
 "rules": {
     "mocha-cleanup/no-assertions-in-loop": [2, {"extraMemberExpression": ["forEach"]}]
 }
@@ -83,19 +83,19 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `disallowed-usage` Rule to disallow usage some functions, methods or properties in the tests and hooks
 
-```
+```json
 "rules": {
     "mocha-cleanup/disallowed-usage": [
-        2, 
+        2,
         {
-            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}],
             "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ]
 }
 ```
 
-* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option 
+* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option
 
 * `no-outside-declaration` Rule to disallow variables declaration outside tests and hooks
 
@@ -103,7 +103,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 Add to your eslint config-file:
 
-```javascript
+```json
 "plugins": [
     "mocha-cleanup"
 ],
@@ -121,9 +121,9 @@ Add to your eslint config-file:
     "mocha-cleanup/invalid-assertions": 2,
     "mocha-cleanup/no-expressions-in-assertions": 2,
     "mocha-cleanup/disallowed-usage": [
-        2, 
+        2,
         {
-            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}], 
+            "test": [{"o": "myObject", "m": ["myNotAllowedMethod"]}],
             "hook": [{"f": "myNotAllowedFunction"}, {"o": "myObject", "p": ["myNotAllowedProperty"]}]
         }
     ],
