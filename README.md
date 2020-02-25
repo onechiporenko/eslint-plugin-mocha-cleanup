@@ -25,7 +25,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options.
 
-* `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts:
+* `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts (Defaults to 3):
 
 ```json
 "rules": {
@@ -57,7 +57,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `no-assertions-outside-it` Rule to disallow assertions outside tests
 
-* `complexity-it` Counts test-body complexity. May be customized with setting maximum complexity:
+* `complexity-it` Counts test-body complexity. May be customized with setting maximum complexity (Defaults to 40):
 
 ```json
 "rules": {
@@ -134,5 +134,27 @@ Add to your eslint config-file:
         }
     ],
     "mocha-cleanup/no-outside-declaration": 2
+}
+```
+
+Or, if you want the items exactly as above (not including `disallowed-usage` and `disallow-stub-window`), just add this:
+
+```json
+{
+  "extends": ["plugin:mocha-cleanup/recommended"]
+}
+```
+
+Or, if you want those items above, minus also the following limit-based rules:
+
+- `asserts-limit`
+- `complexity-it`
+
+...just add this:
+
+
+```json
+{
+  "extends": ["plugin:mocha-cleanup/recommended-no-limits"]
 }
 ```
