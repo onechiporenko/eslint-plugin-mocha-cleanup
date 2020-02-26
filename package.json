@@ -18,7 +18,8 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "test": "eslint . && mocha -R min tests/lib/rules",
+    "eslint": "eslint .",
+    "test": "npm run eslint && mocha -R min tests/lib/rules",
     "test:fast": "mocha -R min tests/lib/rules --fast"
   },
   "dependencies": {

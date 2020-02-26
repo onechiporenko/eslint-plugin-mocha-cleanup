@@ -23,7 +23,7 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options.
+Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. One can also set `"settings": {"mocha-cleanup": {"skipSkipped": true}}` to have skipping for all applicable rules by default.
 
 * `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts (Defaults to 3):
 
@@ -95,7 +95,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have `skipSkipped` option
+* `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have a `skipSkipped` option
 
 * `no-outside-declaration` Rule to disallow variables declaration outside tests and hooks
 
