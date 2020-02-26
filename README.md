@@ -23,9 +23,9 @@ $ npm install eslint-plugin-mocha-cleanup --save-dev
 
 ## Supported Rules
 
-Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify` etc) with adding `skipSkipped: true` to the rule-options. One can also set `"settings": {"mocha-cleanup": {"skipSkipped": true}}` to have skipping for all applicable rules by default.
+Almost each rule (unless otherwise indicated) may be customized to ignore skipped tests/suites (`describe.skip`, `it.skip`, `xspecify`, etc.) by adding `skipSkipped: true` to the rule options. One can also set `"settings": {"mocha-cleanup": {"skipSkipped": true}}` to have skipping for all applicable rules by default.
 
-* `asserts-limit` Rule to disallow use more than allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting maximum number of allowed asserts (Defaults to 3):
+* `asserts-limit` Rule to disallow use of more than an allowed number of assertions. Tests without any assertions are also disallowed. Rule may be customized with setting the maximum number of allowed asserts (Defaults to 3):
 
 ```json
 "rules": {
@@ -33,7 +33,7 @@ Almost each rule (unless otherwise indicated) may be customized to ignore skippe
 }
 ```
 
-This rule ignores tests with `done`-callback and 0 assertions. Set option `ignoreZeroAssertionsIfDoneExists` to `false` to allow such behavior:
+This rule ignores tests with a `done`-callback and 0 assertions. Set the option `ignoreZeroAssertionsIfDoneExists` to `false` to allow such behavior:
 
 ```json
 "rules": {
@@ -41,11 +41,11 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 }
 ```
 
-* `disallow-stub-spy-restore-in-it` Rule to disallow `stub/spy/restore` in the tests (should be in the hooks)
+* `disallow-stub-spy-restore-in-it` Rule to disallow `stub/spy/restore` in tests (they should instead be in hooks)
 
-* `no-empty-title` Rule to disallow empty title in the suites and tests
+* `no-empty-title` Rule to disallow empty titles in suites and tests
 
-* `no-same-titles` Rule to disallow same titles for tests inside one suite or in the whole file. It depends on `scope` value - may be `file` or `suite`. Default - `suite`
+* `no-same-titles` Rule to disallow identical titles for tests inside of one suite or within the whole file. It depends on the `scope` value - may be `file` or `suite`. Defaults to `suite`
 
 ```json
 "rules": {
@@ -79,9 +79,9 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `invalid-assertions` Rule to check `expect` and `should` assertions for completeness. It detects assertions that end with "chainable" words or even raw calls for `expect` and `should`
 
-* `no-expressions-in-assertions` Rule to detect expressions in the `expect` and `assert` assertions
+* `no-expressions-in-assertions` Rule to detect expressions in `expect` and `assert` assertions
 
-* `disallowed-usage` Rule to disallow usage some functions, methods or properties in the tests and hooks
+* `disallowed-usage` Rule to disallow usage of some functions, methods or properties in the tests and hooks
 
 ```json
 "rules": {
@@ -97,7 +97,7 @@ This rule ignores tests with `done`-callback and 0 assertions. Set option `ignor
 
 * `disallow-stub-window` Rule to disallow stubbing some `window`-methods. **IMPORTANT** This rule doesn't have a `skipSkipped` option
 
-* `no-outside-declaration` Rule to disallow variables declaration outside tests and hooks
+* `no-outside-declaration` Rule to disallow variable declarations outside tests and hooks
 
 ## Usage
 

@@ -329,6 +329,45 @@ invalidTests = j
   .getCombos();
 
 ruleTester.run("no-expressions-in-assertions", rule, {
-  valid: validTests,
-  invalid: invalidTests
+  valid: [
+    "describe('123', function () {" +
+      "test('123', function () {" +
+        "assert(`ok`);" +
+      "});" +
+    "});",
+    "describe('123', function () {" +
+      "test('123', function () {" +
+        "expect(`ok`);" +
+      "});" +
+    "});",
+    "describe('123', function () {" +
+      "test('123', function () {" +
+        "assert.equal(`ok`);" +
+      "});" +
+    "});"
+  ].concat(validTests),
+  invalid: [
+    {
+      code:
+        "describe('123', function () {" +
+          "test('123', function () {" +
+            "assert(a === undefined);" +
+          "});" +
+        "});",
+      errors: [
+        {message: "`.isUndefined` should be used.", type: "CallExpression"}
+      ]
+    },
+    {
+      code:
+        "describe('123', function () {" +
+          "test('123', function () {" +
+            "assert(a !== undefined);" +
+          "});" +
+        "});",
+      errors: [
+        {message: "`.isDefined` should be used.", type: "CallExpression"}
+      ]
+    }
+  ].concat(invalidTests)
 });

@@ -3,6 +3,10 @@
   "rules": {
     "quotes": [2, "double"]
   },
+  "overrides": [{
+    "files": "tests/lib/utils/**",
+    "env": {"mocha": true}
+  }],
   "env": {
     "browser": true,
     "node": true

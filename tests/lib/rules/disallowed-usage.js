@@ -200,6 +200,8 @@ var invalidTests = j
   .getCombos();
 
 ruleTester.run("disallowed-usage", rule, {
-  valid: validTests,
+  valid: [
+    "ifNoOptionsJustIgnore;"
+  ].concat(validTests),
   invalid: invalidTests
 });

@@ -146,6 +146,8 @@ var invalidTests = j
   .getCombos();
 
 ruleTester.run("disallow-stub-window", rule, {
-  valid: validTests,
+  valid: [
+    "stub(notWindow, 'setTimeout');"
+  ].concat(validTests),
   invalid: invalidTests
 });

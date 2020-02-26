@@ -153,6 +153,30 @@ var invalidTests = j
   .getCombos();
 
 ruleTester.run("no-eql-primitives", rule, {
-  valid: validTests,
+  valid: [
+    {
+      // This type doesn't seem to get through the `valid` examples
+      //   above, though this is based on them
+      code:
+        "describe.skip('123', function () {" +
+          "it('123', function () {" +
+            "assert.deepEqual(a, 1)" +
+          "});" +
+        "});",
+      options: [{skipSkipped: true}]
+    },
+    "it('123', function () {" +
+      "abc[''];" +
+    "});",
+    "it('123', function () {" +
+      "abc.foo[''];" +
+    "});",
+    "it('123', function () {" +
+      "assert.deepEqual(a, /foo/);" +
+    "});",
+    "it('123', function () {" +
+      "expect(a).to.be.eql(/foo/);" +
+    "});"
+  ].concat(validTests),
   invalid: invalidTests
 });
