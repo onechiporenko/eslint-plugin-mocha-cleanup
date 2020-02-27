@@ -344,7 +344,37 @@ ruleTester.run("no-expressions-in-assertions", rule, {
       "test('123', function () {" +
         "assert.equal(`ok`);" +
       "});" +
-    "});"
+    "});",
+    {
+      code: "describe('123', function () {" +
+        "test('123', function () {" +
+          "assert.equal(a + b, 5);" +
+        "});" +
+      "});",
+      options: [
+        {replacementsOnly: true}
+      ]
+    },
+    {
+      code: "describe('123', function () {" +
+        "test('123', function () {" +
+          "expect(a + b).to.equal(5);" +
+        "});" +
+      "});",
+      options: [
+        {replacementsOnly: true}
+      ]
+    },
+    {
+      code: "describe('123', function () {" +
+        "test('123', function () {" +
+          "assert(+a);" +
+        "});" +
+      "});",
+      options: [
+        {replacementsOnly: true}
+      ]
+    }
   ].concat(validTests),
   invalid: [
     {
