@@ -3,6 +3,7 @@
   "rules": {
     "no-var": [2],
     "prefer-destructuring": ["error"],
+    "object-shorthand": ["error"],
     "quotes": [2, "double"]
   },
   "overrides": [{
