@@ -140,6 +140,10 @@ var invalidTests = j
 
 
 ruleTester.run("no-empty-title", rule, {
-  valid: validTests,
+  valid: [
+    "it('123', function () {" +
+      "abc['']();" +
+    "});"
+  ].concat(validTests),
   invalid: invalidTests
 });

@@ -95,6 +95,17 @@ var validTestTemplates = [
     {
       code:
         "{{SUITESKIP}}('1234', {{ES}} " +
+          "{{TEST}}('1234', {{ES}}" +
+            "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +
+          "});" +
+         "});",
+      settings: {"mocha-cleanup": {"skipSkipped": true}},
+      options: [{assertsLimit: 1}],
+      errors: [{message: "Too many assertions (3). Maximum allowed is 2."}]
+    },
+    {
+      code:
+        "{{SUITESKIP}}('1234', {{ES}} " +
           "{{SUITE}}('4321', {{ES}} " +
             "{{TEST}}('1234', {{ES}}" +
               "{{ASSERTION}} {{ASSERTION}} {{ASSERTION}}" +

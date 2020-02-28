@@ -102,6 +102,12 @@ var invalidTests = j
   .getCombos();
 
 ruleTester.run("invalid-assertions", rule, {
-  valid: validTests,
+  valid: [
+    "describe('1234', function () {" +
+      "it('4321', function () {" +
+        "return expect(1)" +
+      "})" +
+    "})"
+  ].concat(validTests),
   invalid: invalidTests
 });

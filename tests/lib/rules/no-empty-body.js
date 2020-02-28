@@ -165,6 +165,8 @@ var invalidTests = j
 
 
 ruleTester.run("no-empty-body", rule, {
-  valid: validTests,
+  valid: [
+    "var a = function () {}"
+  ].concat(validTests),
   invalid: invalidTests
 });

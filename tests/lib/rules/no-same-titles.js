@@ -112,6 +112,12 @@ var validTestTemplates = [
         "});" +
       "});",
     options: [{scope: "file", skipSkipped: true}]
+  },
+  {
+    code:
+      "{{SUITE}}('4321', {{ES}} " +
+        "{{TEST}}(foo, {{ES}}}); " +
+      "});"
   }
 ];
 
