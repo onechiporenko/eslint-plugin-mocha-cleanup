@@ -1,24 +1,24 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-assertions-outside-it"),
-  RuleTester = require("eslint").RuleTester;
+var rule = require("../../../lib/rules/no-assertions-outside-it")
+var RuleTester = require("eslint").RuleTester
 
-var ruleTester = new RuleTester({env: {es6: true}});
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var testHelpers = require("../../../lib/utils/tests.js");
+var testHelpers = require("../../../lib/utils/tests.js")
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
 var asserts = [
-  {ASSERT: "expect(1).to.be.equal(1);", TYPE: "MemberExpression"},
-  {ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression"},
-  {ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression"},
-  {ASSERT: "assert.equal(1, 1);", TYPE: "CallExpression"},
-  {ASSERT: "assert(1, 1);", TYPE: "ExpressionStatement"},
-  {ASSERT: "sinon.assert.calledOn(sp, {});", TYPE: "MemberExpression"},
-  {ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression"}
-];
+  { ASSERT: "expect(1).to.be.equal(1);", TYPE: "MemberExpression" },
+  { ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression" },
+  { ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression" },
+  { ASSERT: "assert.equal(1, 1);", TYPE: "CallExpression" },
+  { ASSERT: "assert(1, 1);", TYPE: "ExpressionStatement" },
+  { ASSERT: "sinon.assert.calledOn(sp, {});", TYPE: "MemberExpression" },
+  { ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression" }
+]
 
 var validTestTemplates = [
   {
@@ -140,7 +140,7 @@ var validTestTemplates = [
       "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -148,23 +148,23 @@ var validTestTemplates = [
         "{{TEST}}('321', {{ES}}});" +
         "{{ASSERT}}" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}" +
         "{{ASSERT}}" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
     code:
       "{{ASSERT}}",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -172,8 +172,8 @@ var invalidTestTemplates = [
       "{{ASSERT}}" +
       "{{ASSERT}}",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -182,7 +182,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -193,7 +193,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -206,7 +206,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -216,7 +216,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -228,10 +228,10 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -241,7 +241,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -250,7 +250,7 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   },
   {
@@ -262,13 +262,13 @@ var invalidTestTemplates = [
         "{{ASSERT}}" +
       "});",
     errors: [
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"},
-      {message: "Assertion outside tests is not allowed.", type: "{{TYPE}}"}
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" },
+      { message: "Assertion outside tests is not allowed.", type: "{{TYPE}}" }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -278,9 +278,9 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -290,10 +290,9 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
-
+  .getCombos()
 
 ruleTester.run("no-assertions-outside-it", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

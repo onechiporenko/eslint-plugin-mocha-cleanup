@@ -1,12 +1,12 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-nested-it"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+var rule = require("../../../lib/rules/no-nested-it")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
 var validTestTemplates = [
   {
@@ -73,7 +73,7 @@ var validTestTemplates = [
           "{{TEST}}('4321', {{ES}}}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -82,7 +82,7 @@ var validTestTemplates = [
           "{{TEST}}('4321', {{ES}}}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -93,7 +93,7 @@ var validTestTemplates = [
           "}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -104,9 +104,9 @@ var validTestTemplates = [
           "}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
@@ -116,7 +116,7 @@ var invalidTestTemplates = [
           "{{TEST}}('4321', {{ES}}}); " +
         "});" +
       "});",
-    errors: [{message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}]
+    errors: [{ message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }]
   },
   {
     code:
@@ -128,8 +128,8 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" },
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   },
   {
@@ -140,7 +140,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   },
   {
@@ -153,7 +153,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   },
   {
@@ -164,7 +164,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   },
   {
@@ -177,8 +177,8 @@ var invalidTestTemplates = [
       "});" +
     "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" },
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   },
   {
@@ -191,11 +191,11 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"},
-      {message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression"}
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" },
+      { message: "Nested tests are not allowed. Only nested suites are allowed.", type: "CallExpression" }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -203,9 +203,9 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -213,9 +213,9 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-nested-it", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

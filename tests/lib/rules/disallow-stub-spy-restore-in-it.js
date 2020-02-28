@@ -1,12 +1,11 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
-var Jsonium = require("jsonium");
-var j = new Jsonium();
-
+var rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var ruleTester = new RuleTester({ env: { es6: true } })
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
 var validTestTemplates = [
   {
@@ -182,7 +181,7 @@ var validTestTemplates = [
           "sinon.restore{{MOD}}();" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -191,7 +190,7 @@ var validTestTemplates = [
           "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -200,7 +199,7 @@ var validTestTemplates = [
           "sinon.stub{{MOD}}();" +
         "});" +
      "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -209,7 +208,7 @@ var validTestTemplates = [
           "sinon['stub']{{MOD}}();" +
         "});" +
      "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -218,7 +217,7 @@ var validTestTemplates = [
           "sinon.spy{{MOD}}();" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -227,7 +226,7 @@ var validTestTemplates = [
           "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -238,7 +237,7 @@ var validTestTemplates = [
           "});" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -249,23 +248,23 @@ var validTestTemplates = [
           "});" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
       "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
       "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
@@ -273,35 +272,35 @@ var invalidTestTemplates = [
       "{{TEST}}('12345', {{ES}}" +
         "sinon.restore{{MOD}}();" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon['restore']{{MOD}}();" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon.spy{{MOD}}();" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -312,7 +311,7 @@ var invalidTestTemplates = [
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -323,21 +322,21 @@ var invalidTestTemplates = [
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -346,7 +345,7 @@ var invalidTestTemplates = [
           "sinon.restore{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -355,7 +354,7 @@ var invalidTestTemplates = [
           "sinon['restore']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`restore` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -364,7 +363,7 @@ var invalidTestTemplates = [
           "sinon.stub{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -373,7 +372,7 @@ var invalidTestTemplates = [
           "sinon['stub']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -382,7 +381,7 @@ var invalidTestTemplates = [
           "sinon.spy{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -391,7 +390,7 @@ var invalidTestTemplates = [
           "sinon['spy']{{MOD}}();" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -402,7 +401,7 @@ var invalidTestTemplates = [
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
@@ -413,23 +412,23 @@ var invalidTestTemplates = [
           "});" +
         "});" +
       "});",
-    errors: [{message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression"}]
+    errors: [{ message: "`spy` is not allowed to use inside `{{TEST}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon.stub{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression" }]
   },
   {
     code:
       "{{TESTSKIP}}('12345', {{ES}}" +
         "sinon['stub']{{MOD}}().withArgs().returns();" +
       "});",
-    errors: [{message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression"}]
+    errors: [{ message: "`stub` is not allowed to use inside `{{TESTSKIP}}`.", type: "CallExpression" }]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -438,11 +437,11 @@ var validTests = j
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .useCombosAsTemplates()
-  .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])
+  .createCombos(["code"], [{ MOD: ".apply" }, { MOD: ".call" }, { MOD: "" }])
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
@@ -450,11 +449,11 @@ var invalidTests = j
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .useCombosAsTemplates()
-  .createCombos(["code"], [{MOD: ".apply"}, {MOD: ".call"}, {MOD: ""}])
+  .createCombos(["code"], [{ MOD: ".apply" }, { MOD: ".call" }, { MOD: "" }])
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("disallow-stub-spy-restore-in-it", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

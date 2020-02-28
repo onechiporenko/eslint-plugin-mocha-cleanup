@@ -1,21 +1,21 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-outside-declaration"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+var rule = require("../../../lib/rules/no-outside-declaration")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
-var m = "Variable declaration is not allowed outside tests and hooks.";
+var m = "Variable declaration is not allowed outside tests and hooks."
 
 var declarations = [
-  {DECLARATION: "var a = require('abc');"},
-  {DECLARATION: "let b = a + c;"},
-  {DECLARATION: "const c = 1;"},
-  {DECLARATION: "const {e, f, g} = d;"}
-];
+  { DECLARATION: "var a = require('abc');" },
+  { DECLARATION: "let b = a + c;" },
+  { DECLARATION: "const c = 1;" },
+  { DECLARATION: "const {e, f, g} = d;" }
+]
 
 var validTestTemplates = [
   {
@@ -48,7 +48,7 @@ var validTestTemplates = [
         "{{DECLARATION}}" +
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -56,7 +56,7 @@ var validTestTemplates = [
         "{{TEST}}('4321', {{ES}}}); " +
         "{{DECLARATION}}" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -65,9 +65,9 @@ var validTestTemplates = [
         "{{DECLARATION}}" +
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
@@ -77,7 +77,7 @@ var invalidTestTemplates = [
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
     errors: [
-      {message: m, type: "VariableDeclaration"}
+      { message: m, type: "VariableDeclaration" }
     ]
   },
   {
@@ -87,7 +87,7 @@ var invalidTestTemplates = [
         "{{DECLARATION}}" +
       "});",
     errors: [
-      {message: m, type: "VariableDeclaration"}
+      { message: m, type: "VariableDeclaration" }
     ]
   },
   {
@@ -98,10 +98,10 @@ var invalidTestTemplates = [
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
     errors: [
-      {message: m, type: "VariableDeclaration"}
+      { message: m, type: "VariableDeclaration" }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -113,9 +113,9 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], declarations)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -127,9 +127,9 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], declarations)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-outside-declaration", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

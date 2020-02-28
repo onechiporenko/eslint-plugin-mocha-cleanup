@@ -1,5 +1,5 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "standard",
   "rules": {
     "quotes": [2, "double"]
   },
@@ -9,6 +9,7 @@
   }],
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es6": true
   }
 }

@@ -1,34 +1,34 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/disallowed-usage"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var rule = require("../../../lib/rules/disallowed-usage")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
-var ruleTester = new RuleTester({env: {es6: true}});
+var ruleTester = new RuleTester({ env: { es6: true } })
 
 var disallowed = [
-  {CODE: "obj.subObj.prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{o: "obj.subObj", p: ["prop"]}], "options.0.hook": [{o: "obj.subObj", p: ["prop"]}]},
-  {CODE: "obj['subObj'].prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{o: "obj.subObj", p: ["prop"]}], "options.0.hook": [{o: "obj.subObj", p: ["prop"]}]},
-  {CODE: "obj.subObj['prop'] = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{o: "obj.subObj", p: ["prop"]}], "options.0.hook": [{o: "obj.subObj", p: ["prop"]}]},
-  {CODE: "obj.prop = '1';", MESSAGE: "obj.prop", "options.0.test": [{o: "obj", p: ["prop"]}], "options.0.hook": [{o: "obj", p: ["prop"]}]},
-  {CODE: "obj['prop'] = '1';", MESSAGE: "obj.prop", "options.0.test": [{o: "obj", p: ["prop"]}], "options.0.hook": [{o: "obj", p: ["prop"]}]},
-  {CODE: "expect(obj.property).to.be.equal('1');", MESSAGE: "obj.property", "options.0.test": [{o: "obj", p: ["property"]}], "options.0.hook": [{o: "obj", p: ["property"]}]},
-  {CODE: "expect(obj['property']).to.be.equal('1');", MESSAGE: "obj.property", "options.0.test": [{o: "obj", p: ["property"]}], "options.0.hook": [{o: "obj", p: ["property"]}]},
-  {CODE: "obj.subObj.method{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{o: "obj.subObj", m: ["method"]}], "options.0.hook": [{o: "obj.subObj", m: ["method"]}]},
-  {CODE: "obj['subObj'].method{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{o: "obj.subObj", m: ["method"]}], "options.0.hook": [{o: "obj.subObj", m: ["method"]}]},
-  {CODE: "obj.subObj['method']{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{o: "obj.subObj", m: ["method"]}], "options.0.hook": [{o: "obj.subObj", m: ["method"]}]},
-  {CODE: "obj.method{{MOD}}('1');", MESSAGE: "obj.method", "options.0.test": [{o: "obj", m: ["method"]}], "options.0.hook": [{o: "obj", m: ["method"]}]},
-  {CODE: "method{{MOD}}();", MESSAGE: "method", "options.0.test": [{f: "method"}], "options.0.hook": [{f: "method"}]}
-];
+  { CODE: "obj.subObj.prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
+  { CODE: "obj['subObj'].prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
+  { CODE: "obj.subObj['prop'] = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
+  { CODE: "obj.prop = '1';", MESSAGE: "obj.prop", "options.0.test": [{ o: "obj", p: ["prop"] }], "options.0.hook": [{ o: "obj", p: ["prop"] }] },
+  { CODE: "obj['prop'] = '1';", MESSAGE: "obj.prop", "options.0.test": [{ o: "obj", p: ["prop"] }], "options.0.hook": [{ o: "obj", p: ["prop"] }] },
+  { CODE: "expect(obj.property).to.be.equal('1');", MESSAGE: "obj.property", "options.0.test": [{ o: "obj", p: ["property"] }], "options.0.hook": [{ o: "obj", p: ["property"] }] },
+  { CODE: "expect(obj['property']).to.be.equal('1');", MESSAGE: "obj.property", "options.0.test": [{ o: "obj", p: ["property"] }], "options.0.hook": [{ o: "obj", p: ["property"] }] },
+  { CODE: "obj.subObj.method{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{ o: "obj.subObj", m: ["method"] }], "options.0.hook": [{ o: "obj.subObj", m: ["method"] }] },
+  { CODE: "obj['subObj'].method{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{ o: "obj.subObj", m: ["method"] }], "options.0.hook": [{ o: "obj.subObj", m: ["method"] }] },
+  { CODE: "obj.subObj['method']{{MOD}}(1, 2);", MESSAGE: "obj.subObj.method", "options.0.test": [{ o: "obj.subObj", m: ["method"] }], "options.0.hook": [{ o: "obj.subObj", m: ["method"] }] },
+  { CODE: "obj.method{{MOD}}('1');", MESSAGE: "obj.method", "options.0.test": [{ o: "obj", m: ["method"] }], "options.0.hook": [{ o: "obj", m: ["method"] }] },
+  { CODE: "method{{MOD}}();", MESSAGE: "method", "options.0.test": [{ f: "method" }], "options.0.hook": [{ f: "method" }] }
+]
 
 var hooks = [
-  {HOOK: "before"},
-  {HOOK: "beforeEach"},
-  {HOOK: "after"},
-  {HOOK: "afterEach"}
-];
+  { HOOK: "before" },
+  { HOOK: "beforeEach" },
+  { HOOK: "after" },
+  { HOOK: "afterEach" }
+]
 
 var validTestTemplates = [
   {
@@ -73,7 +73,7 @@ var validTestTemplates = [
       }
     ]
   }
-];
+]
 var invalidTestTemplates = [
   {
     code:
@@ -88,7 +88,7 @@ var invalidTestTemplates = [
       }
     ],
     errors: [
-      {message: "`{{MESSAGE}}` is not allowed here."}
+      { message: "`{{MESSAGE}}` is not allowed here." }
     ]
   },
   {
@@ -104,7 +104,7 @@ var invalidTestTemplates = [
       }
     ],
     errors: [
-      {message: "`{{MESSAGE}}` is not allowed here."}
+      { message: "`{{MESSAGE}}` is not allowed here." }
     ]
   },
   {
@@ -122,9 +122,9 @@ var invalidTestTemplates = [
       }
     ],
     errors: [
-      {message: "`{{MESSAGE}}` is not allowed here."},
-      {message: "`{{MESSAGE}}` is not allowed here."},
-      {message: "`{{MESSAGE}}` is not allowed here."}
+      { message: "`{{MESSAGE}}` is not allowed here." },
+      { message: "`{{MESSAGE}}` is not allowed here." },
+      { message: "`{{MESSAGE}}` is not allowed here." }
     ]
   },
   {
@@ -142,9 +142,9 @@ var invalidTestTemplates = [
       }
     ],
     errors: [
-      {message: "`{{MESSAGE}}` is not allowed here."},
-      {message: "`{{MESSAGE}}` is not allowed here."},
-      {message: "`{{MESSAGE}}` is not allowed here."}
+      { message: "`{{MESSAGE}}` is not allowed here." },
+      { message: "`{{MESSAGE}}` is not allowed here." },
+      { message: "`{{MESSAGE}}` is not allowed here." }
     ]
   },
   {
@@ -164,11 +164,11 @@ var invalidTestTemplates = [
       }
     ],
     errors: [
-      {message: "`{{MESSAGE}}` is not allowed here."},
-      {message: "`{{MESSAGE}}` is not allowed here."}
+      { message: "`{{MESSAGE}}` is not allowed here." },
+      { message: "`{{MESSAGE}}` is not allowed here." }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -180,11 +180,11 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(["code"], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
+  .createCombos(["code"], [{ MOD: ".call" }, { MOD: ".apply" }, { MOD: "" }])
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], hooks)
@@ -195,13 +195,13 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .useCombosAsTemplates()
-  .createCombos(["code"], [{MOD: ".call"}, {MOD: ".apply"}, {MOD: ""}])
+  .createCombos(["code"], [{ MOD: ".call" }, { MOD: ".apply" }, { MOD: "" }])
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("disallowed-usage", rule, {
   valid: [
     "ifNoOptionsJustIgnore;"
   ].concat(validTests),
   invalid: invalidTests
-});
+})

@@ -1,55 +1,55 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-eql-primitives"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+var rule = require("../../../lib/rules/no-eql-primitives")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
 var invalidVals = [
-  {VAL: "1"},
-  {VAL: "true"},
-  {VAL: "''"},
-  {VAL: "null"}
-];
+  { VAL: "1" },
+  { VAL: "true" },
+  { VAL: "''" },
+  { VAL: "null" }
+]
 
 var validVals = [
-  {VAL: "{}"},
-  {VAL: "b"}
-];
+  { VAL: "{}" },
+  { VAL: "b" }
+]
 
 var invalidAssertions = [
-  {INVALID_ASSERTION: "assert.deepEqual(a, {{VAL}});", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert['deepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.deepEqual"},
-  {INVALID_ASSERTION: "assert.notDeepEqual(a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "assert['notDeepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual"},
-  {INVALID_ASSERTION: "expect(a).to.be.eql({{VAL}});", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "expect(a).to.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a.should.be.eql({{VAL}});", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a['should'].be.eql({{VAL}});", IN_MESSAGE: ".eql"},
-  {INVALID_ASSERTION: "a.should.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"},
-  {INVALID_ASSERTION: "a['should'].be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal"}
-];
+  { INVALID_ASSERTION: "assert.deepEqual(a, {{VAL}});", IN_MESSAGE: "assert.deepEqual" },
+  { INVALID_ASSERTION: "assert['deepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.deepEqual" },
+  { INVALID_ASSERTION: "assert.notDeepEqual(a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual" },
+  { INVALID_ASSERTION: "assert['notDeepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual" },
+  { INVALID_ASSERTION: "expect(a).to.be.eql({{VAL}});", IN_MESSAGE: ".eql" },
+  { INVALID_ASSERTION: "expect(a).to.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal" },
+  { INVALID_ASSERTION: "a.should.be.eql({{VAL}});", IN_MESSAGE: ".eql" },
+  { INVALID_ASSERTION: "a['should'].be.eql({{VAL}});", IN_MESSAGE: ".eql" },
+  { INVALID_ASSERTION: "a.should.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal" },
+  { INVALID_ASSERTION: "a['should'].be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal" }
+]
 var validAssertions = [
-  {ASSERTION: "assert.deepEqual(a, {{VAL}});"},
-  {ASSERTION: "chai.assert.deepEqual(a, {{VAL}});"},
-  {ASSERTION: "chai['assert'].deepEqual(a, {{VAL}});"},
-  {ASSERTION: "assert['deepEqual'](a, {{VAL}});"},
-  {ASSERTION: "chai.assert['deepEqual'](a, {{VAL}});"},
-  {ASSERTION: "assert.notDeepEqual(a, {{VAL}});"},
-  {ASSERTION: "chai.assert.notDeepEqual(a, {{VAL}});"},
-  {ASSERTION: "chai['assert'].notDeepEqual(a, {{VAL}});"},
-  {ASSERTION: "assert['notDeepEqual'](a, {{VAL}});"},
-  {ASSERTION: "expect(a).to.be.eql({{VAL}});"},
-  {ASSERTION: "chai.expect(a).to.be.eql({{VAL}});"},
-  {ASSERTION: "chai['expect'](a).to.be.eql({{VAL}});"},
-  {ASSERTION: "a.should.be.eql({{VAL}});"},
-  {ASSERTION: "a['should'].be.eql({{VAL}});"},
-  {ASSERTION: "a.should.be.deep.equal({{VAL}});"},
-  {ASSERTION: "a['should'].be.deep.equal({{VAL}});"}
-];
+  { ASSERTION: "assert.deepEqual(a, {{VAL}});" },
+  { ASSERTION: "chai.assert.deepEqual(a, {{VAL}});" },
+  { ASSERTION: "chai['assert'].deepEqual(a, {{VAL}});" },
+  { ASSERTION: "assert['deepEqual'](a, {{VAL}});" },
+  { ASSERTION: "chai.assert['deepEqual'](a, {{VAL}});" },
+  { ASSERTION: "assert.notDeepEqual(a, {{VAL}});" },
+  { ASSERTION: "chai.assert.notDeepEqual(a, {{VAL}});" },
+  { ASSERTION: "chai['assert'].notDeepEqual(a, {{VAL}});" },
+  { ASSERTION: "assert['notDeepEqual'](a, {{VAL}});" },
+  { ASSERTION: "expect(a).to.be.eql({{VAL}});" },
+  { ASSERTION: "chai.expect(a).to.be.eql({{VAL}});" },
+  { ASSERTION: "chai['expect'](a).to.be.eql({{VAL}});" },
+  { ASSERTION: "a.should.be.eql({{VAL}});" },
+  { ASSERTION: "a['should'].be.eql({{VAL}});" },
+  { ASSERTION: "a.should.be.deep.equal({{VAL}});" },
+  { ASSERTION: "a['should'].be.deep.equal({{VAL}});" }
+]
 
 var validTestTemplates = [
   {
@@ -65,7 +65,7 @@ var validTestTemplates = [
           "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -74,9 +74,9 @@ var validTestTemplates = [
           "{{INVALID_ASSERTION}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
@@ -85,7 +85,7 @@ var invalidTestTemplates = [
         "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
-      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
+      { message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression" }
     ]
   },
   {
@@ -94,7 +94,7 @@ var invalidTestTemplates = [
         "{{INVALID_ASSERTION}}" +
       "});",
     errors: [
-      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
+      { message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression" }
     ]
   },
   {
@@ -105,30 +105,30 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression"}
+      { message: "`{{IN_MESSAGE}}` should not be used with primitives.", type: "MemberExpression" }
     ]
   }
-];
+]
 
 validAssertions = j
   .setTemplates(validAssertions)
   .createCombos(["ASSERTION"], validVals)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 j
   .clearTemplates()
-  .clearCombos();
+  .clearCombos()
 
 invalidAssertions = j
   .setTemplates(invalidAssertions)
   .createCombos(["INVALID_ASSERTION"], invalidVals)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 j
   .clearTemplates()
-  .clearCombos();
+  .clearCombos()
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -138,9 +138,9 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -150,7 +150,7 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-eql-primitives", rule, {
   valid: [
@@ -163,7 +163,7 @@ ruleTester.run("no-eql-primitives", rule, {
             "assert.deepEqual(a, 1)" +
           "});" +
         "});",
-      options: [{skipSkipped: true}]
+      options: [{ skipSkipped: true }]
     },
     "it('123', function () {" +
       "abc[''];" +
@@ -179,4 +179,4 @@ ruleTester.run("no-eql-primitives", rule, {
     "});"
   ].concat(validTests),
   invalid: invalidTests
-});
+})

@@ -1,34 +1,34 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/invalid-assertions"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var n = require("../../../lib/utils/node.js");
-var m = "Invalid assertion usage.";
-var ruleTester = new RuleTester({env: {es6: true}});
+var rule = require("../../../lib/rules/invalid-assertions")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var n = require("../../../lib/utils/node.js")
+var m = "Invalid assertion usage."
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
 var chains = n.chaiChainable.map(function (c) {
-  return {CHAIN: "." + c};
-});
+  return { CHAIN: "." + c }
+})
 
-chains.push({CHAIN: ""});
+chains.push({ CHAIN: "" })
 
 var assertions = [
-  {ASSERTION: "expect(1){{CHAIN}};", TYPE: "CallExpression"},
-  {ASSERTION: "chai.expect(1){{CHAIN}};", TYPE: "CallExpression"},
-  {ASSERTION: "chai['expect'](1){{CHAIN}};", TYPE: "CallExpression"},
-  {ASSERTION: "'1'.should{{CHAIN}};", TYPE: "MemberExpression"},
-  {ASSERTION: "'1'['should']{{CHAIN}};", TYPE: "MemberExpression"}
-];
+  { ASSERTION: "expect(1){{CHAIN}};", TYPE: "CallExpression" },
+  { ASSERTION: "chai.expect(1){{CHAIN}};", TYPE: "CallExpression" },
+  { ASSERTION: "chai['expect'](1){{CHAIN}};", TYPE: "CallExpression" },
+  { ASSERTION: "'1'.should{{CHAIN}};", TYPE: "MemberExpression" },
+  { ASSERTION: "'1'['should']{{CHAIN}};", TYPE: "MemberExpression" }
+]
 
 assertions = j
   .setTemplates(assertions)
   .createCombos("ASSERTION", chains)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 var validTestTemplates = [
   {
@@ -51,7 +51,7 @@ var validTestTemplates = [
         "})" +
       "})",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   },
   {
@@ -62,10 +62,10 @@ var validTestTemplates = [
         "})" +
       "})",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
@@ -76,10 +76,10 @@ var invalidTestTemplates = [
         "})" +
       "})",
     errors: [
-      {message: m, type: "{{TYPE}}"}
+      { message: m, type: "{{TYPE}}" }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -89,7 +89,7 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -99,7 +99,7 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("invalid-assertions", rule, {
   valid: [
@@ -110,4 +110,4 @@ ruleTester.run("invalid-assertions", rule, {
     "})"
   ].concat(validTests),
   invalid: invalidTests
-});
+})

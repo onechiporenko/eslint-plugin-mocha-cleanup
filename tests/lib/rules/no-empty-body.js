@@ -1,35 +1,35 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-empty-body"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+var rule = require("../../../lib/rules/no-empty-body")
+var RuleTester = require("eslint").RuleTester
+var testHelpers = require("../../../lib/utils/tests.js")
+var ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+var Jsonium = require("jsonium")
+var j = new Jsonium()
 
-var msg = "Empty function is not allowed here.";
+var msg = "Empty function is not allowed here."
 var hooks = [
-  {HO: "before({{ES}}", OK: "});"},
-  {HO: "beforeEach({{ES}}", OK: "});"},
-  {HO: "after({{ES}}", OK: "});"},
-  {HO: "afterEach({{ES}}", OK: "});"},
-  {HO: "before('12345', {{ES}}", OK: "});"},
-  {HO: "beforeEach('12345', {{ES}}", OK: "});"},
-  {HO: "after('12345', {{ES}}", OK: "});"},
-  {HO: "afterEach('12345', {{ES}}", OK: "});"}
-];
+  { HO: "before({{ES}}", OK: "});" },
+  { HO: "beforeEach({{ES}}", OK: "});" },
+  { HO: "after({{ES}}", OK: "});" },
+  { HO: "afterEach({{ES}}", OK: "});" },
+  { HO: "before('12345', {{ES}}", OK: "});" },
+  { HO: "beforeEach('12345', {{ES}}", OK: "});" },
+  { HO: "after('12345', {{ES}}", OK: "});" },
+  { HO: "afterEach('12345', {{ES}}", OK: "});" }
+]
 var emptyBodies = [
-  {BODY: ""},
-  {BODY: "/* some comment */"},
-  {BODY: "// some comment\n"}
-];
+  { BODY: "" },
+  { BODY: "/* some comment */" },
+  { BODY: "// some comment\n" }
+]
 
 var validTestTemplates = [
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}{{BODY}}});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -38,7 +38,7 @@ var validTestTemplates = [
           "{{BODY}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -47,12 +47,12 @@ var validTestTemplates = [
           "{{BODY}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}{{HO}} {{BODY}} {{OK}}});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -61,23 +61,23 @@ var validTestTemplates = [
           "{{HO}} {{BODY}} {{OK}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   }
-];
+]
 
 var invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}{{BODY}}});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   },
   {
     code:
       "{{SUITE}}('1234', {{ES}}{{HO}} {{BODY}} {{OK}}});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   },
   {
@@ -88,7 +88,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   },
   {
@@ -102,15 +102,15 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: msg},
-      {message: msg}
+      { message: msg },
+      { message: msg }
     ]
   },
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}{{BODY}}});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   },
   {
@@ -121,7 +121,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   },
   {
@@ -132,10 +132,10 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: msg}
+      { message: msg }
     ]
   }
-];
+]
 
 var validTests = j
   .setTemplates(validTestTemplates)
@@ -147,9 +147,9 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
 var invalidTests = j
   .setTemplates(invalidTestTemplates)
@@ -161,12 +161,11 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
-
+  .getCombos()
 
 ruleTester.run("no-empty-body", rule, {
   valid: [
     "var a = function () {}"
   ].concat(validTests),
   invalid: invalidTests
-});
+})
