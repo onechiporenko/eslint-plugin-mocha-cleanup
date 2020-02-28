@@ -1,15 +1,15 @@
 "use strict"
 
-var rule = require("../../../lib/rules/asserts-limit")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
+const rule = require("../../../lib/rules/asserts-limit")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
 
-var ruleTester = new RuleTester({ env: { es6: true } })
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var assertions = [
+const assertions = [
   { ASSERTION: "chai.expect(1).to.be.equal(1);" },
   { ASSERTION: "chai['expect'](1).to.be.equal(1);" },
   { ASSERTION: "expect(1).to.be.equal(1);" },
@@ -26,7 +26,7 @@ var assertions = [
   { ASSERTION: "sinon['assert'].calledOn(sp, {});" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
         "{{TEST}}('1234', {{ES}}" +
@@ -164,7 +164,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
         "{{TEST}}('1234', {{ES}}" +
@@ -194,7 +194,7 @@ var invalidTestTemplates = [
     errors: [{ message: "Too many assertions (3). Maximum allowed is 1.", type: "CallExpression" }]
   }
 ]
-var invalidTestTemplatesWithoutAssertions = [
+const invalidTestTemplatesWithoutAssertions = [
   {
     code:
         "{{TEST}}('1234', {{ES}} });",
@@ -262,7 +262,7 @@ function filter (combo) {
   return !combo.code.match(/\{\s*\}/)
 }
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], assertions)
   .useCombosAsTemplates()
@@ -275,7 +275,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+let invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], assertions)
   .useCombosAsTemplates()

@@ -1,17 +1,17 @@
 "use strict"
 
-var rule = require("../../../lib/rules/disallow-stub-window")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const rule = require("../../../lib/rules/disallow-stub-window")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var ruleTester = new RuleTester({ env: { es6: true } })
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var m1 = "`sinon.stub` should not be used for `window.{{METHOD1}}`"
-var m2 = "`sinon.stub` should not be used for `window.{{METHOD2}}`"
+const m1 = "`sinon.stub` should not be used for `window.{{METHOD1}}`"
+const m2 = "`sinon.stub` should not be used for `window.{{METHOD2}}`"
 
-var templates = [
+const templates = [
   {
     code:
       "{{CODE}}",
@@ -85,30 +85,30 @@ var templates = [
   }
 ]
 
-var stubs = [
+const stubs = [
   { STUB: "sinon.stub" },
   { STUB: "sinon['stub']" },
   { STUB: "stub" }
 ]
 
-var codes = [
+const codes = [
   { CODE: "{{STUB}}(window, '{{METHOD1}}'); {{STUB}}(window, '{{METHOD2}}');" },
   { CODE: "var stub = {{STUB}}(window, '{{METHOD1}}'); {{STUB}}(window, '{{METHOD2}}', function () {});" }
 ]
 
-var methods = [
+const methods = [
   { METHOD1: "setTimeout", METHOD2: "clearTimeout" },
   { METHOD1: "setInterval", METHOD2: "ClearInterval" }
 ]
 
-var hooks = [
+const hooks = [
   { HOOK: "before" },
   { HOOK: "beforeEach" },
   { HOOK: "after" },
   { HOOK: "afterEach" }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(templates)
   .createCombos(["code"], hooks)
   .useCombosAsTemplates()
@@ -128,7 +128,7 @@ var validTests = j
     return c
   })
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(templates)
   .createCombos(["code"], hooks)
   .useCombosAsTemplates()

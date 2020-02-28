@@ -1,16 +1,16 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-same-titles")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-same-titles")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var m = "Some tests have same titles."
+const m = "Some tests have same titles."
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{TEST}}('123', {{ES}}}); " +
@@ -121,7 +121,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('4321', {{ES}} " +
@@ -189,7 +189,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -199,7 +199,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()

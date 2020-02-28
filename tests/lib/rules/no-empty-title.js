@@ -1,20 +1,20 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-empty-title")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-empty-title")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var titles = [
+const titles = [
   { TITLE: "''" },
   { TITLE: "'    '" },
   { TITLE: "'\t'" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{TEST}}('some title', {{ES}}});"
@@ -82,7 +82,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{TEST}}({{TITLE}}, {{ES}}});",
@@ -116,7 +116,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], titles)
   .useCombosAsTemplates()
@@ -128,7 +128,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], titles)
   .useCombosAsTemplates()

@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "rules": {
+    "no-var": [2],
     "quotes": [2, "double"]
   },
   "overrides": [{

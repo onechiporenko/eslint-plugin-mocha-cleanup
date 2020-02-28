@@ -4,16 +4,16 @@
 
 "use strict"
 
-var assert = require("assert")
-var obj = require("../../../lib/utils/obj.js")
+const assert = require("assert")
+const obj = require("../../../lib/utils/obj.js")
 
 describe("obj", function () {
   it("Returns false for absent child path", function () {
-    var result = obj.has({ a: { b: { c: 1 } } }, "a.b.d")
+    const result = obj.has({ a: { b: { c: 1 } } }, "a.b.d")
     assert(!result)
   })
   it("Returns true for present child path", function () {
-    var result = obj.has({ a: { b: { c: 1 } } }, "a.b.c")
+    const result = obj.has({ a: { b: { c: 1 } } }, "a.b.c")
     assert(result)
   })
 })

@@ -1,16 +1,16 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-assertions-outside-it")
-var RuleTester = require("eslint").RuleTester
+const rule = require("../../../lib/rules/no-assertions-outside-it")
+const RuleTester = require("eslint").RuleTester
 
-var ruleTester = new RuleTester({ env: { es6: true } })
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var testHelpers = require("../../../lib/utils/tests.js")
+const testHelpers = require("../../../lib/utils/tests.js")
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var asserts = [
+const asserts = [
   { ASSERT: "expect(1).to.be.equal(1);", TYPE: "MemberExpression" },
   { ASSERT: "'1'.should.equal('1');", TYPE: "MemberExpression" },
   { ASSERT: "'1'['should'].equal('1');", TYPE: "MemberExpression" },
@@ -20,7 +20,7 @@ var asserts = [
   { ASSERT: "sinon['assert'].calledOn(sp, {});", TYPE: "MemberExpression" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{TEST}}('1234', {{ES}}" +
@@ -159,7 +159,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{ASSERT}}",
@@ -270,7 +270,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], asserts)
   .useCombosAsTemplates()
@@ -282,7 +282,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.type"], asserts)
   .useCombosAsTemplates()

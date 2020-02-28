@@ -1,18 +1,18 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-expressions-in-assertions")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-expressions-in-assertions")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var defaultMessage = "Expression should not be used here."
-var detailedMessage = "`{{USE}}` should be used."
-var emptyArgMessage = "Empty assertion is not allowed."
+const defaultMessage = "Expression should not be used here."
+const detailedMessage = "`{{USE}}` should be used."
+const emptyArgMessage = "Empty assertion is not allowed."
 
-var binariesForExpect = [
+const binariesForExpect = [
   { BINARY: ">", USE: ".to.be.above" },
   { BINARY: "<", USE: ".to.be.below" },
   { BINARY: ">=", USE: ".to.be.at.least" },
@@ -24,7 +24,7 @@ var binariesForExpect = [
   { BINARY: "instanceof", USE: ".to.be.instanceof" }
 ]
 
-var binariesForAssert = [
+const binariesForAssert = [
   { BINARY: ">", USE: ".isAbove" },
   { BINARY: "<", USE: ".isBelow" },
   { BINARY: ">=", USE: ".isAtLeast" },
@@ -35,7 +35,7 @@ var binariesForAssert = [
   { BINARY: "!==", USE: ".notStrictEqual" }
 ]
 
-var logical = [
+const logical = [
   { LOGICAL: "+" },
   { LOGICAL: "-" },
   { LOGICAL: "/" },
@@ -46,53 +46,53 @@ var logical = [
   { LOGICAL: "||" }
 ]
 
-var updates = [
+const updates = [
   { UPDATE: "++" },
   { UPDATE: "--" }
 ]
 
-var unaries = [
+const unaries = [
   { UNARY: "!" },
   { UNARY: "~" },
   { UNARY: "+" },
   { UNARY: "-" }
 ]
 
-var primitiveEqualitiesForExpect = [
+const primitiveEqualitiesForExpect = [
   { EQL_BINARY: "==", NOT: "" },
   { EQL_BINARY: "===", NOT: "" },
   { EQL_BINARY: "!=", NOT: "not." },
   { EQL_BINARY: "!==", NOT: "not." }
 ]
 
-var primitiveEqualitiesForAssert = [
+const primitiveEqualitiesForAssert = [
   { EQL_BINARY: "==", NOT: "" },
   { EQL_BINARY: "===", NOT: "" },
   { EQL_BINARY: "!=", NOT: "Not" },
   { EQL_BINARY: "!==", NOT: "Not" }
 ]
 
-var primitiveValuesForExpect = [
+const primitiveValuesForExpect = [
   { VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.null" },
   { VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.true" },
   { VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.false" },
   { VAL: "undefined", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.undefined" }
 ]
 
-var primitiveValuesForAssert = [
+const primitiveValuesForAssert = [
   { VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}Null" },
   { VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}True" },
   { VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}False" }
 ]
 
-var primitiveAssertions = [
+const primitiveAssertions = [
   { ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage },
   { ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage },
   { ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage },
   { ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage }
 ]
 
-var primitiveAssertionsForExpect = j
+const primitiveAssertionsForExpect = j
   .setTemplates(primitiveAssertions)
   .createCombos(["ASSERTION", "MESSAGE"], primitiveValuesForExpect)
   .useCombosAsTemplates()
@@ -100,7 +100,7 @@ var primitiveAssertionsForExpect = j
   .uniqueCombos()
   .getCombos()
 
-var primitiveAssertionsForAssert = j
+const primitiveAssertionsForAssert = j
   .setTemplates(primitiveAssertions)
   .createCombos(["ASSERTION", "MESSAGE"], primitiveValuesForAssert)
   .useCombosAsTemplates()
@@ -108,7 +108,7 @@ var primitiveAssertionsForAssert = j
   .uniqueCombos()
   .getCombos()
 
-var assertions = [
+const assertions = [
   { ASSERTION: "a {{BINARY}} b", MESSAGE: detailedMessage },
   { ASSERTION: "a {{LOGICAL}} b", MESSAGE: defaultMessage },
   { ASSERTION: "{{UPDATE}} b", MESSAGE: defaultMessage },
@@ -117,7 +117,7 @@ var assertions = [
   { ASSERTION: "", MESSAGE: emptyArgMessage }
 ]
 
-var assertionsForExpect = j
+const assertionsForExpect = j
   .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForExpect)
   .uniqueCombos()
@@ -133,7 +133,7 @@ var assertionsForExpect = j
   .concatCombos(primitiveAssertionsForExpect)
   .getCombos()
 
-var assertionsForAssert = j
+const assertionsForAssert = j
   .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForAssert)
   .uniqueCombos()
@@ -149,7 +149,7 @@ var assertionsForAssert = j
   .concatCombos(primitiveAssertionsForAssert)
   .getCombos()
 
-var validTestTemplatesForExpect = [
+const validTestTemplatesForExpect = [
   {
     code:
       "{{EXPECT}}({{ASSERTION}}).to.be.true;"
@@ -183,7 +183,7 @@ var validTestTemplatesForExpect = [
 
 ]
 
-var validTestTemplatesForAssert = [
+const validTestTemplatesForAssert = [
   {
     code:
       "{{ASSERT}}.equal({{ASSERTION}});"
@@ -238,7 +238,7 @@ var validTestTemplatesForAssert = [
   }
 ]
 
-var invalidTestTemplatesForExpect = [
+const invalidTestTemplatesForExpect = [
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
@@ -252,7 +252,7 @@ var invalidTestTemplatesForExpect = [
   }
 ]
 
-var invalidTestTemplatesForAssert = [
+const invalidTestTemplatesForAssert = [
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
@@ -277,7 +277,7 @@ var invalidTestTemplatesForAssert = [
   }
 ]
 
-var validTests = j
+let validTests = j
   .setTemplates(validTestTemplatesForExpect)
   .createCombos(["code"], assertionsForExpect)
   .useCombosAsTemplates()
@@ -302,7 +302,7 @@ validTests = j
   .concatCombos(validTests)
   .getCombos()
 
-var invalidTests = j
+let invalidTests = j
   .setTemplates(invalidTestTemplatesForExpect)
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
   .useCombosAsTemplates()

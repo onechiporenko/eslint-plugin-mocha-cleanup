@@ -1,15 +1,15 @@
 "use strict"
 
-var testHelpers = require("../../../lib/utils/tests.js")
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const testHelpers = require("../../../lib/utils/tests.js")
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var rule = require("../../../lib/rules/complexity-it")
-var RuleTester = require("eslint").RuleTester
+const rule = require("../../../lib/rules/complexity-it")
+const RuleTester = require("eslint").RuleTester
 
-var ruleTester = new RuleTester({ env: { es6: true } })
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var assertions = [
+const assertions = [
   { ASSERT: "sinon.assert.calledOn(sp, {});", COMPLEXITY: "3" },
   { ASSERT: "expect(func()).to.be.equal(1);", COMPLEXITY: "4" },
   { ASSERT: "assert.equal(func(), 1, '4321');", COMPLEXITY: "3" },
@@ -17,7 +17,7 @@ var assertions = [
   { ASSERT: "func().should.be.equal(1);", COMPLEXITY: "4" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{SUITE}}('3421', {{ES}}" +
@@ -93,7 +93,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{TEST}}('1234', {{ES}} " +
@@ -147,7 +147,7 @@ var invalidTestTemplates = [
     errors: [{ message: "`{{TEST}}` has a complexity of 4. Maximum allowed is 0.", type: "CallExpression" }]
   }
 ]
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], assertions)
   .useCombosAsTemplates()
@@ -158,7 +158,7 @@ var validTests = j
   .getCombos()
 
 j.clearTemplates().clearCombos()
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], assertions)
   .useCombosAsTemplates()

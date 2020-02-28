@@ -1,15 +1,15 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-empty-body")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-empty-body")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var msg = "Empty function is not allowed here."
-var hooks = [
+const msg = "Empty function is not allowed here."
+const hooks = [
   { HO: "before({{ES}}", OK: "});" },
   { HO: "beforeEach({{ES}}", OK: "});" },
   { HO: "after({{ES}}", OK: "});" },
@@ -19,13 +19,13 @@ var hooks = [
   { HO: "after('12345', {{ES}}", OK: "});" },
   { HO: "afterEach('12345', {{ES}}", OK: "});" }
 ]
-var emptyBodies = [
+const emptyBodies = [
   { BODY: "" },
   { BODY: "/* some comment */" },
   { BODY: "// some comment\n" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}{{BODY}}});",
@@ -65,7 +65,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}{{BODY}}});",
@@ -137,7 +137,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], emptyBodies)
   .useCombosAsTemplates()
@@ -151,7 +151,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], emptyBodies)
   .useCombosAsTemplates()

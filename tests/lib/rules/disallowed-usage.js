@@ -1,14 +1,14 @@
 "use strict"
 
-var rule = require("../../../lib/rules/disallowed-usage")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const rule = require("../../../lib/rules/disallowed-usage")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var ruleTester = new RuleTester({ env: { es6: true } })
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var disallowed = [
+const disallowed = [
   { CODE: "obj.subObj.prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
   { CODE: "obj['subObj'].prop = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
   { CODE: "obj.subObj['prop'] = 1;", MESSAGE: "obj.subObj.prop", "options.0.test": [{ o: "obj.subObj", p: ["prop"] }], "options.0.hook": [{ o: "obj.subObj", p: ["prop"] }] },
@@ -23,14 +23,14 @@ var disallowed = [
   { CODE: "method{{MOD}}();", MESSAGE: "method", "options.0.test": [{ f: "method" }], "options.0.hook": [{ f: "method" }] }
 ]
 
-var hooks = [
+const hooks = [
   { HOOK: "before" },
   { HOOK: "beforeEach" },
   { HOOK: "after" },
   { HOOK: "afterEach" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{SUITESKIP}}('1234', {{ES}}" +
@@ -74,7 +74,7 @@ var validTestTemplates = [
     ]
   }
 ]
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
@@ -170,7 +170,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], hooks)
   .useCombosAsTemplates()
@@ -185,7 +185,7 @@ var validTests = j
   .getCombos()
 
 j.clearTemplates().clearCombos()
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], hooks)
   .useCombosAsTemplates()

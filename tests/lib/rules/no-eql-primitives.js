@@ -1,26 +1,26 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-eql-primitives")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-eql-primitives")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var invalidVals = [
+const invalidVals = [
   { VAL: "1" },
   { VAL: "true" },
   { VAL: "''" },
   { VAL: "null" }
 ]
 
-var validVals = [
+const validVals = [
   { VAL: "{}" },
   { VAL: "b" }
 ]
 
-var invalidAssertions = [
+let invalidAssertions = [
   { INVALID_ASSERTION: "assert.deepEqual(a, {{VAL}});", IN_MESSAGE: "assert.deepEqual" },
   { INVALID_ASSERTION: "assert['deepEqual'](a, {{VAL}});", IN_MESSAGE: "assert.deepEqual" },
   { INVALID_ASSERTION: "assert.notDeepEqual(a, {{VAL}});", IN_MESSAGE: "assert.notDeepEqual" },
@@ -32,7 +32,7 @@ var invalidAssertions = [
   { INVALID_ASSERTION: "a.should.be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal" },
   { INVALID_ASSERTION: "a['should'].be.deep.equal({{VAL}});", IN_MESSAGE: ".deep.equal" }
 ]
-var validAssertions = [
+let validAssertions = [
   { ASSERTION: "assert.deepEqual(a, {{VAL}});" },
   { ASSERTION: "chai.assert.deepEqual(a, {{VAL}});" },
   { ASSERTION: "chai['assert'].deepEqual(a, {{VAL}});" },
@@ -51,7 +51,7 @@ var validAssertions = [
   { ASSERTION: "a['should'].be.deep.equal({{VAL}});" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{TEST}}('123', {{ES}}" +
@@ -78,7 +78,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{TEST}}('123', {{ES}}" +
@@ -130,7 +130,7 @@ j
   .clearTemplates()
   .clearCombos()
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], validAssertions)
   .useCombosAsTemplates()
@@ -142,7 +142,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], invalidAssertions)
   .useCombosAsTemplates()

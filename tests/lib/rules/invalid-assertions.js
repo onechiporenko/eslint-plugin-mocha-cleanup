@@ -1,22 +1,22 @@
 "use strict"
 
-var rule = require("../../../lib/rules/invalid-assertions")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var n = require("../../../lib/utils/node.js")
-var m = "Invalid assertion usage."
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/invalid-assertions")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const n = require("../../../lib/utils/node.js")
+const m = "Invalid assertion usage."
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var chains = n.chaiChainable.map(function (c) {
+const chains = n.chaiChainable.map(function (c) {
   return { CHAIN: "." + c }
 })
 
 chains.push({ CHAIN: "" })
 
-var assertions = [
+let assertions = [
   { ASSERTION: "expect(1){{CHAIN}};", TYPE: "CallExpression" },
   { ASSERTION: "chai.expect(1){{CHAIN}};", TYPE: "CallExpression" },
   { ASSERTION: "chai['expect'](1){{CHAIN}};", TYPE: "CallExpression" },
@@ -30,7 +30,7 @@ assertions = j
   .uniqueCombos()
   .getCombos()
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{ASSERTION}}"
@@ -67,7 +67,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
@@ -81,7 +81,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], assertions)
   .useCombosAsTemplates()
@@ -91,7 +91,7 @@ var validTests = j
   .uniqueCombos()
   .getCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.type"], assertions)
   .useCombosAsTemplates()

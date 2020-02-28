@@ -1,13 +1,13 @@
 "use strict"
 
-var rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code: "sinon.restore();"
   },
@@ -266,7 +266,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{TEST}}('12345', {{ES}}" +
@@ -430,7 +430,7 @@ var invalidTestTemplates = [
   }
 ]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -442,7 +442,7 @@ var validTests = j
   .getCombos()
 
 j.clearTemplates().clearCombos()
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()

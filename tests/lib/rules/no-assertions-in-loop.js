@@ -1,21 +1,21 @@
 "use strict"
 
-var rule = require("../../../lib/rules/no-assertions-in-loop")
-var RuleTester = require("eslint").RuleTester
-var testHelpers = require("../../../lib/utils/tests.js")
-var ruleTester = new RuleTester({ env: { es6: true } })
+const rule = require("../../../lib/rules/no-assertions-in-loop")
+const RuleTester = require("eslint").RuleTester
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium")
-var j = new Jsonium()
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var loops = [
+const loops = [
   { code: "for(var i = 0; i < 5; i++) {{{ASSERTION}}}" },
   { code: "for(var i in obj) {{{ASSERTION}}}" },
   { code: "while(i < 5) {{{ASSERTION}}}" },
   { code: "do {{{ASSERTION}}} while (i < 5)" }
 ]
 
-var pLoops = [
+const pLoops = [
   {
     LO: "for(var i = 0; i < 5; i++) {",
     OP: "}"
@@ -34,7 +34,7 @@ var pLoops = [
   }
 ]
 
-var assertions = [
+const assertions = [
   { ASSERTION: "assert.equal(1, 1);" },
   { ASSERTION: "assert(1, 1);" },
   { ASSERTION: "assert['equal'](1, 1);" },
@@ -45,7 +45,7 @@ var assertions = [
   { ASSERTION: "sinon['assert'].called(a, 1);" }
 ]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{LO}}" +
@@ -95,7 +95,7 @@ var validTestTemplates = [
   }
 ]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
@@ -145,14 +145,14 @@ var invalidTestTemplates = [
   }
 ]
 
-var loopsWithAssertions = j
+const loopsWithAssertions = j
   .setTemplates(loops)
   .createCombos("code", assertions)
   .uniqueCombos()
   .switchKeys("code", "LOOP")
   .getCombos()
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], pLoops)
   .useCombosAsTemplates()
@@ -168,7 +168,7 @@ var validTests = j
 
 j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], loopsWithAssertions)
   .useCombosAsTemplates()
