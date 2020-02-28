@@ -1,7 +1,7 @@
 "use strict"
 
 const rule = require("../../../lib/rules/disallow-stub-spy-restore-in-it")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 const testHelpers = require("../../../lib/utils/tests.js")
 const ruleTester = new RuleTester({ env: { es6: true } })
 const Jsonium = require("jsonium")

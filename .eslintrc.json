@@ -2,6 +2,7 @@
   "extends": "standard",
   "rules": {
     "no-var": [2],
+    "prefer-destructuring": ["error"],
     "quotes": [2, "double"]
   },
   "overrides": [{

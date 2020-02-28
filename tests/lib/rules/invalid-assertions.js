@@ -1,7 +1,7 @@
 "use strict"
 
 const rule = require("../../../lib/rules/invalid-assertions")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 const testHelpers = require("../../../lib/utils/tests.js")
 const n = require("../../../lib/utils/node.js")
 const m = "Invalid assertion usage."

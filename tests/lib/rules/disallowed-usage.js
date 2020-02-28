@@ -1,7 +1,7 @@
 "use strict"
 
 const rule = require("../../../lib/rules/disallowed-usage")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 const testHelpers = require("../../../lib/utils/tests.js")
 const Jsonium = require("jsonium")
 const j = new Jsonium()

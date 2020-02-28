@@ -1,7 +1,7 @@
 "use strict"
 
 const rule = require("../../../lib/rules/no-assertions-outside-it")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 
 const ruleTester = new RuleTester({ env: { es6: true } })
 

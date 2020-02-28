@@ -1,7 +1,7 @@
 "use strict"
 
 const rule = require("../../../lib/rules/no-eql-primitives")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 const testHelpers = require("../../../lib/utils/tests.js")
 const ruleTester = new RuleTester({ env: { es6: true } })
 

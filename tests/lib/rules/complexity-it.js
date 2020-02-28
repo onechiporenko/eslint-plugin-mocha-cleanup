@@ -5,7 +5,7 @@ const Jsonium = require("jsonium")
 const j = new Jsonium()
 
 const rule = require("../../../lib/rules/complexity-it")
-const RuleTester = require("eslint").RuleTester
+const { RuleTester } = require("eslint")
 
 const ruleTester = new RuleTester({ env: { es6: true } })
 
