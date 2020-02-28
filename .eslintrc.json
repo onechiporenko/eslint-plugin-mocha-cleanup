@@ -2,8 +2,8 @@
   "extends": "standard",
   "rules": {
     "no-var": [2],
-    "prefer-destructuring": ["error"],
-    "object-shorthand": ["error"],
+    "prefer-destructuring": [2],
+    "object-shorthand": [2],
     "quotes": [2, "double"]
   },
   "overrides": [{
