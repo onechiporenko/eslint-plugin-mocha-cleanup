@@ -1,6 +1,9 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "standard",
   "rules": {
+    "no-var": [2],
+    "prefer-destructuring": [2],
+    "object-shorthand": [2],
     "quotes": [2, "double"]
   },
   "overrides": [{
@@ -9,6 +12,7 @@
   }],
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es6": true
   }
 }

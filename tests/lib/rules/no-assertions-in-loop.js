@@ -1,21 +1,21 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-assertions-in-loop"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+const rule = require("../../../lib/rules/no-assertions-in-loop")
+const { RuleTester } = require("eslint")
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var loops = [
-  {code: "for(var i = 0; i < 5; i++) {{{ASSERTION}}}"},
-  {code: "for(var i in obj) {{{ASSERTION}}}"},
-  {code: "while(i < 5) {{{ASSERTION}}}"},
-  {code: "do {{{ASSERTION}}} while (i < 5)"}
-];
+const loops = [
+  { code: "for(var i = 0; i < 5; i++) {{{ASSERTION}}}" },
+  { code: "for(var i in obj) {{{ASSERTION}}}" },
+  { code: "while(i < 5) {{{ASSERTION}}}" },
+  { code: "do {{{ASSERTION}}} while (i < 5)" }
+]
 
-var pLoops = [
+const pLoops = [
   {
     LO: "for(var i = 0; i < 5; i++) {",
     OP: "}"
@@ -32,20 +32,20 @@ var pLoops = [
     LO: "do {",
     OP: "} while (i < 5)"
   }
-];
+]
 
-var assertions = [
-  {ASSERTION: "assert.equal(1, 1);"},
-  {ASSERTION: "assert(1, 1);"},
-  {ASSERTION: "assert['equal'](1, 1);"},
-  {ASSERTION: "expect(1).to.be.equal(1);"},
-  {ASSERTION: "'1'.should.be.equal('1');"},
-  {ASSERTION: "'1'['should'].be.equal('1');"},
-  {ASSERTION: "sinon.assert.called(a, 1);"},
-  {ASSERTION: "sinon['assert'].called(a, 1);"}
-];
+const assertions = [
+  { ASSERTION: "assert.equal(1, 1);" },
+  { ASSERTION: "assert(1, 1);" },
+  { ASSERTION: "assert['equal'](1, 1);" },
+  { ASSERTION: "expect(1).to.be.equal(1);" },
+  { ASSERTION: "'1'.should.be.equal('1');" },
+  { ASSERTION: "'1'['should'].be.equal('1');" },
+  { ASSERTION: "sinon.assert.called(a, 1);" },
+  { ASSERTION: "sinon['assert'].called(a, 1);" }
+]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{LO}}" +
@@ -71,7 +71,7 @@ var validTestTemplates = [
           "{{LOOP}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -80,7 +80,7 @@ var validTestTemplates = [
           "{{LOOP}}" +
         "});" +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -91,11 +91,11 @@ var validTestTemplates = [
           "});" +
         "});" +
       "});",
-    options: [{skipSkipped: true, extraMemberExpression: ["forEach"]}]
+    options: [{ skipSkipped: true, extraMemberExpression: ["forEach"] }]
   }
-];
+]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
@@ -104,7 +104,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Assertions should not be used in loops."}
+      { message: "Assertions should not be used in loops." }
     ]
   },
   {
@@ -115,7 +115,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Assertions should not be used in loops."}
+      { message: "Assertions should not be used in loops." }
     ]
   },
   {
@@ -126,7 +126,7 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: "Assertions should not be used in loops."}
+      { message: "Assertions should not be used in loops." }
     ]
   },
   {
@@ -138,21 +138,21 @@ var invalidTestTemplates = [
           "});" +
         "});" +
       "});",
-    options: [{extraMemberExpression: ["forEach"]}],
+    options: [{ extraMemberExpression: ["forEach"] }],
     errors: [
-      {message: "Assertions should not be used in loops."}
+      { message: "Assertions should not be used in loops." }
     ]
   }
-];
+]
 
-var loopsWithAssertions = j
+const loopsWithAssertions = j
   .setTemplates(loops)
   .createCombos("code", assertions)
   .uniqueCombos()
   .switchKeys("code", "LOOP")
-  .getCombos();
+  .getCombos()
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], pLoops)
   .useCombosAsTemplates()
@@ -164,11 +164,11 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], loopsWithAssertions)
   .useCombosAsTemplates()
@@ -178,9 +178,9 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-assertions-in-loop", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

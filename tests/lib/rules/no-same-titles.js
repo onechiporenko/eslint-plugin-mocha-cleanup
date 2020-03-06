@@ -1,16 +1,16 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-same-titles"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+const rule = require("../../../lib/rules/no-same-titles")
+const { RuleTester } = require("eslint")
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var m = "Some tests have same titles.";
+const m = "Some tests have same titles."
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{TEST}}('123', {{ES}}}); " +
@@ -24,7 +24,7 @@ var validTestTemplates = [
       "{{SUITE}}('321', {{ES}}" +
         "{{TEST}}('123', {{ES}}});" +
       "});",
-    options: [{scope: "suite"}]
+    options: [{ scope: "suite" }]
   },
   {
     code:
@@ -45,7 +45,7 @@ var validTestTemplates = [
           "{{TEST}}('123', {{ES}}});" +
         "});" +
       "});",
-    options: [{scope: "suite"}]
+    options: [{ scope: "suite" }]
   },
   {
     code:
@@ -64,7 +64,7 @@ var validTestTemplates = [
       "{{SUITE}}('4321', {{ES}}" +
         "{{TEST}}('123', {{ES}}});" +
       "});",
-    options: [{scope: "suite"}]
+    options: [{ scope: "suite" }]
   },
   {
     code:
@@ -72,7 +72,7 @@ var validTestTemplates = [
         "{{TEST}}('1234', {{ES}}}); " +
         "{{TEST}}('1234', {{ES}}}); " +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -80,17 +80,7 @@ var validTestTemplates = [
         "{{TEST}}('1234', {{ES}}}); " +
         "{{TEST}}('1234', {{ES}}}); " +
       "});",
-    options: [{skipSkipped: true, scope: "suite"}]
-  },
-  {
-    code:
-      "{{SUITESKIP}}('4321', {{ES}} " +
-        "{{SUITE}}('4321', {{ES}} " +
-          "{{TEST}}('1234', {{ES}}}); " +
-          "{{TEST}}('1234', {{ES}}}); " +
-        "});" +
-      "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true, scope: "suite" }]
   },
   {
     code:
@@ -100,7 +90,17 @@ var validTestTemplates = [
           "{{TEST}}('1234', {{ES}}}); " +
         "});" +
       "});",
-    options: [{skipSkipped: true, scope: "suite"}]
+    options: [{ skipSkipped: true }]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('4321', {{ES}} " +
+        "{{SUITE}}('4321', {{ES}} " +
+          "{{TEST}}('1234', {{ES}}}); " +
+          "{{TEST}}('1234', {{ES}}}); " +
+        "});" +
+      "});",
+    options: [{ skipSkipped: true, scope: "suite" }]
   },
   {
     code:
@@ -111,7 +111,7 @@ var validTestTemplates = [
             "{{TEST}}('123', {{ES}}});" +
         "});" +
       "});",
-    options: [{scope: "file", skipSkipped: true}]
+    options: [{ scope: "file", skipSkipped: true }]
   },
   {
     code:
@@ -119,9 +119,9 @@ var validTestTemplates = [
         "{{TEST}}(foo, {{ES}}}); " +
       "});"
   }
-];
+]
 
-var invalidTestTemplates = [
+const invalidTestTemplates = [
   {
     code:
       "{{SUITE}}('4321', {{ES}} " +
@@ -129,8 +129,8 @@ var invalidTestTemplates = [
         "{{TEST}}('1234', {{ES}}}); " +
       "});",
     errors: [
-      {message: m, type: "CallExpression"},
-      {message: m, type: "CallExpression"}
+      { message: m, type: "CallExpression" },
+      { message: m, type: "CallExpression" }
     ]
   },
   {
@@ -140,8 +140,8 @@ var invalidTestTemplates = [
         "{{TEST}}('1234', {{ES}}}); " +
       "});",
     errors: [
-      {message: m, type: "CallExpression"},
-      {message: m, type: "CallExpression"}
+      { message: m, type: "CallExpression" },
+      { message: m, type: "CallExpression" }
     ]
   },
   {
@@ -153,8 +153,8 @@ var invalidTestTemplates = [
         "});" +
       "});",
     errors: [
-      {message: m, type: "CallExpression"},
-      {message: m, type: "CallExpression"}
+      { message: m, type: "CallExpression" },
+      { message: m, type: "CallExpression" }
     ]
   },
   {
@@ -168,8 +168,8 @@ var invalidTestTemplates = [
           "});" +
         "});",
     errors: [
-      {message: m, type: "CallExpression"},
-      {message: m, type: "CallExpression"}
+      { message: m, type: "CallExpression" },
+      { message: m, type: "CallExpression" }
     ]
   },
   {
@@ -181,34 +181,33 @@ var invalidTestTemplates = [
             "{{TEST}}('123', {{ES}}});" +
           "});" +
         "});",
-    options: [{scope: "file"}],
+    options: [{ scope: "file" }],
     errors: [
-      {message: m, type: "CallExpression"},
-      {message: m, type: "CallExpression"}
+      { message: m, type: "CallExpression" },
+      { message: m, type: "CallExpression" }
     ]
   }
-];
+]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code", "errors.@each.message"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
-
+  .getCombos()
 
 ruleTester.run("no-same-title", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

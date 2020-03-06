@@ -1,23 +1,23 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-outside-declaration"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+const rule = require("../../../lib/rules/no-outside-declaration")
+const { RuleTester } = require("eslint")
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var m = "Variable declaration is not allowed outside tests and hooks.";
+const m = "Variable declaration is not allowed outside tests and hooks."
 
-var declarations = [
-  {DECLARATION: "var a = require('abc');"},
-  {DECLARATION: "let b = a + c;"},
-  {DECLARATION: "const c = 1;"},
-  {DECLARATION: "const {e, f, g} = d;"}
-];
+const declarations = [
+  { DECLARATION: "var a = require('abc');" },
+  { DECLARATION: "let b = a + c;" },
+  { DECLARATION: "const c = 1;" },
+  { DECLARATION: "const {e, f, g} = d;" }
+]
 
-var validTestTemplates = [
+const validTestTemplates = [
   {
     code:
       "{{DECLARATION}}" +
@@ -48,7 +48,7 @@ var validTestTemplates = [
         "{{DECLARATION}}" +
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
-    options: [{skipSkipped: true}]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -56,39 +56,7 @@ var validTestTemplates = [
         "{{TEST}}('4321', {{ES}}}); " +
         "{{DECLARATION}}" +
       "});",
-    options: [{skipSkipped: true}]
-  },
-  {
-    code:
-      "{{SUITESKIP}}('1234', {{ES}} " +
-        "{{HOOK}}({{ES}}});" +
-        "{{DECLARATION}}" +
-        "{{TEST}}('4321', {{ES}}}); " +
-      "});",
-    options: [{skipSkipped: true}]
-  }
-];
-
-var invalidTestTemplates = [
-  {
-    code:
-      "{{SUITESKIP}}('1234', {{ES}} " +
-        "{{DECLARATION}}" +
-        "{{TEST}}('4321', {{ES}}}); " +
-      "});",
-    errors: [
-      {message: m, type: "VariableDeclaration"}
-    ]
-  },
-  {
-    code:
-      "{{SUITESKIP}}('1234', {{ES}} " +
-        "{{TEST}}('4321', {{ES}}}); " +
-        "{{DECLARATION}}" +
-      "});",
-    errors: [
-      {message: m, type: "VariableDeclaration"}
-    ]
+    options: [{ skipSkipped: true }]
   },
   {
     code:
@@ -97,13 +65,45 @@ var invalidTestTemplates = [
         "{{DECLARATION}}" +
         "{{TEST}}('4321', {{ES}}}); " +
       "});",
+    options: [{ skipSkipped: true }]
+  }
+]
+
+const invalidTestTemplates = [
+  {
+    code:
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "{{DECLARATION}}" +
+        "{{TEST}}('4321', {{ES}}}); " +
+      "});",
     errors: [
-      {message: m, type: "VariableDeclaration"}
+      { message: m, type: "VariableDeclaration" }
+    ]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "{{TEST}}('4321', {{ES}}}); " +
+        "{{DECLARATION}}" +
+      "});",
+    errors: [
+      { message: m, type: "VariableDeclaration" }
+    ]
+  },
+  {
+    code:
+      "{{SUITESKIP}}('1234', {{ES}} " +
+        "{{HOOK}}({{ES}}});" +
+        "{{DECLARATION}}" +
+        "{{TEST}}('4321', {{ES}}}); " +
+      "});",
+    errors: [
+      { message: m, type: "VariableDeclaration" }
     ]
   }
-];
+]
 
-var validTests = j
+const validTests = j
   .setTemplates(validTestTemplates)
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -113,11 +113,11 @@ var validTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], declarations)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-j.clearTemplates().clearCombos();
+j.clearTemplates().clearCombos()
 
-var invalidTests = j
+const invalidTests = j
   .setTemplates(invalidTestTemplates)
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
@@ -127,9 +127,9 @@ var invalidTests = j
   .useCombosAsTemplates()
   .createCombos(["code"], declarations)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-outside-declaration", rule, {
   valid: validTests,
   invalid: invalidTests
-});
+})

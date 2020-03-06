@@ -1,123 +1,123 @@
-"use strict";
+"use strict"
 
-var rule = require("../../../lib/rules/no-expressions-in-assertions"),
-  RuleTester = require("eslint").RuleTester;
-var testHelpers = require("../../../lib/utils/tests.js");
-var ruleTester = new RuleTester({env: {es6: true}});
+const rule = require("../../../lib/rules/no-expressions-in-assertions")
+const { RuleTester } = require("eslint")
+const testHelpers = require("../../../lib/utils/tests.js")
+const ruleTester = new RuleTester({ env: { es6: true } })
 
-var Jsonium = require("jsonium");
-var j = new Jsonium();
+const Jsonium = require("jsonium")
+const j = new Jsonium()
 
-var defaultMessage = "Expression should not be used here.";
-var detailedMessage = "`{{USE}}` should be used.";
-var emptyArgMessage = "Empty assertion is not allowed.";
+const defaultMessage = "Expression should not be used here."
+const detailedMessage = "`{{USE}}` should be used."
+const emptyArgMessage = "Empty assertion is not allowed."
 
-var binariesForExpect = [
-  {BINARY: ">", USE: ".to.be.above"},
-  {BINARY: "<", USE: ".to.be.below"},
-  {BINARY: ">=", USE: ".to.be.at.least"},
-  {BINARY: "<=", USE: ".to.be.most"},
-  {BINARY: "==", USE: ".to.be.equal"},
-  {BINARY: "===", USE: ".to.be.equal"},
-  {BINARY: "!=", USE: ".to.be.not.equal"},
-  {BINARY: "!==", USE: ".to.be.not.equal"},
-  {BINARY: "instanceof", USE: ".to.be.instanceof"}
-];
+const binariesForExpect = [
+  { BINARY: ">", USE: ".to.be.above" },
+  { BINARY: "<", USE: ".to.be.below" },
+  { BINARY: ">=", USE: ".to.be.at.least" },
+  { BINARY: "<=", USE: ".to.be.most" },
+  { BINARY: "==", USE: ".to.be.equal" },
+  { BINARY: "===", USE: ".to.be.equal" },
+  { BINARY: "!=", USE: ".to.be.not.equal" },
+  { BINARY: "!==", USE: ".to.be.not.equal" },
+  { BINARY: "instanceof", USE: ".to.be.instanceof" }
+]
 
-var binariesForAssert = [
-  {BINARY: ">", USE: ".isAbove"},
-  {BINARY: "<", USE: ".isBelow"},
-  {BINARY: ">=", USE: ".isAtLeast"},
-  {BINARY: "<=", USE: ".isAtMost"},
-  {BINARY: "==", USE: ".equal"},
-  {BINARY: "===", USE: ".strictEqual"},
-  {BINARY: "!=", USE: ".notEqual"},
-  {BINARY: "!==", USE: ".notStrictEqual"}
-];
+const binariesForAssert = [
+  { BINARY: ">", USE: ".isAbove" },
+  { BINARY: "<", USE: ".isBelow" },
+  { BINARY: ">=", USE: ".isAtLeast" },
+  { BINARY: "<=", USE: ".isAtMost" },
+  { BINARY: "==", USE: ".equal" },
+  { BINARY: "===", USE: ".strictEqual" },
+  { BINARY: "!=", USE: ".notEqual" },
+  { BINARY: "!==", USE: ".notStrictEqual" }
+]
 
-var logical = [
-  {LOGICAL: "+"},
-  {LOGICAL: "-"},
-  {LOGICAL: "/"},
-  {LOGICAL: "*"},
-  {LOGICAL: "%"},
-  {LOGICAL: "^"},
-  {LOGICAL: "&&"},
-  {LOGICAL: "||"}
-];
+const logical = [
+  { LOGICAL: "+" },
+  { LOGICAL: "-" },
+  { LOGICAL: "/" },
+  { LOGICAL: "*" },
+  { LOGICAL: "%" },
+  { LOGICAL: "^" },
+  { LOGICAL: "&&" },
+  { LOGICAL: "||" }
+]
 
-var updates = [
-  {UPDATE: "++"},
-  {UPDATE: "--"}
-];
+const updates = [
+  { UPDATE: "++" },
+  { UPDATE: "--" }
+]
 
-var unaries = [
-  {UNARY: "!"},
-  {UNARY: "~"},
-  {UNARY: "+"},
-  {UNARY: "-"}
-];
+const unaries = [
+  { UNARY: "!" },
+  { UNARY: "~" },
+  { UNARY: "+" },
+  { UNARY: "-" }
+]
 
-var primitiveEqualitiesForExpect = [
-  {EQL_BINARY: "==", NOT: ""},
-  {EQL_BINARY: "===", NOT: ""},
-  {EQL_BINARY: "!=", NOT: "not."},
-  {EQL_BINARY: "!==", NOT: "not."}
-];
+const primitiveEqualitiesForExpect = [
+  { EQL_BINARY: "==", NOT: "" },
+  { EQL_BINARY: "===", NOT: "" },
+  { EQL_BINARY: "!=", NOT: "not." },
+  { EQL_BINARY: "!==", NOT: "not." }
+]
 
-var primitiveEqualitiesForAssert = [
-  {EQL_BINARY: "==", NOT: ""},
-  {EQL_BINARY: "===", NOT: ""},
-  {EQL_BINARY: "!=", NOT: "Not"},
-  {EQL_BINARY: "!==", NOT: "Not"}
-];
+const primitiveEqualitiesForAssert = [
+  { EQL_BINARY: "==", NOT: "" },
+  { EQL_BINARY: "===", NOT: "" },
+  { EQL_BINARY: "!=", NOT: "Not" },
+  { EQL_BINARY: "!==", NOT: "Not" }
+]
 
-var primitiveValuesForExpect = [
-  {VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.null"},
-  {VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.true"},
-  {VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.false"},
-  {VAL: "undefined", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.undefined"}
-];
+const primitiveValuesForExpect = [
+  { VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.null" },
+  { VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.true" },
+  { VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.false" },
+  { VAL: "undefined", EQL_BINARY: "{{EQL_BINARY}}", USE: ".to.{{NOT}}be.undefined" }
+]
 
-var primitiveValuesForAssert = [
-  {VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}Null"},
-  {VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}True"},
-  {VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}False"}
-];
+const primitiveValuesForAssert = [
+  { VAL: "null", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}Null" },
+  { VAL: "true", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}True" },
+  { VAL: "false", EQL_BINARY: "{{EQL_BINARY}}", USE: ".is{{NOT}}False" }
+]
 
-var primitiveAssertions = [
-  {ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage},
-  {ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage},
-  {ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage},
-  {ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage}
-];
+const primitiveAssertions = [
+  { ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage },
+  { ASSERTION: "a {{EQL_BINARY}} {{VAL}}", MESSAGE: detailedMessage },
+  { ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage },
+  { ASSERTION: "{{VAL}} {{EQL_BINARY}} b", MESSAGE: detailedMessage }
+]
 
-var primitiveAssertionsForExpect = j
+const primitiveAssertionsForExpect = j
   .setTemplates(primitiveAssertions)
   .createCombos(["ASSERTION", "MESSAGE"], primitiveValuesForExpect)
   .useCombosAsTemplates()
   .createCombos(["ASSERTION", "MESSAGE"], primitiveEqualitiesForExpect)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-var primitiveAssertionsForAssert = j
+const primitiveAssertionsForAssert = j
   .setTemplates(primitiveAssertions)
   .createCombos(["ASSERTION", "MESSAGE"], primitiveValuesForAssert)
   .useCombosAsTemplates()
   .createCombos(["ASSERTION", "MESSAGE"], primitiveEqualitiesForAssert)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
-var assertions = [
-  {ASSERTION: "a {{BINARY}} b", MESSAGE: detailedMessage},
-  {ASSERTION: "a {{LOGICAL}} b", MESSAGE: defaultMessage},
-  {ASSERTION: "{{UPDATE}} b", MESSAGE: defaultMessage},
-  {ASSERTION: "b{{UPDATE}}", MESSAGE: defaultMessage},
-  {ASSERTION: "{{UNARY}} a", MESSAGE: defaultMessage},
-  {ASSERTION: "", MESSAGE: emptyArgMessage}
-];
+const assertions = [
+  { ASSERTION: "a {{BINARY}} b", MESSAGE: detailedMessage },
+  { ASSERTION: "a {{LOGICAL}} b", MESSAGE: defaultMessage },
+  { ASSERTION: "{{UPDATE}} b", MESSAGE: defaultMessage },
+  { ASSERTION: "b{{UPDATE}}", MESSAGE: defaultMessage },
+  { ASSERTION: "{{UNARY}} a", MESSAGE: defaultMessage },
+  { ASSERTION: "", MESSAGE: emptyArgMessage }
+]
 
-var assertionsForExpect = j
+const assertionsForExpect = j
   .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForExpect)
   .uniqueCombos()
@@ -131,9 +131,9 @@ var assertionsForExpect = j
   .createCombos(["ASSERTION"], unaries)
   .uniqueCombos()
   .concatCombos(primitiveAssertionsForExpect)
-  .getCombos();
+  .getCombos()
 
-var assertionsForAssert = j
+const assertionsForAssert = j
   .setTemplates(assertions)
   .createCombos(["ASSERTION", "MESSAGE"], binariesForAssert)
   .uniqueCombos()
@@ -147,10 +147,9 @@ var assertionsForAssert = j
   .createCombos(["ASSERTION"], unaries)
   .uniqueCombos()
   .concatCombos(primitiveAssertionsForAssert)
-  .getCombos();
+  .getCombos()
 
-
-var validTestTemplatesForExpect = [
+const validTestTemplatesForExpect = [
   {
     code:
       "{{EXPECT}}({{ASSERTION}}).to.be.true;"
@@ -167,7 +166,7 @@ var validTestTemplatesForExpect = [
         "});" +
       "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   },
   {
@@ -178,13 +177,13 @@ var validTestTemplatesForExpect = [
         "});" +
       "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   }
 
-];
+]
 
-var validTestTemplatesForAssert = [
+const validTestTemplatesForAssert = [
   {
     code:
       "{{ASSERT}}.equal({{ASSERTION}});"
@@ -201,7 +200,7 @@ var validTestTemplatesForAssert = [
         "});" +
     "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   },
   {
@@ -212,7 +211,7 @@ var validTestTemplatesForAssert = [
         "});" +
     "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   },
   {
@@ -223,7 +222,7 @@ var validTestTemplatesForAssert = [
         "});" +
     "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   },
   {
@@ -234,12 +233,12 @@ var validTestTemplatesForAssert = [
         "});" +
     "});",
     options: [
-      {skipSkipped: true}
+      { skipSkipped: true }
     ]
   }
-];
+]
 
-var invalidTestTemplatesForExpect = [
+const invalidTestTemplatesForExpect = [
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
@@ -248,12 +247,12 @@ var invalidTestTemplatesForExpect = [
         "});" +
       "});",
     errors: [
-      {message: "{{MESSAGE}}", type: "CallExpression"}
+      { message: "{{MESSAGE}}", type: "CallExpression" }
     ]
   }
-];
+]
 
-var invalidTestTemplatesForAssert = [
+const invalidTestTemplatesForAssert = [
   {
     code:
       "{{SUITE}}('123', {{ES}}" +
@@ -262,7 +261,7 @@ var invalidTestTemplatesForAssert = [
         "});" +
       "});",
     errors: [
-      {message: "{{MESSAGE}}", type: "MemberExpression"}
+      { message: "{{MESSAGE}}", type: "MemberExpression" }
     ]
   },
   {
@@ -273,60 +272,60 @@ var invalidTestTemplatesForAssert = [
         "});" +
       "});",
     errors: [
-      {message: "{{MESSAGE}}", type: "{{TYPE}}"}
+      { message: "{{MESSAGE}}", type: "{{TYPE}}" }
     ]
   }
-];
+]
 
-var validTests = j
+let validTests = j
   .setTemplates(validTestTemplatesForExpect)
   .createCombos(["code"], assertionsForExpect)
   .useCombosAsTemplates()
-  .createCombos(["code"], [{EXPECT: "expect"}, {EXPECT: "chai.expect"}, {EXPECT: "chai['expect']"}])
+  .createCombos(["code"], [{ EXPECT: "expect" }, { EXPECT: "chai.expect" }, { EXPECT: "chai['expect']" }])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 validTests = j
   .setTemplates(validTestTemplatesForAssert)
   .createCombos(["code"], assertionsForAssert)
   .useCombosAsTemplates()
-  .createCombos(["code"], [{ASSERT: "assert"}, {ASSERT: "chai.assert"}, {ASSERT: "chai['assert']"}])
+  .createCombos(["code"], [{ ASSERT: "assert" }, { ASSERT: "chai.assert" }, { ASSERT: "chai['assert']" }])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(validTests)
-  .getCombos();
+  .getCombos()
 
-var invalidTests = j
+let invalidTests = j
   .setTemplates(invalidTestTemplatesForExpect)
   .createCombos(["code", "errors.@each.message"], assertionsForExpect)
   .useCombosAsTemplates()
-  .createCombos(["code"], [{EXPECT: "expect"}, {EXPECT: "chai.expect"}, {EXPECT: "chai['expect']"}])
+  .createCombos(["code"], [{ EXPECT: "expect" }, { EXPECT: "chai.expect" }, { EXPECT: "chai['expect']" }])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
-  .getCombos();
+  .getCombos()
 
 invalidTests = j
   .setTemplates(invalidTestTemplatesForAssert)
   .createCombos(["code", "errors.@each.message"], assertionsForAssert)
   .useCombosAsTemplates()
-  .createCombos(["code", "errors.0.type"], [{ASSERT: "assert", TYPE: "CallExpression"}, {ASSERT: "chai.assert", TYPE: "MemberExpression"}, {ASSERT: "chai['assert']", TYPE: "MemberExpression"}])
+  .createCombos(["code", "errors.0.type"], [{ ASSERT: "assert", TYPE: "CallExpression" }, { ASSERT: "chai.assert", TYPE: "MemberExpression" }, { ASSERT: "chai['assert']", TYPE: "MemberExpression" }])
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.mochaDatasets)
   .useCombosAsTemplates()
   .createCombos(["code"], testHelpers.es)
   .uniqueCombos()
   .concatCombos(invalidTests)
-  .getCombos();
+  .getCombos()
 
 ruleTester.run("no-expressions-in-assertions", rule, {
   valid: [
@@ -352,7 +351,7 @@ ruleTester.run("no-expressions-in-assertions", rule, {
         "});" +
       "});",
       options: [
-        {replacementsOnly: true}
+        { replacementsOnly: true }
       ]
     },
     {
@@ -362,7 +361,7 @@ ruleTester.run("no-expressions-in-assertions", rule, {
         "});" +
       "});",
       options: [
-        {replacementsOnly: true}
+        { replacementsOnly: true }
       ]
     },
     {
@@ -372,7 +371,7 @@ ruleTester.run("no-expressions-in-assertions", rule, {
         "});" +
       "});",
       options: [
-        {replacementsOnly: true}
+        { replacementsOnly: true }
       ]
     }
   ].concat(validTests),
@@ -385,7 +384,7 @@ ruleTester.run("no-expressions-in-assertions", rule, {
           "});" +
         "});",
       errors: [
-        {message: "`.isUndefined` should be used.", type: "CallExpression"}
+        { message: "`.isUndefined` should be used.", type: "CallExpression" }
       ]
     },
     {
@@ -396,8 +395,8 @@ ruleTester.run("no-expressions-in-assertions", rule, {
           "});" +
         "});",
       errors: [
-        {message: "`.isDefined` should be used.", type: "CallExpression"}
+        { message: "`.isDefined` should be used.", type: "CallExpression" }
       ]
     }
   ].concat(invalidTests)
-});
+})
