@@ -165,7 +165,9 @@ const invalidTests = j
 
 ruleTester.run("no-empty-body", rule, {
   valid: [
-    "var a = function () {}"
+    "var a = function () {}",
+    "it('test', () => expect('a').to.equal('a'))",
+    "it('test', function () {expect('a').to.equal('a')})"
   ].concat(validTests),
   invalid: invalidTests
 })
