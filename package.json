@@ -18,8 +18,8 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "eslint": "eslint .",
-    "test": "npm run eslint && nyc mocha -R min tests/lib/**",
+    "lint": "eslint .",
+    "test": "nyc mocha -R min tests/lib/**",
     "test:fast": "mocha -R min tests/lib/** --fast"
   },
   "dependencies": {

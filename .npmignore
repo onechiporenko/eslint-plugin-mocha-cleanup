@@ -2,3 +2,4 @@ tests
 .nyc_output
 .ncurc.js
 .idea
+.github
