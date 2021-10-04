@@ -17,11 +17,11 @@ const chains = n.chaiChainable.map(function (c) {
 chains.push({ CHAIN: "" })
 
 let assertions = [
-  { ASSERTION: "expect(1){{CHAIN}};", TYPE: "CallExpression" },
-  { ASSERTION: "chai.expect(1){{CHAIN}};", TYPE: "CallExpression" },
-  { ASSERTION: "chai['expect'](1){{CHAIN}};", TYPE: "CallExpression" },
-  { ASSERTION: "'1'.should{{CHAIN}};", TYPE: "MemberExpression" },
-  { ASSERTION: "'1'['should']{{CHAIN}};", TYPE: "MemberExpression" }
+  { ASSERTION: "expect(1){{CHAIN}}", TYPE: "CallExpression" },
+  { ASSERTION: "chai.expect(1){{CHAIN}}", TYPE: "CallExpression" },
+  { ASSERTION: "chai['expect'](1){{CHAIN}}", TYPE: "CallExpression" },
+  { ASSERTION: "'1'.should{{CHAIN}}", TYPE: "MemberExpression" },
+  { ASSERTION: "'1'['should']{{CHAIN}}", TYPE: "MemberExpression" }
 ]
 
 assertions = j
@@ -33,21 +33,20 @@ assertions = j
 const validTestTemplates = [
   {
     code:
-      "{{ASSERTION}}"
+      "{{ASSERTION}};"
   },
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
-        "{{ASSERTION}}" +
-          "{{TEST}}('4321', {{ES}}" +
-        "})" +
+        "{{ASSERTION}};" +
+        "{{TEST}}('4321', {{ES}} })" +
       "})"
   },
   {
     code:
       "{{SUITE}}('1234', {{ES}}" +
         "{{TESTSKIP}}('4321', {{ES}}" +
-          "{{ASSERTION}}" +
+          "{{ASSERTION}};" +
         "})" +
       "})",
     options: [
@@ -58,7 +57,7 @@ const validTestTemplates = [
     code:
       "{{SUITESKIP}}('1234', {{ES}}" +
         "{{TEST}}('4321', {{ES}}" +
-          "{{ASSERTION}}" +
+          "{{ASSERTION}};" +
         "})" +
       "})",
     options: [
@@ -72,9 +71,18 @@ const invalidTestTemplates = [
     code:
       "{{SUITE}}('1234', {{ES}}" +
         "{{TEST}}('4321', {{ES}}" +
-          "{{ASSERTION}}" +
+          "{{ASSERTION}};" +
         "})" +
       "})",
+    errors: [
+      { message: m, type: "{{TYPE}}" }
+    ]
+  },
+  {
+    code:
+      "{{SUITE}}('1234', () =>" +
+        "{{TEST}}('4321', () => {{ASSERTION}})" +
+      ")",
     errors: [
       { message: m, type: "{{TYPE}}" }
     ]
@@ -102,12 +110,6 @@ const invalidTests = j
   .getCombos()
 
 ruleTester.run("invalid-assertions", rule, {
-  valid: [
-    "describe('1234', function () {" +
-      "it('4321', function () {" +
-        "return expect(1)" +
-      "})" +
-    "})"
-  ].concat(validTests),
+  valid: validTests,
   invalid: invalidTests
 })
