@@ -99,6 +99,8 @@ This rule ignores tests with a `done`-callback and 0 assertions. Set the option 
 
 * `no-outside-declaration` Rule to disallow variable declarations outside tests and hooks
 
+* `top-level-assertions` Rule to check if some assertions are not on top of the test-block. Rule is a "next-level" for `no-assertions-in-loop`. 
+
 ## Usage
 
 Add to your eslint config-file:
@@ -133,11 +135,12 @@ Add to your eslint config-file:
             "methods": ["setTimeout"]
         }
     ],
-    "mocha-cleanup/no-outside-declaration": 2
+    "mocha-cleanup/no-outside-declaration": 2,
+    "mocha-cleanup/top-level-assertions": 1
 }
 ```
 
-Or, if you want the items exactly as above (not including `disallowed-usage` and `disallow-stub-window`), just add this:
+Or, if you want the items exactly as above (not including `disallowed-usage`, `disallow-stub-window` and `top-level-assertions`), just add this:
 
 ```json
 {

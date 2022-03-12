@@ -19,8 +19,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "nyc mocha -R min tests/lib/**",
-    "test:fast": "mocha -R min tests/lib/** --fast"
+    "test": "nyc mocha -R min \"tests/**\""
   },
   "dependencies": {
     "requireindex": "~1.2.0"
