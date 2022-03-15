@@ -25,49 +25,49 @@ const asserts = [
 const validTestTemplates = [
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "{{ASSERT}}" +
-      "});"
+      `{{TEST}}('1234', {{ES}}
+        {{ASSERT}}
+      });`
   },
   {
     code:
-      "{{TESTSKIP}}('1234', {{ES}}" +
-        "[].forEach({{ES}}" +
-          "{{ASSERT}}" +
-        "});" +
-      "});",
+      `{{TESTSKIP}}('1234', {{ES}}
+        [].forEach({{ES}}
+          {{ASSERT}}
+        });
+      });`,
     options: [{ skipSkipped: true }]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "[].forEach({{ES}}" +
-          "{{ASSERT}}" +
-          "expect(1).to.be.assertsCount" +
-        "});" +
-      "});",
-    options: [{ assertionsCheckExpression: /expect(\d+)\.to\.be\.assertsCount/ }]
+      `{{TEST}}('1234', {{ES}}
+        Assertion.expectAssertions(1);
+        [].forEach({{ES}}
+          {{ASSERT}}
+        });
+      });`,
+    options: [{ assertionsCheckExpression: /Assertion\.expectAssertions\(\d+\)/.source }]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', {{ES}}" +
-        "{{TEST}}('1234', {{ES}}" +
-          "[].forEach({{ES}}" +
-            "{{ASSERT}}" +
-          "});" +
-        "});" +
-      "});",
+      `{{SUITESKIP}}('1234', {{ES}}
+        {{TEST}}('1234', {{ES}}
+          [].forEach({{ES}}
+            {{ASSERT}}
+          });
+        });
+      });`,
     options: [{ skipSkipped: true }]
   },
   {
     code:
-      "{{SUITESKIP}}('1234', {{ES}}" +
-        "{{TEST}}('1234', {{ES}}" +
-          "[].forEach({{ES}}" +
-            "{{ASSERT}}" +
-          "});" +
-        "});" +
-      "});",
+      `{{SUITESKIP}}('1234', {{ES}}
+        {{TEST}}('1234', {{ES}}
+          [].forEach({{ES}}
+            {{ASSERT}}
+          });
+        });
+      });`,
     options: [{ skipSkipped: true }]
   }
 ]
@@ -75,89 +75,89 @@ const validTestTemplates = [
 const invalidTestTemplates = [
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "function a () {" +
-          "[].forEach({{ES}}" +
-            "{{ASSERT}}" +
-          "});" +
-        "}" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        function a () {
+          [].forEach({{ES}}
+            {{ASSERT}}
+          });
+        }
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "var a = {{ES}} " +
-          "[].forEach({{ES}}" +
-            "[].forEach({{ES}}" +
-              "{{ASSERT}}" +
-            "});" +
-          "});" +
-        "}" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        var a = {{ES}}
+          [].forEach({{ES}}
+            [].forEach({{ES}}
+              {{ASSERT}}
+            });
+          });
+        }
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "function a () {" +
-          "[].forEach({{ES}}" +
-            "[].forEach({{ES}}" +
-              "{{ASSERT}}" +
-            "});" +
-          "});" +
-        "}" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        function a () {
+          [].forEach({{ES}}
+            [].forEach({{ES}}
+              {{ASSERT}}
+            });
+          });
+        }
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "function a () {" +
-          "{{ASSERT}} " +
-        "}" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        function a () {
+          {{ASSERT}}
+        }
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "[].forEach({{ES}}" +
-          "{{ASSERT}}" +
-        "});" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        [].forEach({{ES}}
+          {{ASSERT}}
+        });
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TESTSKIP}}('1234', {{ES}}" +
-        "[].forEach({{ES}}" +
-          "[].forEach({{ES}}" +
-            "{{ASSERT}}" +
-          "});" +
-        "});" +
-      "});",
+      `{{TESTSKIP}}('1234', {{ES}}
+        [].forEach({{ES}}
+          [].forEach({{ES}}
+            {{ASSERT}}
+          });
+        });
+      });`,
     errors: [
       { message, type: "{{TYPE}}" }
     ]
   },
   {
     code:
-      "{{TEST}}('1234', {{ES}}" +
-        "class A {" +
-          "mthd() { {{ASSERT}} {{ASSERT}} }" +
-        "}" +
-      "});",
+      `{{TEST}}('1234', {{ES}}
+        class A {
+          mthd() { {{ASSERT}} {{ASSERT}} }
+        }
+      });`,
     errors: [
       { message, type: "{{TYPE}}" },
       { message, type: "{{TYPE}}" }
@@ -165,13 +165,35 @@ const invalidTestTemplates = [
   },
   {
     code:
-      "{{TEST}}('1234', () =>" +
-        "[].forEach({{ES}}" +
-          "{{ASSERT}}" +
-        "})" +
-      ");",
+      `{{TEST}}('1234', () =>
+        [].forEach({{ES}}
+          {{ASSERT}}
+        })
+      );`,
     errors: [
       { message }
+    ]
+  },
+  {
+    code:
+      `{{TEST}}('1234', {{ES}}
+        Assertion.expectAssertions(1);
+        ['a'].forEach({{ES}}
+          {{ASSERT}}
+        })
+      });
+      {{TEST}}('1234', {{ES}}
+        [].forEach({{ES}}
+          {{ASSERT}}
+        })
+      });`,
+    errors: [
+      { message }
+    ],
+    options: [
+      {
+        assertionsCheckExpression: /Assertion\.expectAssertions\(\d+\)/gm.source
+      }
     ]
   }
 ]
