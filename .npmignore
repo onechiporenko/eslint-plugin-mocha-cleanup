@@ -3,3 +3,4 @@ tests
 .ncurc.js
 .idea
 .github
+coverage

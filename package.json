@@ -20,7 +20,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "nyc mocha -R min \"tests/**\""
+    "test": "mocha -R min \"tests/**\"",
+    "test:cov": "nyc --reporter=lcov npm run test"
   },
   "dependencies": {
     "requireindex": "~1.2.0"
