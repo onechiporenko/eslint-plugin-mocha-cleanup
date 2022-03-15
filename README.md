@@ -1,6 +1,7 @@
 # eslint-plugin-mocha-cleanup
 
 [![Build Status](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup.svg)](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup)
+[![Coverage Status](https://coveralls.io/repos/github/onechiporenko/eslint-plugin-mocha-cleanup/badge.svg?branch=master)](https://coveralls.io/github/onechiporenko/eslint-plugin-mocha-cleanup?branch=master)
 [![npm version](https://badge.fury.io/js/eslint-plugin-mocha-cleanup.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 [![Downloads](http://img.shields.io/npm/dm/eslint-plugin-mocha-cleanup.svg)](https://www.npmjs.com/package/eslint-plugin-mocha-cleanup)
