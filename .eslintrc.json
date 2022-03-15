@@ -1,10 +1,15 @@
 {
-  "extends": "standard",
+  "plugins": [
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
   "rules": {
     "no-var": [2],
     "prefer-destructuring": [2],
-    "object-shorthand": [2],
-    "quotes": [2, "double"]
+    "object-shorthand": [2]
   },
   "overrides": [{
     "files": "tests/lib/utils/**",
