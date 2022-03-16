@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup.svg)](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup)
 [![Coverage Status](https://coveralls.io/repos/github/onechiporenko/eslint-plugin-mocha-cleanup/badge.svg?branch=master)](https://coveralls.io/github/onechiporenko/eslint-plugin-mocha-cleanup?branch=master)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fonechiporenko%2Feslint-plugin-mocha-cleanup%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/onechiporenko/eslint-plugin-mocha-cleanup/master)
 [![npm version](https://badge.fury.io/js/eslint-plugin-mocha-cleanup.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 [![Downloads](http://img.shields.io/npm/dm/eslint-plugin-mocha-cleanup.svg)](https://www.npmjs.com/package/eslint-plugin-mocha-cleanup)

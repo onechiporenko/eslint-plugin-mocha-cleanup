@@ -1,0 +1,17 @@
+{
+  "testRunner": "mocha",
+  "coverageAnalysis": "off",
+  "reporters": ["clear-text", "progress", "html", "dashboard"],
+  "mutate": ["lib/rules/**/*.js", "lib/utils/**/*.js"],
+  "mochaOptions": {
+    "spec": [ "tests/**/*.js" ]
+  },
+  "commandRunner": {
+    "command": "npm run test:fast"
+  },
+  "thresholds": {
+    "break": 50,
+    "high": 80,
+    "low": 60
+  }
+}
