@@ -1,6 +1,6 @@
 # eslint-plugin-mocha-cleanup
 
-[![Build Status](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup.svg)](https://travis-ci.org/onechiporenko/eslint-plugin-mocha-cleanup)
+[![CI](https://github.com/onechiporenko/eslint-plugin-mocha-cleanup/actions/workflows/nodejs.yml/badge.svg)](https://github.com/onechiporenko/eslint-plugin-mocha-cleanup/actions/workflows/nodejs.yml)
 [![Coverage Status](https://coveralls.io/repos/github/onechiporenko/eslint-plugin-mocha-cleanup/badge.svg?branch=master)](https://coveralls.io/github/onechiporenko/eslint-plugin-mocha-cleanup?branch=master)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fonechiporenko%2Feslint-plugin-mocha-cleanup%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/onechiporenko/eslint-plugin-mocha-cleanup/master)
 [![npm version](https://badge.fury.io/js/eslint-plugin-mocha-cleanup.png)](http://badge.fury.io/js/eslint-plugin-mocha-cleanup)
@@ -12,13 +12,13 @@
 You'll first need to install [ESLint](http://eslint.org):
 
 ```
-$ npm i eslint --save-dev
+$ npm i -D eslint
 ```
 
 Next, install `eslint-plugin-mocha-cleanup`:
 
 ```
-$ npm install eslint-plugin-mocha-cleanup --save-dev
+$ npm i -D eslint-plugin-mocha-cleanup
 ```
 
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `eslint-plugin-mocha-cleanup` globally.
