@@ -9,7 +9,7 @@
     "mocha",
     "cleanup"
   ],
-  "repository": "https://github.com/onechiporenko/eslint-plugin-mocha-cleanup",
+  "repository": "git://github.com/onechiporenko/eslint-plugin-mocha-cleanup.git",
   "bugs": "https://github.com/onechiporenko/eslint-plugin-mocha-cleanup/issues",
   "homepage": "https://github.com/onechiporenko/eslint-plugin-mocha-cleanup",
   "author": "onechiporenko",
