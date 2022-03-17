@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 12
       - run: npm ci
-      - run: npm lint
+      - run: npm run lint
       - run: npm test
 
   publish-gpr:
