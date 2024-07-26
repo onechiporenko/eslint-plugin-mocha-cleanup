@@ -2,11 +2,14 @@
 
 const rule = require('../../../lib/rules/disallow-stub-window');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 const testHelpers = require('../../../lib/utils/tests.js');
 const Jsonium = require('jsonium');
 const j = new Jsonium();
 
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const m1 = '`sinon.stub` should not be used for `window.{{METHOD1}}`';
 const m2 = '`sinon.stub` should not be used for `window.{{METHOD2}}`';
@@ -94,7 +97,7 @@ const validTests = j
   .useCombosAsTemplates()
   .createCombos(
     ['code', 'options.0.methods.@each', 'errors.@each.message'],
-    methods
+    methods,
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
@@ -117,7 +120,7 @@ const invalidTests = j
   .useCombosAsTemplates()
   .createCombos(
     ['code', 'options.0.methods.@each', 'errors.@each.message'],
-    methods
+    methods,
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)

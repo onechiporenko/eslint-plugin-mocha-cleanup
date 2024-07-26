@@ -2,10 +2,13 @@
 
 const rule = require('../../../lib/rules/invalid-assertions');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 const testHelpers = require('../../../lib/utils/tests.js');
 const n = require('../../../lib/utils/node.js');
 const m = 'Invalid assertion usage.';
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const Jsonium = require('jsonium');
 const j = new Jsonium();

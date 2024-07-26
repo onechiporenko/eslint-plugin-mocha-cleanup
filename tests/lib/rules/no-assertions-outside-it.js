@@ -2,8 +2,11 @@
 
 const rule = require('../../../lib/rules/no-assertions-outside-it');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const testHelpers = require('../../../lib/utils/tests.js');
 
@@ -23,7 +26,7 @@ const asserts = [
 const validTestTemplates = [
   {
     code: `{{TEST}}('1234', {{ES}}
-      {{ASSERT}} 
+      {{ASSERT}}
     });`,
   },
   {
@@ -42,7 +45,7 @@ const validTestTemplates = [
     });`,
   },
   {
-    code: `{{SUITE}}('1234', {{ES}} 
+    code: `{{SUITE}}('1234', {{ES}}
       expect;
     });`,
   },
@@ -116,7 +119,7 @@ const validTestTemplates = [
     });`,
   },
   {
-    code: `var a = {{ES}} 
+    code: `var a = {{ES}}
       {{ASSERT}}
     }`,
   },

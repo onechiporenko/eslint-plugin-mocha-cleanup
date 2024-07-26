@@ -2,9 +2,12 @@
 
 const rule = require('../../../lib/rules/asserts-limit');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 const testHelpers = require('../../../lib/utils/tests.js');
 
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const Jsonium = require('jsonium');
 const j = new Jsonium();
@@ -43,12 +46,12 @@ const validTestTemplates = [
   },
   {
     code: `{{TEST}}('1234', {{ES}}
-      should; {{ASSERTION}} 
+      should; {{ASSERTION}}
     });`,
   },
   {
-    code: `{{TEST}}('1234', {{ES}} 
-      notAssert['assert']; {{ASSERTION}} 
+    code: `{{TEST}}('1234', {{ES}}
+      notAssert['assert']; {{ASSERTION}}
     });`,
   },
   {
@@ -124,8 +127,8 @@ const validTestTemplates = [
     });`,
   },
   {
-    code: `{{TEST}}('1234', function (notDone) { 
-      notDone(); 
+    code: `{{TEST}}('1234', function (notDone) {
+      notDone();
     });`,
   },
   {
@@ -303,7 +306,7 @@ const invalidTestTemplatesWithoutAssertions = [
   },
   {
     code: `{{TEST}}('1234', function (notDone) {
-      notDone(); 
+      notDone();
     });`,
     options: [
       {

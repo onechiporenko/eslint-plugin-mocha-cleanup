@@ -2,8 +2,11 @@
 
 const rule = require('../../../lib/rules/no-expressions-in-assertions');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 const testHelpers = require('../../../lib/utils/tests.js');
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const Jsonium = require('jsonium');
 const j = new Jsonium();
@@ -256,7 +259,7 @@ let validTests = j
       { EXPECT: 'expect' },
       { EXPECT: 'chai.expect' },
       { EXPECT: "chai['expect']" },
-    ]
+    ],
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
@@ -275,7 +278,7 @@ validTests = j
       { ASSERT: 'assert' },
       { ASSERT: 'chai.assert' },
       { ASSERT: "chai['assert']" },
-    ]
+    ],
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
@@ -295,7 +298,7 @@ let invalidTests = j
       { EXPECT: 'expect' },
       { EXPECT: 'chai.expect' },
       { EXPECT: "chai['expect']" },
-    ]
+    ],
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)
@@ -314,7 +317,7 @@ invalidTests = j
       { ASSERT: 'assert', TYPE: 'CallExpression' },
       { ASSERT: 'chai.assert', TYPE: 'MemberExpression' },
       { ASSERT: "chai['assert']", TYPE: 'MemberExpression' },
-    ]
+    ],
   )
   .useCombosAsTemplates()
   .createCombos(['code'], testHelpers.mochaDatasets)

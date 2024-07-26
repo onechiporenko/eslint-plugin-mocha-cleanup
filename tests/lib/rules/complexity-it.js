@@ -6,8 +6,11 @@ const j = new Jsonium();
 
 const rule = require('../../../lib/rules/complexity-it');
 const { RuleTester } = require('eslint');
+const globals = require('globals');
 
-const ruleTester = new RuleTester({ env: { es6: true } });
+const ruleTester = new RuleTester({
+  languageOptions: { globals: globals.es2015 },
+});
 
 const assertions = [
   { ASSERT: 'sinon.assert.calledOn(sp, {});', COMPLEXITY: '3' },
